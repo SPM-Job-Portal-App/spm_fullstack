@@ -16,6 +16,39 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/openroles',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Open Roles',
+        component: () => import('@/views/OpenRoles.vue'),
+      },
+    ],
+  },
+  {
+    path: '/candidates',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Candidates',
+        component: () => import('@/views/Candidates.vue'),
+      },
+    ],
+  },
+  {
+    path: '/settings',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Settings',
+        component: () => import('@/views/Settings.vue'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
