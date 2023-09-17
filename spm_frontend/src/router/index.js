@@ -49,6 +49,17 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/createrolelisting',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Create Role Listing',
+        component: () => import('@/views/CreateRoleListing.vue'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
