@@ -1,51 +1,59 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
+import DefaultLayout from '@/layouts/default/Default.vue'
+import Home from '@/views/Home.vue'
+import OpenRoles from '@/views/OpenRoles.vue'
+import ApplyOpenRoles from '@/views/ApplyOpenRoles.vue'
+import Candidates from '@/views/Candidates.vue'
+import Settings from '@/views/Settings.vue'
 
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        component: Home,
       },
     ],
   },
   {
     path: '/openroles',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Open Roles',
-        component: () => import('@/views/OpenRoles.vue'),
+        component: OpenRoles,
+      },
+      {
+        path: 'apply',
+        name: 'Apply Open Roles',
+        component: ApplyOpenRoles,
       },
     ],
   },
   {
     path: '/candidates',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Candidates',
-        component: () => import('@/views/Candidates.vue'),
+        component: Candidates,
       },
     ],
   },
   {
     path: '/settings',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Settings',
-        component: () => import('@/views/Settings.vue'),
+        component: Settings,
       },
     ],
   },
