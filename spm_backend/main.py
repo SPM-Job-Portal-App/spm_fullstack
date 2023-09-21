@@ -1,5 +1,5 @@
 from flask import Flask
-from role_listings.role_listing_controller import listing_bp
+from role_listings.role_listing import listing_bp
 from role_application.role_application import application_bp
 from models import db
 
