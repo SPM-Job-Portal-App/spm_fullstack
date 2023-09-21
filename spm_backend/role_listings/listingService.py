@@ -1,4 +1,4 @@
-from models import RoleListing
+from role_listings.role_listing import RoleListing
 
 class Listing():
     def get_all_listing():
