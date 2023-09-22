@@ -85,13 +85,11 @@
     }),
     computed: {
       departmentOptions() {
-        // Extract unique department names from both available and applied roles
         const departments = [...new Set([...this.availableRoles, ...this.appliedRoles].map((role) => role.department))];
-        // Add an option for filtering all departments
+        
         return ['All', ...departments];
       },
       filteredAvailableRoles() {
-        // Filter available roles based on the selected department
         if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
           return this.availableRoles;
         } else {
@@ -99,7 +97,6 @@
         }
       },
       filteredAppliedRoles() {
-        // Filter applied roles based on the selected department
         if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
           return this.appliedRoles;
         } else {
@@ -112,8 +109,6 @@
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
       filterRoles() {
-        // Update the filtered roles based on the selected department
-        // This will trigger reactivity and update the displayed roles
       },
       getDepartmentIcon(department) {
         const departmentIcons = {
