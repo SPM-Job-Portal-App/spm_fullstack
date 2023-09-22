@@ -57,3 +57,54 @@ def delete_role_listing(id):
     db.session.delete(listing)
     db.session.commit()
     return jsonify({'message': 'Role listing deleted successfully'}), 200
+
+
+
+######################### Create Role Listing #########################
+@listing_bp.route('/role_listing/create', methods=['POST'])
+def create_role_listing():
+    data = request.get_json()
+    
+    # role_listing_id = data['role_listing_id']
+    role_name = data['role_name']
+    skills = data['skills']
+    country = data['country']
+    dept = data['dept']
+    reporting_manager = data['reporting_manager']
+    
+    # Check if patient already exists (NOT SURE IF WE NEED THIS PART)
+    if RoleListing.query.filter_by(role_name=role_name, skills=skills, country=country, dept=dept, reporting_manager=reporting_manager).first():
+        return jsonify(
+            {
+                "code": 400,
+                "message": "Role Listing already exists!"
+            }
+        ), 400
+    
+    new_role = RoleListing(role_name=role_name, skills=skills, country=country, dept=dept, reporting_manager=reporting_manager)
+    try:
+        db.session.add(new_role)
+        db.session.commit()
+    except:
+        return jsonify(
+            {
+                "code": 500,
+                "data": {
+                    "role_name": role_name,
+                    "skills": skills,
+                    "country": country,
+                    "dept": dept,
+                    "reporting_manager": reporting_manager
+                },
+                "message": "An error occurred creating the Role_Listing record."
+            }
+        ), 500
+        
+    return jsonify(
+        {
+            "code": 201,
+            "data": new_role.json(),
+            "message": "Role Listing created successfully"
+        }
+    ), 201    
+    
