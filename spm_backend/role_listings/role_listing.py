@@ -70,10 +70,11 @@ def create_role_listing():
     skills = data['skills']
     country = data['country']
     dept = data['dept']
+    is_open = is_open
     reporting_manager = data['reporting_manager']
     
-    # Check if patient already exists (NOT SURE IF WE NEED THIS PART)
-    if RoleListing.query.filter_by(role_name=role_name, skills=skills, country=country, dept=dept, reporting_manager=reporting_manager).first():
+    # Check if role_listing already exists (NOT SURE IF WE NEED THIS PART)
+    if RoleListing.query.filter_by(role_name=role_name, skills=skills, country=country, dept=dept, is_open=is_open, reporting_manager=reporting_manager).first():
         return jsonify(
             {
                 "code": 400,
@@ -81,7 +82,7 @@ def create_role_listing():
             }
         ), 400
     
-    new_role = RoleListing(role_name=role_name, skills=skills, country=country, dept=dept, reporting_manager=reporting_manager)
+    new_role = RoleListing(role_name=role_name, skills=skills, country=country, dept=dept, is_open=is_open, reporting_manager=reporting_manager)
     try:
         db.session.add(new_role)
         db.session.commit()
@@ -94,6 +95,7 @@ def create_role_listing():
                     "skills": skills,
                     "country": country,
                     "dept": dept,
+                    "is_open": is_open,
                     "reporting_manager": reporting_manager
                 },
                 "message": "An error occurred creating the Role_Listing record."
