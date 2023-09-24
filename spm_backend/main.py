@@ -1,6 +1,6 @@
 from flask import Flask
 from role_listings.role_listing import listing_bp
-from role_application.role_application import application_bp
+from role_application.applicationController import application_bp
 from models import db
 
 app = Flask(__name__)

@@ -1,4 +1,4 @@
-from models import RoleListing
+from models import db, RoleListing
 
 class Listing():
     def get_all_listing():
@@ -18,7 +18,7 @@ class Listing():
         return listing_list
     
     def get_listing_by_index(id):
-        listing = RoleListing.query.get(id)
+        listing = db.session.get(RoleListing, id)
         if listing is None:
             return None
         listing_data = {

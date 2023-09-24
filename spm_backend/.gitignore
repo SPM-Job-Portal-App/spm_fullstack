@@ -1,25 +1,28 @@
-.DS_Store
-.env
-.flaskenv
-*.pyc
-*.pyo
-env/
-venv/
-.venv/
-env*
-dist/
-build/
-*.egg
-*.egg-info/
-.tox/
-.cache/
-.pytest_cache/
-.idea/
-docs/_build/
-.vscode
+# Python bytecode
+__pycache__/
 
-# Coverage reports
-htmlcov/
-.coverage
-.coverage.*
-*,cover
+# Virtual environment
+venv/
+env/
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Docker Compose files
+docker-compose.yml
+docker-compose.yaml
+
+# Environment variables
+.env
+*.env
+
+# IDE specific files (e.g., VSCode, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Editor and OS generated files
+*.swp
+.DS_Store
+Thumbs.db
