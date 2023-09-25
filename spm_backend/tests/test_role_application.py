@@ -12,4 +12,4 @@ def client():
 def test_apply_for_open_role_listing(client):
     response = client.get('/')
     assert response.status_code == 200
-    assert response.data == b"Flask API works!"
+    assert response.data == b"Flask API works"
