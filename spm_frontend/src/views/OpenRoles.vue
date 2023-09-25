@@ -23,6 +23,7 @@
             <v-row>
               <v-col cols="4" v-for="(listing, index) in filteredAvailableRoles" :key="index">
                 <!-- Listing Card with Margin -->
+               
                 <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
                   <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
                   <div class="d-flex align-center justify-center department-icon-container">
@@ -31,6 +32,9 @@
                   </div>
                   <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">{{ listing.department }}</div>
                   <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.label }}</div>
+                  <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">Skills : {{ listing.description }}</div>
+            
+                  <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.skill }}</div>
                   <div class="text-center mt-3 mb-6">
                     <v-btn class="mx-auto px-4" @click="applyNow(index)" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Apply Now!</v-btn>
                   </div>
@@ -43,6 +47,7 @@
             <v-row>
               <v-col cols="4" v-for="(listing, index) in filteredAppliedRoles" :key="index">
                 <!-- Listing Card with Margin for Applied Roles -->
+              
                 <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
                   <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
                   <div class="d-flex align-center justify-center department-icon-container">
@@ -50,7 +55,8 @@
                     <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.department) }}</v-icon>
                   </div>
                   <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">{{ listing.department }}</div>
-                  <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.label }}</div>
+                  <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.description }}</div>
+                  
                   <div class="text-center mt-3 mb-6">
                     <v-btn class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Applied</v-btn>
                   </div>
@@ -65,30 +71,39 @@
   
   
   <script>
+  import axios from'axios';
   export default {
+   
     data: () => ({
       tab: 'availableRoles',
       selectedDepartment: null,
-      availableRoles: [
-        { department: 'Engineering', label: 'Software Engineer' },
-        { department: 'Product Management', label: 'Product Manager' },
-        { department: 'Analytics', label: 'Data Analyst' },
-        { department: 'Marketing', label: 'Marketing Specialist' },
-        { department: 'Sales', label: 'Sales Representative' },
-        { department: 'Sales', label: 'Sales Associate' },
-        { department: 'HR', label: 'HR Coordinator' },
-      ],
+      availableRoles: [],
       appliedRoles: [
-        { department: 'Sales', label: 'Sales Associate' },
-        { department: 'HR', label: 'HR Coordinator' },
+    
       ],
     }),
+    mounted()
+      {
+        axios.get('http://localhost:5000/role').then(
+          (response)=>{
+            this.availableRoles = response.data.roles;
+            
+            console.log(this.availableRoles[0])
+            
+
+
+          }
+          
+        )
+
+      },
     computed: {
       departmentOptions() {
         const departments = [...new Set([...this.availableRoles, ...this.appliedRoles].map((role) => role.department))];
         
         return ['All', ...departments];
       },
+      
       filteredAvailableRoles() {
         if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
           return this.availableRoles;
