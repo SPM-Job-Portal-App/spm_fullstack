@@ -5,6 +5,9 @@ from role.role_service import role_bp
 from models import db
 from flask_cors import CORS
 
+
+
+
 app = Flask(__name__)
 CORS(app)
 
@@ -18,6 +21,8 @@ app.register_blueprint(role_bp, url_prefix='/role')
 
 @app.route('/', methods=["GET"])
 def test():
+    
+
     return "Flask API works!"
 
 if __name__ == '__main__':
