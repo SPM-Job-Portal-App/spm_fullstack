@@ -44,5 +44,3 @@ jobs:
       - name: Run Tests
         working-directory: spm_backend
         run: python test_backend.py
-        env:
-          DATABASE_URL: mysql+mysqlconnector://user:password@localhost:3306/db
