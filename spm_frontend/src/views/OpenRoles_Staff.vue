@@ -40,7 +40,7 @@
           </v-window-item>
   
           <v-window-item value="appliedRoles">
-            <v-row>
+            <v-row class="ml-4">
               <v-col cols="4" v-for="(listing, index) in filteredAppliedRoles" :key="index">
                 <!-- Listing Card with Margin for Applied Roles -->
                 <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
@@ -79,8 +79,8 @@
         { department: 'HR', label: 'HR Coordinator' },
       ],
       appliedRoles: [
-        { department: 'Sales', label: 'Sales Associate' },
-        { department: 'HR', label: 'HR Coordinator' },
+        { department: 'Sales', label: 'Sales Associate'},
+        { department: 'HR', label: 'HR Coordinator'},
       ],
     }),
     computed: {
@@ -106,7 +106,7 @@
     },
     methods: {
       applyNow(index) {
-        console.log(`Applied for ${this.availableRoles[index].label}`);
+        console.log(`Applied for ${role.label}`);
       },
       filterRoles() {
       },
