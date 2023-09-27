@@ -12,10 +12,12 @@ jobs:
 
     services:
       mysql:
-        image: mysql:latest
+        image: mysql:5.7
         env:
-          MYSQL_DATABASE: db
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -34,11 +36,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Create Test Database
+      - name: Set up MYSQL
+        working-directory: spm_backend
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS db;'
+          python -c "import mysql.connector; conn = mysql.connector.connect(host='localhost', user='user', password='password', database='db'); conn.close();"
 
       - name: Run Tests
         working-directory: spm_backend
-        run: |
-          python test_backend.py
+        run: python test_backend.py
+        env:
+          DATABASE_URL: mysql+mysqlconnector://user:password@localhost:3306/db
