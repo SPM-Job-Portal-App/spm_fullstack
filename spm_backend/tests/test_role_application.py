@@ -1,94 +1,130 @@
 import pytest
-from main import app
-import unittest
-from unittest.mock import patch
-from role_application.applicationService import Application
+from main import app, drop_tables, initialize_databases
+from models import db, RoleListing, Staff
 
-class TestRoleApplication(unittest.TestCase):
-    def setUp(self):
-        self.app = app.test_client()
-        self.app_context = app.app_context()
-        self.app_context.push()
+# Set up the Flask app for testing
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
 
-    @patch('role_listings.listingService.Listing.get_listing_by_index')
-    @patch('models.db.session.query')
-    def test_apply_for_application_successful(self, mock_query, mock_get_listing_by_index):
-        listing_data = {
-            'role_name': 'Manager',
-            'skills': 'Leadership, Communication',
-            'country': 'USA',
-            'dept': 'Management',
-            'is_open': True,
-            'reporting_manager': None
-        }
-        application_data = None
-        data = {
-            'role_listing': 3,
-            'staff_id': 2
-        }
-        mock_query.return_value.filter_by.return_value.first.return_value = application_data
-        mock_get_listing_by_index.return_value = listing_data
-        response, status_code = Application.apply_for_role(data)
-        self.assertEqual(status_code, 201)
-        self.assertEqual(response.get_json()['message'], 'Role application created successfully')
+def test_apply_for_open_role_listing_success(client):
+    initialize_databases()
+    new_listing = RoleListing(
+        role_name="Software Engineer",
+        skills="Python, JavaScript, SQL",
+        country="USA",
+        dept="Engineering",
+        is_open=True,
+        reporting_manager=None
+    )
+    new_staff = Staff(
+        staff_first_name="John",
+        staff_last_name="Doe",
+        dept="Engineering",
+        country="USA",
+        email="john.doe@example.com",
+        role="Engineer"
+    )
+    application_data = {
+        "role_listing": 1,
+        "staff_id": 1
+    }
+    with app.app_context():
+        db.session.add(new_listing)
+        db.session.add(new_staff)
+        db.session.commit()
+    response = client.post('/application', json=application_data)
+    expected_message = {'message': 'Role application created successfully'}
+    assert response.json == expected_message
+    assert response.status_code == 201
+    drop_tables()
 
-    @patch('role_listings.listingService.Listing.get_listing_by_index')
-    def test_application_does_not_exist(self, mock_get_listing_by_index):
-        listing_data = None
-        data = {
-            'role_listing': 3,
-            'staff_id': 2
-        }
-        mock_get_listing_by_index.return_value = listing_data
-        response, status_code = Application.apply_for_role(data)
-        response_data = response.get_json()
-        self.assertEqual(status_code, 404)
-        self.assertEqual(response_data['message'], 'Role listing at index does not exist')
+def test_apply_for_closed_role_listing_failure(client):
+    initialize_databases()
+    new_listing = RoleListing(
+        role_name="Software Engineer",
+        skills="Python, JavaScript, SQL",
+        country="USA",
+        dept="Engineering",
+        is_open=False,
+        reporting_manager=None
+    )
+    new_staff = Staff(
+        staff_first_name="John",
+        staff_last_name="Doe",
+        dept="Engineering",
+        country="USA",
+        email="john.doe@example.com",
+        role="Engineer"
+    )
+    application_data = {
+        "role_listing": 1,
+        "staff_id": 1
+    }
+    with app.app_context():
+        db.session.add(new_listing)
+        db.session.add(new_staff)
+        db.session.commit()
+    response = client.post('/application', json=application_data)
+    expected_message = {'message': 'Application is closed'}
+    assert response.json == expected_message
+    assert response.status_code == 400
+    drop_tables()
 
-    @patch('role_listings.listingService.Listing.get_listing_by_index')
-    def test_application_does_not_exist(self, mock_get_listing_by_index):
-        listing_data = {
-            'role_name': 'Manager',
-            'skills': 'Leadership, Communication',
-            'country': 'USA',
-            'dept': 'Management',
-            'is_open': False,
-            'reporting_manager': None
-        }
-        data = {
-            'role_listing': 3,
-            'staff_id': 2
-        }
-        mock_get_listing_by_index.return_value = listing_data
-        response, status_code = Application.apply_for_role(data)
-        response_data = response.get_json()
-        self.assertEqual(status_code, 400)
-        self.assertEqual(response_data['message'], 'Application is closed')
+def test_apply_for_nonexistent_role_listing_failure(client):
+    initialize_databases()
+    new_staff = Staff(
+        staff_first_name="John",
+        staff_last_name="Doe",
+        dept="Engineering",
+        country="USA",
+        email="john.doe@example.com",
+        role="Engineer"
+    )
+    application_data = {
+        "role_listing": 1,
+        "staff_id": 1
+    }
+    with app.app_context():
+        db.session.add(new_staff)
+        db.session.commit()
+    response = client.post('/application', json=application_data)
+    expected_message = {'message': 'Role listing at index does not exist'}
+    assert response.json == expected_message
+    assert response.status_code == 404
+    drop_tables()
 
-    @patch('role_listings.listingService.Listing.get_listing_by_index')
-    @patch('models.db.session.query')
-    def test_application_does_not_exist(self, mock_query, mock_get_listing_by_index):
-        listing_data = {
-            'role_name': 'Manager',
-            'skills': 'Leadership, Communication',
-            'country': 'USA',
-            'dept': 'Management',
-            'is_open': True,
-            'reporting_manager': None
-        }
-        application_data = {
-            'application_date': '2023-09-15',
-            'role_listing_id': 2,
-            'staff_id': 2
-        }
-        data = {
-            'role_listing': 3,
-            'staff_id': 2
-        }
-        mock_query.return_value.filter_by.return_value.first.return_value = application_data
-        mock_get_listing_by_index.return_value = listing_data
-        response, status_code = Application.apply_for_role(data)
-        response_data = response.get_json()
-        self.assertEqual(status_code, 400)
-        self.assertEqual(response_data['message'], 'You have already applied for this role listing')
-    
+def test_apply_for_role_listing_with_active_application_failure(client):
+    initialize_databases()
+    new_staff = Staff(
+        staff_first_name="John",
+        staff_last_name="Doe",
+        dept="Engineering",
+        country="USA",
+        email="john.doe@example.com",
+        role="Engineer"
+    )
+    new_listing = RoleListing(
+        role_name="Software Engineer",
+        skills="Python, JavaScript, SQL",
+        country="USA",
+        dept="Engineering",
+        is_open=True,
+        reporting_manager=None
+    )
+    application_data = {
+        "role_listing": 1,
+        "staff_id": 1
+    }
+    with app.app_context():
+        db.session.add(new_staff)
+        db.session.add(new_listing)
+        db.session.commit()
+    client.post('/application', json=application_data)
+    response = client.post('/application', json=application_data)
+    expected_message = {'message': 'You have already applied for this role listing'}
+    assert response.json == expected_message
+    assert response.status_code == 400
+    drop_tables()
