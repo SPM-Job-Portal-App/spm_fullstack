@@ -29,11 +29,11 @@ except Exception as e:
     print(f"Failed to connect to MySQL on localhost: {e}")
     
     # Try connecting to the "mysql" service defined in Docker Compose
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@mysql:3306/db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@mysql:3306/db'
     db.init_app(app)
     app.register_blueprint(listing_bp, url_prefix='/listing')
     app.register_blueprint(application_bp, url_prefix='/application')
     app.register_blueprint(role_bp, url_prefix='/role')
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -14,16 +14,12 @@ jobs:
       localhost:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: db
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    steps:
-      - uses: actions/checkout@v1
-      - run: mysql -h 127.0.0.1 --port 3306 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS test;'
 
     steps:
       - name: Checkout Repository
