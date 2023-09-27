@@ -16,21 +16,11 @@ def initialize_databases():
     with app.app_context():
         db.create_all()
 
-try:
-    # Try connecting to MySQL on localhost first
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
-    db.init_app(app)
-    app.register_blueprint(listing_bp, url_prefix='/listing')
-    app.register_blueprint(application_bp, url_prefix='/application')
-    app.register_blueprint(role_bp, url_prefix='/role')
-except Exception as e:
-    print(f"Failed to connect to MySQL on localhost: {e}")
-    # Try connecting to the "mysql" service defined in Docker Compose
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@mysql:3306/db'
-    db.init_app(app)
-    app.register_blueprint(listing_bp, url_prefix='/listing')
-    app.register_blueprint(application_bp, url_prefix='/application')
-    app.register_blueprint(role_bp, url_prefix='/role')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@127.0.0.1:3306/db'
+db.init_app(app)
+app.register_blueprint(listing_bp, url_prefix='/listing')
+app.register_blueprint(application_bp, url_prefix='/application')
+app.register_blueprint(role_bp, url_prefix='/role')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='localhost', port=5000, debug=True)
