@@ -18,6 +18,7 @@ def initialize_databases():
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
 db.init_app(app)
+initialize_databases()
 app.register_blueprint(listing_bp, url_prefix='/listing')
 app.register_blueprint(application_bp, url_prefix='/application')
 app.register_blueprint(role_bp, url_prefix='/role')
