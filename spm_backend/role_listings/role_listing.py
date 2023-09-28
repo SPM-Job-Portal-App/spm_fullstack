@@ -33,20 +33,20 @@ def get_role_listing(id):
     return jsonify(res), 200
 
 # Update
-@listing_bp.route('/<int:id>', methods=['PUT'])
-def update_role_listing(id):
-    listing = RoleListing.query.get(id)
-    if listing is None:
-        return jsonify({'message': 'Role listing not found'}), 404
-    data = request.get_json()
-    listing.role_name = data['role_name']
-    listing.skills = data['skills']
-    listing.country = data['country']
-    listing.dept = data['dept']
-    listing.is_open = data['is_open']
-    listing.reporting_manager = data.get('reporting_manager')
-    db.session.commit()
-    return jsonify({'message': 'Role listing updated successfully'}), 200
+# @listing_bp.route('/<int:id>', methods=['PUT'])
+# def update_role_listing(id):
+#     listing = RoleListing.query.get(id)
+#     if listing is None:
+#         return jsonify({'message': 'Role listing not found'}), 404
+#     data = request.get_json()
+#     listing.role_name = data['role_name']
+#     listing.skills = data['skills']
+#     listing.country = data['country']
+#     listing.dept = data['dept']
+#     listing.is_open = data['is_open']
+#     listing.reporting_manager = data.get('reporting_manager')
+#     db.session.commit()
+#     return jsonify({'message': 'Role listing updated successfully'}), 200
 
 # Delete
 @listing_bp.route('/<int:id>', methods=['DELETE'])
@@ -109,4 +109,34 @@ def create_role_listing():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "An error occurred while creating the Role Listing"}), 500
+    
+    
+    
+
+######################### Update Role Listing #########################
+@listing_bp.route('/update/<int:role_listing_id>', methods=['PUT'])
+def update_role_listing(role_listing_id):
+    # Get the JSON data from the request
+    data = request.get_json()
+
+    # Find the role_listing record to update
+    role_listing = RoleListing.query.get(role_listing_id)
+
+    if role_listing is None:
+        return jsonify({"message": "Role Listing not found"}), 404
+
+    # Update the record with new data
+    role_listing.role_name = data.get('role_name', role_listing.role_name)
+    role_listing.skills = data.get('skills', role_listing.skills)
+    role_listing.country = data.get('country', role_listing.country)
+    role_listing.dept = data.get('dept', role_listing.dept)
+    role_listing.is_open = data.get('is_open', role_listing.is_open)
+    role_listing.reporting_manager = data.get('reporting_manager')
+
+    try:
+        db.session.commit()
+        return jsonify({"message": "Role Listing updated successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "An error occurred while updating the Role Listing"}), 500
     
