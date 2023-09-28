@@ -51,3 +51,6 @@ Thumbs.db
 *.mov
 *.wmv
 
+# environment
+spm_backend/myenv/
+spm_backend/myenv2/
