@@ -1,7 +1,7 @@
 from flask import jsonify, request, Blueprint
 import csv
 from role.role import Role
-from models import db;
+from models.model import db;
 
 
 role_bp = Blueprint('role', __name__)

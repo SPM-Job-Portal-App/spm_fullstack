@@ -96,6 +96,7 @@
 
 <script>
     import OverlayMessage from '../components/OverlayMessage.vue';
+    import axios from 'axios'
 
     export default {
         data: () => ({

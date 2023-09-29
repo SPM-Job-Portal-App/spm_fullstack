@@ -1,4 +1,5 @@
-from models import db
+from models.model import db
+
 class Role(db.Model):
     role_name = db.Column(db.String(255), nullable=False,primary_key=True)
     skill_name = db.Column(db.String(255), nullable=False,primary_key=True)
@@ -14,6 +15,6 @@ class Role(db.Model):
     def json(self):
         return {"label": self.role_name, "skill": self.skill_name, "description": self.description,"department":self.department}
     
-        
+    
 
         
