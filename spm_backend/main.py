@@ -2,7 +2,7 @@ from flask import Flask
 from role_listings.role_listing import listing_bp
 from role_application.applicationController import application_bp
 from role.role_service import role_bp
-from models import db
+from models.model import db
 from flask_cors import CORS
 
 app = Flask(__name__)

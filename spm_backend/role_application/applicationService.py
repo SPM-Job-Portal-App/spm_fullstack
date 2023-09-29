@@ -1,4 +1,5 @@
-from models import db, RoleApplication
+from models.model import db
+from models.role_application_model import RoleApplication
 from role_listings.listingService import Listing
 from datetime import datetime
 from flask import jsonify

@@ -1,5 +1,6 @@
 from flask import jsonify, request, Blueprint
-from models import db, RoleListing
+from models.model import db
+from models.role_listing_model import RoleListing
 from role_listings.listingService import Listing
 
 listing_bp = Blueprint('listing', __name__)
