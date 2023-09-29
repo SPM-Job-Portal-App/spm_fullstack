@@ -64,6 +64,7 @@ const routes = [
     path: '/edit-listing/:index', // Define a route parameter :index
     name: 'edit-listing',
     component: () => import('@/components/EditListing.vue'),
+    props: true,
   },
 ]
 

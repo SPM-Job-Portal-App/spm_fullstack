@@ -40,19 +40,19 @@
                   <!-- Department Icon -->
                   <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.department) }}</v-icon>
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">
+                <div class="text-center" style="color:#664229; font-size: 18px; font-weight: bold;">
                   {{ listing.label }}
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <div class="text-center mt-7" style="color:#8C7251; padding: 10px; font-size: 18px;">
                   <b>Department:</b> {{ listing.department }}
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
                   <b>Description:</b> Lorem ipsum lorem ipsum
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
                   <b>Reporting Manager:</b> {{ getReportingManager() }}
                 </div>
                 <div class="text-center mt-3 mb-6">
@@ -80,13 +80,13 @@
                   <b>Department:</b> {{ listing.department }}
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                  <b>Description:</b> Lorem ipsum lorem ipsum
+                  <b>Description:</b> {{ listing.description }}
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                  <b>Reporting Manager:</b> {{ getReportingManager() }}
+                <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
+                  <b>Reporting Manager:</b> {{ listing.reportingmanager }}
                 </div>
                 <div class="text-center mt-3 mb-6">
                   <v-btn class="mx-auto px-4" @click="applyToAppliedRole(index)" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Applied</v-btn>
@@ -107,16 +107,16 @@ export default {
     selectedDepartment: 'All',
     selectedCountry: 'All',
     availableRoles: [
-      { department: 'Engineering', label: 'Software Engineer', country: 'Singapore' },
-      { department: 'Product Management', label: 'Product Manager', country: 'Indonesia' },
-      { department: 'Analytics', label: 'Data Analyst', country: 'Vietnam' },
-      { department: 'Sales', label: 'Sales Associate', country: 'Singapore' },
-      { department: 'HR', label: 'HR Coordinator', country: 'Indonesia' },
+      { department: 'Engineering', label: 'Software Engineer', country: 'Singapore',reportingmanager: 'John Doe'},
+      { department: 'Product Management', label: 'Product Manager', country: 'Indonesia',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
+      { department: 'Analytics', label: 'Data Analyst', country: 'Vietnam',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
+      { department: 'Sales', label: 'Sales Associate', country: 'Singapore',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
+      { department: 'HR', label: 'HR Coordinator', country: 'Indonesia',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
       // Add more roles with department and country properties
     ],
     appliedRoles: [
-      { department: 'Sales', label: 'Sales Associate', country: 'Singapore' },
-      { department: 'HR', label: 'HR Coordinator', country: 'Indonesia' },
+      { department: 'Sales', label: 'Sales Associate', country: 'Singapore',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
+      { department: 'HR', label: 'HR Coordinator', country: 'Indonesia',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
       // Add more applied roles with department and country properties
     ],
   }),
@@ -173,7 +173,7 @@ export default {
 
 <style scoped>
 .department-icon-container {
-  height: 200px;
+  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;

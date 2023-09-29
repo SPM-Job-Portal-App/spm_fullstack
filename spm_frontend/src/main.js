@@ -15,6 +15,8 @@ import { registerPlugins } from '@/plugins'
 
 const app = createApp(App)
 
+// export const EventBus = new Vue();
+
 registerPlugins(app)
 
 app.mount('#app')

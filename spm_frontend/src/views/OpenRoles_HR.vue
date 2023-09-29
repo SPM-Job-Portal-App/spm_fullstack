@@ -1,7 +1,7 @@
 <template>
     <v-card class>
       <!-- Title -->
-      <h1 class="page-title ml-8">Available Jobs</h1>
+      <h1 class="page-title ml-8">Job Listings</h1>
   
       <v-row>
         <v-col cols="12" md="6">
@@ -9,6 +9,17 @@
             v-model="selectedDepartment"
             :items="departmentOptions"
             label="Filter by Department"
+            @input="filterRoles"
+            dense
+            class="ml-8"
+          ></v-select>
+        </v-col>
+
+        <v-col cols="12" md="6">
+          <v-select
+            v-model="selectedCountry"
+            :items="countryOptions"
+            label="Filter by Country"
             @input="filterRoles"
             dense
             class="ml-8"
@@ -29,8 +40,21 @@
               <!-- Department Icon -->
               <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.department) }}</v-icon>
             </div>
-            <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">{{ listing.department }}</div>
-            <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.label }}</div>
+            <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">
+                {{ listing.label }}
+              </div>
+              <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <b>Department:</b> {{ listing.department }}
+              </div>
+              <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <b>Description:</b> Lorem ipsum lorem ipsum
+              </div>
+              <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
+                <b>Country of Opening:</b> {{ listing.country }}
+              </div>
+              <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
+                <b>Reporting Manager:</b> {{ listing.reportingmanager }}
+              </div>
             <div class="text-center mt-3 mb-6">
               <!-- Number of Applicants -->
               <v-btn @click="viewApplicants(index)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
@@ -44,48 +68,74 @@
   </template>
   
   <script>
+  import { EventBus } from '@/main';
   export default {
     data: () => ({
       selectedDepartment: null,
+      selectedCountry: null,
       availableRoles: [
-        { department: 'Engineering', label: 'Software Engineer', numApplications:0},
-        { department: 'Product Management', label: 'Product Manager', numApplications:7 },
-        { department: 'Analytics', label: 'Data Analyst', numApplications:4 },
-        { department: 'Marketing', label: 'Marketing Specialist', numApplications:2 },
-        { department: 'Sales', label: 'Sales Representative', numApplications:8 },
-        { department: 'Sales', label: 'Sales Associate', numApplications:3},
-        { department: 'HR', label: 'HR Coordinator', numApplications:9},
+        { department: 'Engineering', label: 'Software Engineer', numApplications:0, country:'Singapore',reportingmanager: 'John Doe'},
+        { department: 'Product Management', label: 'Product Manager', numApplications:7, country:'Singapore',reportingmanager: 'John Doe'},
+        { department: 'Analytics', label: 'Data Analyst', numApplications:4, country:'Indonesia',reportingmanager: 'John Doe'},
+        { department: 'Marketing', label: 'Marketing Specialist', numApplications:2, country:'Indonesia',reportingmanager: 'John Doe'},
+        { department: 'Sales', label: 'Sales Representative', numApplications:8, country: 'Vietnam',reportingmanager: 'John Doe'},
+        { department: 'Sales', label: 'Sales Associate', numApplications:3, country:'Indonesia',reportingmanager: 'John Doe'},
+        { department: 'HR', label: 'HR Coordinator', numApplications:9, country: 'Vietnam',reportingmanager: 'John Doe'},
       ],
       appliedRoles: [
-        { department: 'Sales', label: 'Sales Associate', numApplications:12},
-        { department: 'HR', label: 'HR Coordinator', numApplications:1},
+        { department: 'Sales', label: 'Sales Associate', numApplications:12,reportingmanager: 'John Doe'},
+        { department: 'HR', label: 'HR Coordinator', numApplications:1,reportingmanager: 'John Doe'},
       ],
     }),
+    // created() {
+    // // Listen for the 'listing-updated' event
+    // EventBus.$on('listing-updated', (updatedListing) => {
+    //   // Find the index of the updated listing in the 'availableRoles' array
+    //   const index = this.availableRoles.findIndex((listing) => listing.label === updatedListing.label);
+
+    //   if (index !== -1) {
+    //     // Update the listing in the 'availableRoles' array
+    //     this.availableRoles[index] = updatedListing;
+    //   }
+    // });
+    // },
     computed: {
       departmentOptions() {
         const departments = [...new Set(this.availableRoles.map((role) => role.department))];
         return ['All', ...departments];
       },
-      filteredAvailableRoles() {
-        if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
-          return this.availableRoles;
-        } else {
-          return this.availableRoles.filter((role) => role.department === this.selectedDepartment);
-        }
-      },
+        countryOptions() {
+            const countries = [...new Set(this.availableRoles.map((role) => role.country))];
+            console.log(countries); 
+            return ['All', ...countries];
+        },
+        filteredAvailableRoles() {
+            if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
+            if (this.selectedCountry === 'All' || !this.selectedCountry) {
+                return this.availableRoles;
+            } else {
+                return this.availableRoles.filter((role) => role.country === this.selectedCountry);
+            }
+            } else {
+            if (this.selectedCountry === 'All' || !this.selectedCountry) {
+                return this.availableRoles.filter((role) => role.department === this.selectedDepartment);
+            } else {
+                return this.availableRoles.filter((role) =>
+                role.department === this.selectedDepartment && role.country === this.selectedCountry
+                );
+                }
+            }
+        },
     },
     methods: {
       applyNow(index) {
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
-      filterRoles() {
-        // Add logic to filter roles based on selected department
-      },
       editListing(index) {
-        // Handle the edit button click for the role at the specified index.
+        const selectedListing = this.filteredAvailableRoles[index];
+        console.log(`Editing ${selectedListing.label}`);
         this.$router.push({ name: 'edit-listing', params: { index } });
-        console.log(`Editing ${this.filteredAvailableRoles[index].label}`);
-      },
+        },
       getDepartmentIcon(department) {
         const departmentIcons = {
           Engineering: 'mdi-code-braces',
@@ -99,7 +149,6 @@
         return departmentIcons[department] || 'mdi-help-circle';
       },
       getRandomApplicants() {
-        // Generate random number of applicants (between 1 and 10) for each role listing
         return Math.floor(Math.random() * 10) + 1;
       },
     },
@@ -109,13 +158,12 @@
   <style scoped>
   .page-title {
     color: #664229;
-    font-size: 24px;
     font-weight: bold;
     margin: 20px 0;
   }
   
   .department-icon-container {
-    height: 200px;
+    height: 180px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -139,4 +187,3 @@
   }
 
   </style>
-  
