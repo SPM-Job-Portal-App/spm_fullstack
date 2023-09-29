@@ -1,4 +1,5 @@
 from models.model import db
+from models.staff_model import Staff
 
 class RoleListing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
