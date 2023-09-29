@@ -1,4 +1,4 @@
-from model import db
+from models.model import db
 
 class Staff(db.Model):
     id = db.Column(db.Integer, primary_key=True)
