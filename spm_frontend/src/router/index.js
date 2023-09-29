@@ -20,18 +20,24 @@ const routes = [
     ],
   },
   {
-    path: '/openroles',
-    component: DefaultLayout,
+    path: '/openroles/staff',
+    component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
         path: '',
-        name: 'Open Roles',
-        component: OpenRoles,
+        name: 'Open Roles Staff',
+        component: () => import('@/views/OpenRoles_Staff.vue'),
       },
+    ],
+  },
+  {
+    path: '/openroles/hr',
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
       {
-        path: 'apply',
-        name: 'Apply Open Roles',
-        component: ApplyOpenRoles,
+        path: '',
+        name: 'Open Roles HR',
+        component: () => import('@/views/OpenRoles_HR.vue'),
       },
     ],
   },
@@ -68,7 +74,12 @@ const routes = [
       },
     ],
   },
-  
+  {
+    path: '/edit-listing/:index', // Define a route parameter :index
+    name: 'edit-listing',
+    component: () => import('@/components/EditListing.vue'),
+    props: true,
+  },
 ]
 
 const router = createRouter({
