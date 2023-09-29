@@ -1,4 +1,4 @@
-from models import db
+from models.model import db
 
 class Role(db.Model):
     role_name = db.Column(db.String(255), nullable=False,primary_key=True)

@@ -1,6 +1,8 @@
 import pytest
 from main import app, drop_tables, initialize_databases
-from models import db, RoleListing, Staff
+from models.model import db
+from models.role_listing_model import RoleListing
+from models.staff_model import Staff
 
 # Set up the Flask app for testing
 @pytest.fixture
