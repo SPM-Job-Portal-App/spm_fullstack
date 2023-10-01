@@ -37,8 +37,14 @@ class Application():
                     db.session.add(new_application)
                     db.session.commit()
                     return jsonify({'message': 'Role application created successfully'}), 201
-    def get_role_listing_by_staff_id(id):
-        application = db.session.query(RoleApplication).filter_by(staff_id=id)
-        if application is None:
-            return None
-        return application
+
+    def get_role_listing_by_staff_id_application(id):
+        applications = db.session.query(RoleApplication).filter_by(staff_id=id).all()
+        applied_role_listings = []
+        for application in applications:
+            role_listing = Listing.get_listing_by_index(application.role_listing_id)
+            applied_role_listings.append(role_listing)
+        return jsonify({
+            'message': 'Applied role listings by staff id retrieved successfully',
+            'applied_role_listings': applied_role_listings
+        }), 201
