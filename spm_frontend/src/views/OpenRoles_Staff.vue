@@ -118,16 +118,18 @@ export default {
     {
       axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
-          this.appliedRoles = response.data[0];
+          // this.appliedRoles = response.data[0];
+          // console.log(this.appliedRoles)
+          this.appliedRoles = response.data.applied_role_listings
           console.log(this.appliedRoles)
         }
       )
-      // axios.get('http://localhost:5000/listing').then(
-      //   (response)=>{
-      //     this.availableRoles = response.data[0];
-      //     console.log(this.availableRoles)
-      //   }
-      // )
+      axios.get('http://localhost:5000/listing').then(
+        (response)=>{
+          this.availableRoles = response.data[0];
+          console.log(this.availableRoles)
+        }
+      )
     },
   computed: {
     departmentOptions() {

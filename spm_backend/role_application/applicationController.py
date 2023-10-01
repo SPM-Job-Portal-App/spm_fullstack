@@ -15,4 +15,8 @@ def apply_for_role_listing():
 # read role application by staff ID
 @application_bp.route('/<int:id>', methods=['GET'])
 def get_role_listing(id):
-    return jsonify(Application.get_role_listing_by_staff_id(id)), 200
+    try:
+        response, status_code = Application.get_role_listing_by_staff_id_application(id)
+        return response, status_code
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
