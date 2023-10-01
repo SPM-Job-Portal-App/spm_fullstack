@@ -61,55 +61,55 @@ def delete_role_listing(id):
 
 
 
-######################### Create Role Listing #########################
-@listing_bp.route('/create', methods=['POST'])
-def create_role_listing():
-    data = request.get_json()
+# ######################### Create Role Listing #########################
+# @listing_bp.route('/create', methods=['POST'])
+# def create_role_listing():
+#     data = request.get_json()
     
-    # role_listing_id = data['role_listing_id']
-    role_name = data['role_name']
-    skills = data['skills']
-    country = data['country']
-    dept = data['dept']
-    is_open = data['is_open']
-    reporting_manager = data['reporting_manager']
+#     # role_listing_id = data['role_listing_id']
+#     role_name = data['role_name']
+#     skills = data['skills']
+#     country = data['country']
+#     dept = data['dept']
+#     is_open = data['is_open']
+#     reporting_manager = data['reporting_manager']
     
-    # Validate the incoming data (e.g., check for required fields)
-    if not role_name or not skills or not country or not dept:
-        return jsonify({"message": "Missing required fields"}), 400
+#     # Validate the incoming data (e.g., check for required fields)
+#     if not role_name or not skills or not country or not dept:
+#         return jsonify({"message": "Missing required fields"}), 400
 
-    # Check if a role listing with the same attributes exists
-    existing_listing = RoleListing.query.filter_by(
-        role_name=role_name,
-        skills=skills,
-        country=country,
-        dept=dept,
-        is_open=is_open,
-        reporting_manager=reporting_manager
-    ).first()
+#     # Check if a role listing with the same attributes exists
+#     existing_listing = RoleListing.query.filter_by(
+#         role_name=role_name,
+#         skills=skills,
+#         country=country,
+#         dept=dept,
+#         is_open=is_open,
+#         reporting_manager=reporting_manager
+#     ).first()
 
-    if existing_listing:
-        return jsonify({"message": "Role Listing already exists"}), 409  # Conflict
+#     if existing_listing:
+#         return jsonify({"message": "Role Listing already exists"}), 409  # Conflict
 
-    # Create a new RoleListing object
-    new_role = RoleListing(
-        role_name=role_name,
-        skills=skills,
-        country=country,
-        dept=dept,
-        is_open=is_open,
-        reporting_manager=reporting_manager
-    )
+#     # Create a new RoleListing object
+#     new_role = RoleListing(
+#         role_name=role_name,
+#         skills=skills,
+#         country=country,
+#         dept=dept,
+#         is_open=is_open,
+#         reporting_manager=reporting_manager
+#     )
 
-    # Add the new role to the database
-    db.session.add(new_role)
+#     # Add the new role to the database
+#     db.session.add(new_role)
 
-    try:
-        db.session.commit()
-        return jsonify({"message": "Role Listing created successfully"}), 201
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"message": "An error occurred while creating the Role Listing"}), 500
+#     try:
+#         db.session.commit()
+#         return jsonify({"message": "Role Listing created successfully"}), 201
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({"message": "An error occurred while creating the Role Listing"}), 500
     
     
     
