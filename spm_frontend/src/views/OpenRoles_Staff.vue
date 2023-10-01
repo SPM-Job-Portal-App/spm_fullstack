@@ -158,10 +158,6 @@ export default {
     return this.availableRoles.filter((role) => {
       const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
       const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
-      // console.log(role)
-      // console.log(Object.values(this.appliedRoles))
-      // console.log(Object.values(this.appliedRoles).includes(role.id))
-      // const appliedMatch = !this.appliedRoles.includes(role.id);
       return departmentMatch && countryMatch && !this.getAppliedMatch(role);
     });
   },
