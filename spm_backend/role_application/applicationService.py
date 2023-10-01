@@ -37,3 +37,8 @@ class Application():
                     db.session.add(new_application)
                     db.session.commit()
                     return jsonify({'message': 'Role application created successfully'}), 201
+    def get_role_listing_by_staff_id(id):
+        application = db.session.query(RoleApplication).filter_by(staff_id=id)
+        if application is None:
+            return None
+        return application

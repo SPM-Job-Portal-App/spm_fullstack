@@ -2,7 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/default/Default.vue'
 import Home from '@/views/Home.vue'
-import OpenRoles from '@/views/OpenRoles.vue'
+import OpenRolesStaff from '@/views/OpenRoles_Staff.vue'
 import ApplyOpenRoles from '@/views/ApplyOpenRoles.vue'
 import Candidates from '@/views/Candidates.vue'
 import Settings from '@/views/Settings.vue'
@@ -21,12 +21,17 @@ const routes = [
   },
   {
     path: '/openroles/staff',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Open Roles Staff',
-        component: () => import('@/views/OpenRoles_Staff.vue'),
+        component: OpenRolesStaff,
+      },
+      {
+        path: 'apply/:id',
+        name: 'Apply Open Roles',
+        component: ApplyOpenRoles,
       },
     ],
   },
