@@ -20,3 +20,11 @@ def get_role_listing(id):
         return response, status_code
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+# read role applications
+@application_bp.route('', methods=['GET'])
+def get_role_listings():
+    try:
+        return jsonify(Application.get_role_applications(), 200)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
