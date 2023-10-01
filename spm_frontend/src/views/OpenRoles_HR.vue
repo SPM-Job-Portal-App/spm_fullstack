@@ -32,7 +32,7 @@
           <!-- Listing Card with Margin -->
           <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
             <!-- Edit Button (Top Right) -->
-            <v-btn icon class="edit-button" @click="editListing(index)">
+            <v-btn icon class="edit-button" @click="editListing(listing.id)">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
@@ -152,8 +152,8 @@
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
       editListing(index) {
-        const selectedListing = this.filteredAvailableRoles[index];
-        console.log(`Editing ${selectedListing.label}`);
+        // const selectedListing = this.filteredAvailableRoles[index];
+        // console.log(`Editing ${selectedListing.label}`);
         this.$router.push({ name: 'edit-listing', params: { index } });
         },
       getDepartmentIcon(department) {
