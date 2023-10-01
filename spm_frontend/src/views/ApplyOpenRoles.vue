@@ -159,7 +159,6 @@
             submitForm() {
                 if (this.isValid()) {
                     this.loading = true
-                    this.overlay = true
                     const id = this.$route.params.id;
                     let application_data = {
                         "role_listing": id,
