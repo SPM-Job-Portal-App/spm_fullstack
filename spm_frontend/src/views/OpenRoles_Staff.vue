@@ -56,7 +56,6 @@
                   </v-chip>
                 </div>
           
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.skill }}</div>
                 <div class="text-center mt-3 mb-6">
                   <v-btn v-if="listing.is_open" class="mx-auto px-4" :to="{ name: 'Apply Open Roles', params: { id: listing.id } }" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Apply Now</v-btn>
                   <v-btn v-else class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Expired</v-btn>
@@ -68,7 +67,7 @@
 
         <v-window-item value="appliedRoles">
           <v-row>
-            <v-col cols="4" v-for="(listing, index) in filteredAppliedRoles" :key="index">
+            <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAppliedRoles" :key="index">
               <!-- Listing Card with Margin for Applied Roles -->
             
               <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
@@ -78,11 +77,24 @@
                   <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                   <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">{{ listing.dept }}</div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">{{ listing.description }}</div>
+                <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
+                <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ listing.dept }} - {{ listing.country }}</div>
+                <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
+                <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
+                  <v-chip
+                    v-for="skill in listing.skills.split(', ')"
+                    :key="skill"
+                    :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
+                    :prepend-icon="getSkillIcon(skill)"
+                    class="ma-1"
+                    style="font-size: 12px;"
+                  >
+                    {{ skill }}
+                  </v-chip>
+                </div>
                 
                 <div class="text-center mt-3 mb-6">
-                  <v-btn class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Applied</v-btn>
+                  <v-btn class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">View Status</v-btn>
                 </div>
               </v-card>
             </v-col>
@@ -120,8 +132,6 @@ export default {
     {
       axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
-          // this.appliedRoles = response.data[0];
-          // console.log(this.appliedRoles)
           this.appliedRoles = response.data.applied_role_listings
           console.log(this.appliedRoles)
         }
@@ -148,18 +158,31 @@ export default {
     return this.availableRoles.filter((role) => {
       const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
       const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
-      return departmentMatch && countryMatch;
+      // console.log(role)
+      // console.log(Object.values(this.appliedRoles))
+      // console.log(Object.values(this.appliedRoles).includes(role.id))
+      // const appliedMatch = !this.appliedRoles.includes(role.id);
+      return departmentMatch && countryMatch && !this.getAppliedMatch(role);
     });
   },
   filteredAppliedRoles() {
     return this.appliedRoles.filter((role) => {
       const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
       const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
-      return departmentMatch && countryMatch;
+      const appliedMatch = this.appliedRoles.includes(role.id);
+      return departmentMatch && countryMatch && this.getAppliedMatch(role);
     });
   },
   },
   methods: {
+    getAppliedMatch(role) {
+      for(const[key,value] of Object.entries(this.appliedRoles)){
+        if(value.id == role.id){
+          return true
+        }
+      }
+      return false
+    },
     getDepartmentIcon(department) {
       const departmentIcons = {
         'Engineering': 'mdi-code-braces',
