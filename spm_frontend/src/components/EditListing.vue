@@ -2,13 +2,14 @@
     <div class="mx-10 mt-6">
       <h1 class="page-title">Edit Listing</h1>
       <!-- Input fields for editing -->
-      <v-text-field v-model="listing.role_name" label="Role Name" class="mt-5"></v-text-field>
-      <v-text-field v-model="listing.dept" label="Department"></v-text-field>
-      <v-text-field v-model="listing.country" label="Country of Opening"></v-text-field>
-      <v-text-field v-model="listing.skills" label="Skills"></v-text-field>
+      <v-select v-model="listing.role_name" :items="availableRoles" label="Role Name" class="mt-5"></v-select>
+      <v-select v-model="listing.dept" :items="availableDepartments" label="Department"></v-select>
+      <v-select v-model="listing.country" :items="availableCountries" label="Country of Opening"></v-select>
+      <v-select v-model="listing.skills" :items="availableSkills" label="Skills" chips multiple></v-select>
       <v-text-field v-model="listing.reporting_manager" label="Reporting Manager"></v-text-field>
-      <v-text-field v-model="listing.is_open" label="Open"></v-text-field>
-      <v-btn @click="saveChanges" class="mt-3" color="#ccbbaa" :loading="loading">Save Changes</v-btn>
+      <v-select v-model="listing.is_open"  :items="availableIsOpen" label="Open"></v-select>
+      <v-btn @click="saveChanges" class="mt-3 mr-3" color="#ccbbaa" :loading="loading">Save Changes</v-btn>
+      <v-btn to="/openroles/hr" class="mt-3" color="#ccbbaa" :loading="loading">Discard Changes</v-btn>
     </div>
 
     <!-- success message with overlay -->
@@ -58,7 +59,12 @@
         loading: false,
         successOverlay: false,
         failureOverlay: false,
-        feedbackMessage: ''
+        feedbackMessage: '',
+        availableRoles: ['Manager', 'Developer', 'Designer'],
+        availableDepartments: ['Engineering', 'Product Management', 'Analytics', 'Marketing', 'Sales', 'HR', 'Others', 'Management', 'IT', 'Design'],
+        availableCountries: ['USA', 'UK', 'Canada'],
+        availableSkills: ['Python', 'HTML', 'CSS', 'JavaScript', 'PHP', 'C#', 'Ruby', 'Angular.js', 'Vue.js', 'Leadership', 'Communication', 'Programming', 'Web Development', 'Graphic Design', 'UI/UX'],
+        availableIsOpen: ['True', 'False'],
       };
     },
     mounted()
@@ -69,6 +75,8 @@
           for (let item of listings){
             if (item.id == this.index) {
               this.listing = item
+              this.listing.skills = this.listing.skills.length > 0 ? this.listing.skills.split(/, |,/) : []
+              this.listing.is_open = this.listing.is_open ? 'True' : 'False'
               break
             }
           }
@@ -79,6 +87,9 @@
     methods: {
       saveChanges() {
         // Handle saving changes here
+        this.listing.skills = this.listing.skills.filter((skill) => {return skill !== ''})
+        this.listing.skills = this.listing.skills.join(", ")
+        this.listing.is_open = this.listing.is_open == 'True' ? true : false
         console.log('Saving changes:', this.listing);
         this.loading = true
         axios.put(`http://localhost:5000/listing/update/${this.index}`, this.listing)
