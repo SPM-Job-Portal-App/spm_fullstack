@@ -45,14 +45,20 @@
             <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
             <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
               <v-chip
-                v-for="skill in listing.skills.split(', ')"
+                v-for="skill in listing.skills.split(', ').slice(0,4)"
                 :key="skill"
                 :prepend-icon="getSkillIcon(skill)"
                 class="ma-1"
                 style="font-size: 12px;"
               >
-                {{ skill }}
+                {{ skill || 'None' }}
               </v-chip>
+              <div
+                v-if="listing.skills.split(', ').length > 4"
+                class="text-grey text-caption align-self-center"
+              >
+                (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
+              </div>
             </div>
             <div class="text-center mt-3 mb-6">
               <!-- Number of Applicants -->

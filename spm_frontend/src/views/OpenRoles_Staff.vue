@@ -45,17 +45,22 @@
                 <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
                 <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
                   <v-chip
-                    v-for="skill in listing.skills.split(', ')"
+                    v-for="skill in listing.skills.split(', ').slice(0,4)"
                     :key="skill"
-                    :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
+                    :color="acquiredSkills.includes(skill) || skill=='' ? 'green' : 'red'"
                     :prepend-icon="getSkillIcon(skill)"
                     class="ma-1"
                     style="font-size: 12px;"
                   >
-                    {{ skill }}
+                    {{ skill || 'None' }}
                   </v-chip>
+                  <div
+                    v-if="listing.skills.split(', ').length > 4"
+                    class="text-grey text-caption align-self-center"
+                  >
+                    (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
+                  </div>
                 </div>
-          
                 <div class="text-center mt-3 mb-6">
                   <v-btn v-if="listing.is_open" class="mx-auto px-4" :to="{ name: 'Apply Open Roles', params: { id: listing.id } }" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Apply Now</v-btn>
                   <v-btn v-else class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Expired</v-btn>
@@ -82,17 +87,22 @@
                 <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
                 <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
                   <v-chip
-                    v-for="skill in listing.skills.split(', ')"
+                    v-for="skill in listing.skills.split(', ').slice(0,4)"
                     :key="skill"
                     :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
                     :prepend-icon="getSkillIcon(skill)"
                     class="ma-1"
                     style="font-size: 12px;"
                   >
-                    {{ skill }}
+                    {{ skill || 'None' }}
                   </v-chip>
+                  <div
+                    v-if="listing.skills.split(', ').length > 4"
+                    class="text-grey text-caption align-self-center"
+                  >
+                    (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
+                  </div>
                 </div>
-                
                 <div class="text-center mt-3 mb-6">
                   <v-btn class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">View Status</v-btn>
                 </div>
