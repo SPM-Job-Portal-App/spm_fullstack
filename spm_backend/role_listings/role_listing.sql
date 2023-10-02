@@ -13,6 +13,6 @@ CREATE TABLE role_listing (
 -- Insert data into the role_listing table
 INSERT INTO role_listing (role_name, skills, country, dept, is_open, reporting_manager)
 VALUES
-    ('Manager', 'Leadership, Communication', 'USA', 'Management', true, NULL),
-    ('Developer', 'Programming, Web Development', 'Canada', 'IT', false, 1),
-    ('Designer', 'Graphic Design, UI/UX', 'UK', 'Design', true, 1);
+    ('Manager', 'Leadership, Communication', 'USA', 'Sales', True, NULL),
+    ('Developer', 'Programming, Web Development', 'Canada', 'IT', False, 1),
+    ('Designer', 'Graphic Design, UI/UX', 'UK', 'Solutioning', True, 1);
