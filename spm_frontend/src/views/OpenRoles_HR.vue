@@ -70,6 +70,15 @@
         </v-col>
       </v-row>
     </v-card>
+    <v-card-actions>
+      <v-btn
+        class="add-button"
+        to="/createrolelisting"
+        icon
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-card-actions>
   </template>
   
   <script>
@@ -92,26 +101,8 @@
       //   { department: 'HR', label: 'HR Coordinator', numApplications:1,reportingmanager: 'John Doe'},
       // ],
     }),
-    // created() {
-    // // Listen for the 'listing-updated' event
-    // EventBus.$on('listing-updated', (updatedListing) => {
-    //   // Find the index of the updated listing in the 'availableRoles' array
-    //   const index = this.availableRoles.findIndex((listing) => listing.label === updatedListing.label);
-
-    //   if (index !== -1) {
-    //     // Update the listing in the 'availableRoles' array
-    //     this.availableRoles[index] = updatedListing;
-    //   }
-    // });
-    // },
     mounted()
     {
-      // axios.get(`http://localhost:5000/application/${this.id}`).then(
-      //   (response)=>{
-      //     this.appliedRoles = response.data.applied_role_listings
-      //     console.log(this.appliedRoles)
-      //   }
-      // )
       axios.get('http://localhost:5000/application').then(
         (response)=>{
           this.availableRoles = response.data[0];
@@ -135,22 +126,6 @@
           const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
           return departmentMatch && countryMatch;
         });
-
-          // if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
-          // if (this.selectedCountry === 'All' || !this.selectedCountry) {
-          //     return this.availableRoles;
-          // } else {
-          //     return this.availableRoles.filter((role) => role.country === this.selectedCountry);
-          // }
-          // } else {
-          // if (this.selectedCountry === 'All' || !this.selectedCountry) {
-          //     return this.availableRoles.filter((role) => role.department === this.selectedDepartment);
-          // } else {
-          //     return this.availableRoles.filter((role) =>
-          //     role.department === this.selectedDepartment && role.country === this.selectedCountry
-          //     );
-          //     }
-          // }
       },
     },
     methods: {
@@ -158,8 +133,6 @@
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
       editListing(index) {
-        // const selectedListing = this.filteredAvailableRoles[index];
-        // console.log(`Editing ${selectedListing.label}`);
         this.$router.push({ name: 'edit-listing', params: { index } });
         },
       getDepartmentIcon(department) {
@@ -228,6 +201,15 @@
     right: 10px;
     z-index: 1;
     color: #664229;
+  }
+
+  .add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    color: white;
+    background-color: #664229;
   }
 
   .numapp {
