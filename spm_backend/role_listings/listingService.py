@@ -1,9 +1,36 @@
 from models.role_listing_model import RoleListing
-from models.staff_model import Staff
 from models.model import db
-from flask import jsonify
+from staff.staffService import StaffService
+from role.roleService import RoleService
+from role_skill.roleSkillService import RoleSkillService
 
 class Listing():
+    # helper functions
+    # to get staff using staff id
+    def get_staff_full_name_with_id(id):
+        try:
+            staff_response = StaffService.get_staff_by_id(id)
+            return staff_response['staff_first_name'] + " " + staff_response['staff_last_name']
+        except Exception as e:
+            return "Nil"
+
+    # to get role description using role_name
+    def get_role_desc(role_name):
+        try:
+            role_response = RoleService.get_role_by_role_name(role_name)
+            return role_response['role_desc']
+        except Exception as e:
+            return "Nil"
+        
+    # to get skills for a role using role_name
+    def get_skills_with_role_name(role_name):
+        try:
+            skills_response = RoleSkillService.get_skills_by_role_name(role_name)
+            return skills_response
+        except Exception as e:
+            return []
+
+
     def get_all_listing():
         listings = RoleListing.query.all()
         listing_list = []
@@ -26,30 +53,33 @@ class Listing():
 
         # no open listings
         if len(open_listings) == 0:
-            return {'message': 'No open role listings'}, 404
+            raise Exception('No open role listings')
         
-        
+        # if got open listings
         open_listing_list = []
         for listing in open_listings:
             
-            # get reporting manager for the role listing
-            reporting_manager = Staff.query.filter(Staff.id == listing.reporting_manager).first()
+            # get reporting_manager using staff id
+            reporting_manager_full_name = Listing.get_staff_full_name_with_id(listing.reporting_manager)
+            # get role description using role_name 
+            description = Listing.get_role_desc(listing.role_name)
+            # get skills for a role using role_name
+            skills_list = Listing.get_skills_with_role_name(listing.role_name)
+            skills_string = "Nil"
             
-            reporting_manager_name = "Nil"
-            # if no reporting_manager, that is reporting_manager is None
-            if reporting_manager:
-                reporting_manager_name = reporting_manager.staff_first_name + " " + reporting_manager.staff_last_name
+            # if skills list is not empty then only update skills_string
+            if skills_list != []:
+                skills_string = ", ".join(skills_list)
 
             listing_data = {
                 'id': listing.id,
                 'role_name': listing.role_name,
-                'skills': listing.skills,
+                'skills': skills_string,
                 'country': listing.country,
                 'dept': listing.dept,
                 'is_open': listing.is_open,
-                'reporting_manager': reporting_manager_name,
-                # possible description integration here before sending to the frontend
-                # 'description': 'Testing'
+                'reporting_manager': reporting_manager_full_name,
+                'description': description
             }
             open_listing_list.append(listing_data)
         

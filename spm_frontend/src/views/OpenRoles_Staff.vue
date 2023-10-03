@@ -46,14 +46,15 @@
                 <div class="text-center mt-7" style="color:#8C7251; padding: 10px; font-size: 18px;">
                   <b>Department:</b> {{ listing.dept }}
                 </div>
-                <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
+                <div class="text-center mt-2" style="color: #8C7251; padding-left: 10px; padding-right: 10px; font-size: 18px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; white-space: normal;">
                   <b>Description:</b> {{  listing.description }}
                 </div>
                 <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
                 </div>
                 <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
-                  <b>Reporting Manager:</b> {{ listing.reporting_manager }}
+                  <!-- <b>Reporting Manager:</b> {{ listing.reporting_manager }} -->
+                  <b>Skills: </b> {{ listing.skills }}
                 </div>
                 <div class="text-center mt-3 mb-6">
                   <v-btn class="mx-auto px-4" @click="applyNow(index)" color="#ccbbaa" style="padding: 10px 0; font-size: 18px; margin-top:3px">Apply Now!</v-btn>
@@ -79,8 +80,8 @@
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
                   <b>Department:</b> {{ listing.dept }}
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                  <b>Description:</b> {{ listing.description }}
+                <div class="text-center mt-2" style="color: #8C7251; padding-left: 10px; padding-right: 10px; font-size: 18px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; white-space: normal;">
+                  <b>Description:</b> {{  listing.description }}
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
@@ -109,14 +110,6 @@ export default {
     selectedDepartment: 'All',
     selectedCountry: 'All',
     availableRoles: [],
-    // availableRoles: [
-    //   { dept: 'Engineering', role_name: 'Software Engineer', country: 'Singapore',reporting_manager: 'John Doe'},
-    //   { dept: 'Product Management', role_name: 'Product Manager', country: 'Indonesia',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-    //   { dept: 'Analytics', role_name: 'Data Analyst', country: 'Vietnam',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-    //   { dept: 'Sales', role_name: 'Sales Associate', country: 'Singapore',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-    //   { dept: 'HR', role_name: 'HR Coordinator', country: 'Indonesia',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-    //   // Add more roles with department and country properties
-    // ],
     appliedRoles: [
       { dept: 'Sales', role_name: 'Sales Associate', country: 'Singapore',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
       { dept: 'HR', role_name: 'HR Coordinator', country: 'Indonesia',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
@@ -170,7 +163,7 @@ export default {
         'Engineering': 'mdi-code-braces',
         'HR': 'mdi-account-supervisor',
         'Finance': 'mdi-cash-register',
-        'IT': 'mdi-latop'
+        'IT': 'mdi-laptop'
       };
       return departmentIcons[department] || 'mdi-help-circle';
     },
