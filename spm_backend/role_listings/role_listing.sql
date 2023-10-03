@@ -7,6 +7,7 @@ CREATE TABLE role_listing (
     dept VARCHAR(255) NOT NULL,
     is_open BOOLEAN NOT NULL,
     reporting_manager INT,
+    FOREIGN KEY (role_name) REFERENCES role (role_name) ON DELETE CASCADE,
     FOREIGN KEY (reporting_manager) REFERENCES staff(id) ON DELETE CASCADE
 );
 
