@@ -80,3 +80,34 @@ class Listing():
         except Exception as e:
             db.session.rollback()
             return {"message": "An error occurred while creating the Role Listing"}, 500
+        
+    # update role listing
+    def update_role_listing(id, data):
+        # Get the existing role listing by its ID
+        existing_listing = RoleListing.query.get(id)
+
+        if existing_listing is None:
+            return {"message": "Role Listing not found"}, 404  # Not Found
+
+        # Extract data from the input (only update fields that are provided)
+        role_name = data.get('role_name', existing_listing.role_name)
+        skills = data.get('skills', existing_listing.skills)
+        country = data.get('country', existing_listing.country)
+        dept = data.get('dept', existing_listing.dept)
+        is_open = data.get('is_open', existing_listing.is_open)
+        reporting_manager = data.get('reporting_manager', existing_listing.reporting_manager)
+
+        # Update the existing role listing with the new data
+        existing_listing.role_name = role_name
+        existing_listing.skills = skills
+        existing_listing.country = country
+        existing_listing.dept = dept
+        existing_listing.is_open = is_open
+        existing_listing.reporting_manager = reporting_manager
+
+        try:
+            db.session.commit()
+            return {"message": "Role Listing updated successfully"}, 200
+        except Exception as e:
+            db.session.rollback()
+            return {"message": "An error occurred while updating the Role Listing"}, 500
