@@ -2,7 +2,7 @@ from flask import jsonify, request, Blueprint
 import csv
 
 from models.model import db;
-from models.role import Role;
+from models.role_model import Role;
 
 from role.roleService import RoleService;
 role_bp = Blueprint('role', __name__)
@@ -13,7 +13,7 @@ role_bp = Blueprint('role', __name__)
 @role_bp.route('/',methods=['GET'])
 def get_roles():
     # import the roles from the csv file
-    RoleService.importRoles();
+    RoleService.importRoles()
     roles= Role.query.all()
     print(roles)
     if len(roles):
@@ -30,4 +30,13 @@ def get_roles():
             "message": "There are no crops."
         }
     ), 404
+
+
+@role_bp.route('/get_role_by_role_name/<role_name>')
+def get_role_by_role_name(role_name):
+    try:
+        response = RoleService.get_role_by_role_name(role_name)
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 

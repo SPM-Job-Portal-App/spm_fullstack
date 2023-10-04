@@ -1,5 +1,5 @@
 from models.model import db;
-from models.role import Role;
+from models.role_model import Role;
 from flask import jsonify;
 import csv
 
@@ -23,9 +23,7 @@ class RoleService():
 
 
     
-from models.role_model import Role
 
-class RoleService():
     def get_role_by_role_name(role_name_input):
 
         try:
