@@ -46,12 +46,12 @@
                   <v-chip
                     v-for="skill in listing.skills.split(', ').slice(0,4)"
                     :key="skill"
-                    :color="acquiredSkills.includes(skill) || skill=='' ? 'green' : 'red'"
+                    :color="acquiredSkills.includes(skill) || skill=='Nil' ? 'green' : 'red'"
                     :prepend-icon="getSkillIcon(skill)"
                     class="ma-1"
                     style="font-size: 12px;"
                   >
-                    {{ skill || 'None' }}
+                    {{ skill || 'Nil' }}
                   </v-chip>
                   <div
                     v-if="listing.skills.split(', ').length > 4"
@@ -87,12 +87,12 @@
                   <v-chip
                     v-for="skill in listing.skills.split(', ').slice(0,4)"
                     :key="skill"
-                    :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
+                    :color="acquiredSkills.includes(skill) || skill=='Nil' ? 'green' : 'red'"
                     :prepend-icon="getSkillIcon(skill)"
                     class="ma-1"
                     style="font-size: 12px;"
                   >
-                    {{ skill || 'None' }}
+                    {{ skill || 'Nil' }}
                   </v-chip>
                   <div
                     v-if="listing.skills.split(', ').length > 4"
@@ -126,27 +126,35 @@ export default {
     appliedRoles: [],
     id: 1,
     acquiredSkills: [
-      'Python',
-      'Vue.js',
-      'HTML',
-      'CSS',
-      'JavaScript',
-      'Communication',
-      'Programming',
-      'Web Development',
+      'Account Management',
+      'Accounting and Tax Systems',
+      'Accounting Standards',
+      'Applications Development',
+      'Applications Integration',
+      'Applications Support and Enhancement',
+      'Audit Compliance',
+      'Audit Frameworks',
+      'Budgeting'
     ],
   }),
   mounted()
     {
       axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
-          this.appliedRoles = response.data.applied_role_listings
+          console.log(response.data.applied_role_listings)
+          let temp_appliedRoles = []
+          for (const [key,value] of Object.entries(response.data.applied_role_listings)){
+            if (value[0].is_open){
+              temp_appliedRoles.push(value[0])
+            }
+          }
+          this.appliedRoles = temp_appliedRoles
           console.log(this.appliedRoles)
         }
       )
-      axios.get('http://localhost:5000/listing').then(
+      axios.get('http://localhost:5000/listing/get_open_listings').then(
         (response)=>{
-          this.availableRoles = response.data[0];
+          this.availableRoles = response.data;
           console.log(this.availableRoles)
         }
       )
@@ -170,10 +178,11 @@ export default {
     });
   },
   filteredAppliedRoles() {
-    return this.appliedRoles.filter((role) => {
+    return this.availableRoles.filter((role) => {
+      console.log(role)
       const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
       const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
-      const appliedMatch = this.appliedRoles.includes(role.id);
+      console.log(departmentMatch, countryMatch, this.getAppliedMatch(role))
       return departmentMatch && countryMatch && this.getAppliedMatch(role);
     });
   },
@@ -189,36 +198,101 @@ export default {
     },
     getDepartmentIcon(department) {
       const departmentIcons = {
-        'Engineering': 'mdi-code-braces',
-        'Product Management': 'mdi-chart-pie',
-        'Analytics': 'mdi-chart-bar',
-        'Marketing': 'mdi-bullhorn',
-        'Sales': 'mdi-cash-register',
-        'HR': 'mdi-account-supervisor',
-        'Others': 'mdi-account',
-        'Management': 'mdi-compass',
-        'IT': 'mdi-monitor',
-        'Design': 'mdi-palette'
+        'Design': 'mdi-palette',
+        'Chariman': 'mdi-chess-king',
+        'CEO': 'mdi-chess-queen',
+        'Sales': 'mdi-phone-in-talk',
+        'Solutioning': 'mdi-lightbulb',
+        'Engineering': 'mdi-state-machine',
+        'HR': 'mdi-account-group',
+        'Finance': 'mdi-cash-register',
+        'Consultancy': 'mdi-compass',
+        'IT': 'mdi-code-tags'
       };
       return departmentIcons[department] || 'mdi-help-circle';
     },
     getSkillIcon(skill) {
       const skillIcons = {
-        'Python': 'mdi-language-python',
-        'HTML': 'mdi-language-html5',
-        'CSS': 'mdi-language-css3',
-        'JavaScript': 'mdi-language-javascript',
-        'PHP': 'mdi-language-php',
-        'C#': 'mdi-language-c',
-        'Ruby': 'mdi-language-ruby',
-        'Angular.js': 'mdi-angularjs',
-        'Vue.js': 'mdi-vuejs',
-        'Leadership': 'mdi-chess-king',
+        'Account Management': 'mdi-bank',
+        'Accounting and Tax Systems': 'mdi-bank',
+        'Accounting Standards': 'mdi-bank',
+        'Applications Development': 'mdi-code-braces',
+        'Applications Integration': 'mdi-code-braces',
+        'Applications Support and Enhancement': 'mdi-code-braces',
+        'Audit Compliance': 'mdi-bank-check',
+        'Audit Frameworks': 'mdi-bank-check',
+        'Budgeting': 'mdi-cash',
+        'Business Acumen': 'mdi-cash',
+        'Business Development': 'mdi-cash',
+        'Business Environment Analysis': 'mdi-cash',
+        'Business Needs Analysis': 'mdi-cash',
+        'Business Negotiation': 'mdi-cash',
+        'Business Presentation Delivery': 'mdi-cash',
+        'Business Requirements Mapping': 'mdi-cash',
+        'Business Risk Management': 'mdi-cash',
+        'Call Centre Management': 'mdi-message-outline',
+        'Collaboration': 'mdi-message-outline',
         'Communication': 'mdi-message-outline',
-        'Programming': 'mdi-code-braces',
-        'Web Development': 'mdi-web',
-        'Graphic Design': 'mdi-draw',
-        'UI/UX': 'mdi-table-account'
+        'Configuration Tracking': 'mdi-message-outline',
+        'Customer Acquisition Management': 'mdi-message-outline',
+        'Customer Relationship Management': 'mdi-message-outline',
+        'Data Analytics': 'mdi-data-matrix',
+        'Database Administration': 'mdi-data-matrix',
+        'Developing People': 'mdi-account-group',
+        'Digital Fluency': 'mdi-account-group',
+        'Employee Communication Management': 'mdi-account-group',
+        'Employee Engagement Management': 'mdi-account-group',
+        'Finance Business Partnering': 'mdi-finance',
+        'Financial Acumen': 'mdi-finance',
+        'Financial Closing': 'mdi-finance',
+        'Financial Management': 'mdi-finance',
+        'Financial Planning': 'mdi-finance',
+        'Financial Reporting': 'mdi-finance',
+        'Financial Statements Analysis': 'mdi-finance',
+        'Financial Transactions': 'mdi-finance',
+        'Human Resource Advisory': 'mdi-account-switch',
+        'Human Resource Practices Implementation': 'mdi-account-switch',
+        'Human Resource Strategy Formulation': 'mdi-account-switch',
+        'Human Resource Systems Management': 'mdi-account-switch',
+        'Infrastructure Deployment': 'mdi-domain',
+        'Infrastructure Support': 'mdi-domain',
+        'Learning and Development Programme Management': 'mdi-school',
+        'Learning Needs Analysis': 'mdi-school',
+        'Network Administration and Maintenance': 'mdi-domain',
+        'Onboarding': 'mdi-account-group',
+        'Organisational Design': 'mdi-account-group',
+        'People and Performance Management': 'mdi-account-group',
+        'Pricing Strategy': 'mdi-cash',
+        'Problem Management': 'mdi-help',
+        'Problem Solving': 'mdi-help',
+        'Product Management': 'mdi-clipboard-text',
+        'Professional and Business Ethics': 'mdi-clipboard-text',
+        'Project Management': 'mdi-clipboard-text',
+        'Regulatory Compliance': 'mdi-police-badge',
+        'Regulatory Risk Assessment': 'mdi-police-badge',
+        'Regulatory Strategy': 'mdi-police-badge',
+        'Sales Closure': 'mdi-sale',
+        'Sales Strategy': 'mdi-sale',
+        'Security Administration': 'mdi-electron-framework',
+        'Sense Making': 'mdi-electron-framework',
+        'Service Level Management': 'mdi-electron-framework',
+        'Skills Framework Adoption': 'mdi-electron-framework',
+        'Software Configuration': 'mdi-microsoft-visual-studio-code',
+        'Software Design': 'mdi-microsoft-visual-studio-code',
+        'Software Testing': 'mdi-microsoft-visual-studio-code',
+        'Solution Architecture': 'mdi-microsoft-visual-studio-code',
+        'Solutions Design Thinking': 'mdi-microsoft-visual-studio-code',
+        'SOP Development and Implementation': 'mdi-vhs',
+        'Stakeholder Management': 'mdi-vhs',
+        'Strategy Planning': 'mdi-vhs',
+        'System Integration': 'mdi-vhs',
+        'Talent Management': 'mdi-account-multiple',
+        'Tax Computation': 'mdi-cash',
+        'Tax Implications': 'mdi-cash',
+        'Technology Application': 'mdi-semantic-web',
+        'Technology Integration': 'mdi-semantic-web',
+        'Technology Road Mapping': 'mdi-semantic-web',
+        'User Interface Design': 'mdi-semantic-web'
       };
       return skillIcons[skill] || 'mdi-help-circle';
     },

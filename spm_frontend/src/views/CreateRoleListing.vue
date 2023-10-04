@@ -7,8 +7,30 @@
       <!-- Job title -->
       <v-row justify="center">
         <v-col cols="8">
-          <v-select v-model="RoleTitle" :items="roleOptions" label="Role Title" class="mt-4"></v-select>
+          <div class="mb-2">
+            <h3 style="color: #664229; text-align: left; font-size: 18px;">Role Title</h3>
+          </div>
+          <v-select v-model="RoleTitle" :items="roleOptions" label="Select Role Title" outlined></v-select>
         </v-col>
+      </v-row>
+
+      <!-- Country of Opening and Reporting Manager -->
+      <v-row justify="center">
+        <v-col cols="2"></v-col>
+
+        <v-col cols="8" class="text-center">
+          <div class="mb-2">
+            <h3 style="color: #664229; text-align: left; font-size: 18px;">Reporting Manager</h3>
+          </div>
+          <v-select
+            v-model="selectedReportingManager"
+            :items="reportingManagers"
+            label="Select Reporting Manager"
+            outlined
+            style="width: 100%;"
+          ></v-select>
+        </v-col>
+        <v-col cols="2"></v-col>
       </v-row>
 
       <!-- Department -->
@@ -24,6 +46,15 @@
         </v-col>
 
         <v-col cols="4" class="text-center">
+          <div>
+            <h3 style="color: #664229; text-align: left; font-size: 18px;">Country of Opening</h3>
+          </div>
+          <v-radio-group v-model="selectedCountry" style="margin-left: 10px">
+            <v-radio v-for="country in countryOptions" :label="country" :value="country"></v-radio>
+          </v-radio-group>
+        </v-col>
+
+        <!-- <v-col cols="4" class="text-center">
           <div class="mb-2">
             <h3 style="color: #664229; text-align: left;">Required Skills</h3>
           </div>
@@ -38,35 +69,21 @@
             class="custom-select"
             style="width: 100%;"
           ></v-select>
-        </v-col>
+        </v-col> -->
         <v-col cols="2"></v-col>
       </v-row>
 
-      <!-- Country of Opening and Reporting Manager -->
+      <!-- Opening and Closing date -->
       <v-row justify="center">
         <v-col cols="2"></v-col>
-        <v-col cols="4" class="text-center">
-          <div>
-            <h3 style="color: #664229; text-align: left; font-size: 18px;">Country of Opening</h3>
+
+        <v-col cols="8" class="text-center">
+          <div class="text-center">
+            <h3 style="color: #664229; font-size: 18px;">Closing Date</h3>
+            <VDatePicker v-model="closingDate" :disabled-dates="disabledDates" mode="date" expanded />
           </div>
-          <v-radio-group v-model="selectedCountry" style="margin-left: 10px">
-            <v-radio v-for="country in countryOptions" :label="country" :value="country"></v-radio>
-          </v-radio-group>
         </v-col>
 
-        <v-col cols="4" class="text-center">
-          <div class="mb-2">
-            <h3 style="color: #664229; text-align: left; font-size: 18px;">Reporting Manager</h3>
-          </div>
-          <v-select
-            v-model="selectedReportingManager"
-            :items="reportingManagers"
-            label="Select Reporting Manager"
-            class="custom-select"
-            outlined
-            style="width: 100%;"
-          ></v-select>
-        </v-col>
         <v-col cols="2"></v-col>
       </v-row>
 
@@ -126,12 +143,127 @@ export default {
   data() {
     return {
       RoleTitle: '',
-      roleOptions: ['Manager', 'Developer', 'Designer'],
+      roleOptions: [
+        'Account Manager',
+        'Consultancy Director',
+        'Consultant',
+        'Sales Director',
+        'Solutioning Director',
+        'Finance  Executive',
+        'Finance Director',
+        'Finance Manager',
+        'Developer',
+        'Senior Engineer',
+        'Engineering Director',
+        'Sales Manager',
+        'HR Director',
+        'IT Director',
+        'IT Analyst',
+        'Support Engineer',
+        'Call Centre',
+        'Admin Executive',
+        'HR Executive',
+        'Junior Engineer',
+        'L&D Executuve',
+        'Ops Planning Exec'
+      ],
       RoleDescription: '',
-      deptOptions: ['Engineering', 'Product Management', 'Analytics', 'Marketing', 'Sales', 'HR', 'Others', 'Management', 'IT', 'Design'],
+      deptOptions: [
+        'Design',
+        'Chariman',
+        'CEO',
+        'Sales',
+        'Solutioning',
+        'Engineering',
+        'HR',
+        'Finance',
+        'Consultancy',
+        'IT'
+      ],
       SelectedDept: null,
-      skillOptions: ['Python', 'HTML', 'CSS', 'JavaScript', 'PHP', 'C#', 'Ruby', 'Angular.js', 'Vue.js', 'Leadership', 'Communication', 'Programming', 'Web Development', 'Graphic Design', 'UI/UX'],
-      selectedSkills: [],
+      // skillOptions: [
+      //   'Account Management',
+      //   'Accounting and Tax Systems',
+      //   'Accounting Standards',
+      //   'Applications Development',
+      //   'Applications Integration',
+      //   'Applications Support and Enhancement',
+      //   'Audit Compliance',
+      //   'Audit Frameworks',
+      //   'Budgeting',
+      //   'Business Acumen',
+      //   'Business Development',
+      //   'Business Environment Analysis',
+      //   'Business Needs Analysis',
+      //   'Business Negotiation',
+      //   'Business Presentation Delivery',
+      //   'Business Requirements Mapping',
+      //   'Business Risk Management',
+      //   'Call Centre Management',
+      //   'Collaboration',
+      //   'Communication',
+      //   'Configuration Tracking',
+      //   'Customer Acquisition Management',
+      //   'Customer Relationship Management',
+      //   'Data Analytics',
+      //   'Database Administration',
+      //   'Developing People',
+      //   'Digital Fluency',
+      //   'Employee Communication Management',
+      //   'Employee Engagement Management',
+      //   'Finance Business Partnering',
+      //   'Financial Acumen',
+      //   'Financial Closing',
+      //   'Financial Management',
+      //   'Financial Planning',
+      //   'Financial Reporting',
+      //   'Financial Statements Analysis',
+      //   'Financial Transactions',
+      //   'Human Resource Advisory',
+      //   'Human Resource Practices Implementation',
+      //   'Human Resource Strategy Formulation',
+      //   'Human Resource Systems Management',
+      //   'Infrastructure Deployment',
+      //   'Infrastructure Support',
+      //   'Learning and Development Programme Management',
+      //   'Learning Needs Analysis',
+      //   'Network Administration and Maintenance',
+      //   'Onboarding',
+      //   'Organisational Design',
+      //   'People and Performance Management',
+      //   'Pricing Strategy',
+      //   'Problem Management',
+      //   'Problem Solving',
+      //   'Product Management',
+      //   'Professional and Business Ethics',
+      //   'Project Management',
+      //   'Regulatory Compliance',
+      //   'Regulatory Risk Assessment',
+      //   'Regulatory Strategy',
+      //   'Sales Closure',
+      //   'Sales Strategy',
+      //   'Security Administration',
+      //   'Sense Making',
+      //   'Service Level Management',
+      //   'Skills Framework Adoption',
+      //   'Software Configuration',
+      //   'Software Design',
+      //   'Software Testing',
+      //   'Solution Architecture',
+      //   'Solutions Design Thinking',
+      //   'SOP Development and Implementation',
+      //   'Stakeholder Management',
+      //   'Strategy Planning',
+      //   'System Integration',
+      //   'Talent Management',
+      //   'Tax Computation',
+      //   'Tax Implications',
+      //   'Technology Application',
+      //   'Technology Integration',
+      //   'Technology Road Mapping',
+      //   'User Interface Design'
+      // ],
+      // selectedSkills: [],
       countryOptions: ['USA', 'UK', 'Canada', 'Singapore', 'Malaysia', 'Indonesia', 'Vietnam', 'Hong Kong'],
       selectedCountry: null,
       reportingManagers: ['None', '1'],
@@ -140,19 +272,22 @@ export default {
       successOverlay: false,
       failureOverlay: false,
       feedbackMessage: '',
+      closingDate: null,
+      openingDate: new Date(),
+      disabledDates: [{ start: null, end: new Date() }],
     };
   },
   computed: {
     isConfirmButtonEnabled() {
       const isRoleTitleValid = this.RoleTitle.length != '';
       const isDeptSelected = this.SelectedDept != null;
-      const isAtLeastOneSkillSelected = this.selectedSkills.length >= 1;
+      // const isAtLeastOneSkillSelected = this.selectedSkills.length >= 1;
       const isCountrySelected = this.selectedCountry != null;
       const isReportingManagerSelected = this.selectedReportingManager != null;
       return (
         isRoleTitleValid &&
         isDeptSelected &&
-        isAtLeastOneSkillSelected &&
+        // isAtLeastOneSkillSelected &&
         isCountrySelected &&
         isReportingManagerSelected
       );
@@ -175,12 +310,15 @@ export default {
         this.loading = true
         const listing = {
           role_name: this.RoleTitle,
-          skills: this.selectedSkills.join(', '),
+          // skills: this.selectedSkills.join(', '),
           country: this.selectedCountry,
           dept: this.SelectedDept,
           reporting_manager: this.selectedReportingManager == 'None' ? null : parseInt(this.selectedReportingManager),
-          is_open: true
+          is_open: true,
+          opening_date: `${this.openingDate.getFullYear()}-${this.openingDate.getMonth()+1}-${this.openingDate.getDate()}`,
+          closing_date: `${this.closingDate.getFullYear()}-${this.closingDate.getMonth()+1}-${this.closingDate.getDate()}`
         }
+        console.log(listing)
         axios.post('http://localhost:5000/listing/create', listing)
           .then(
             (response)=>{
@@ -232,7 +370,4 @@ export default {
   color: #888;
 }
 
-.custom-select {
-  width: 60%;
-}
 </style>
