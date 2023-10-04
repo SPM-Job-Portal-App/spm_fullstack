@@ -11,10 +11,10 @@ CREATE TABLE role_listing (
 );
 
 -- Insert data into the role_listing table
-INSERT INTO role_listing (role_name, skills, country, dept, is_open, reporting_manager)
+INSERT INTO role_listing (role_name, country, dept, is_open, opening_date, closing_date, reporting_manager)
 VALUES
-    ('Consultant', 'USA', 'Sales', True, NULL),
-    ('Developer', 'Canada', 'IT', False, 1),
-    ('Designer', 'UK', 'Solutioning', True, 1);
+    ('Consultant', 'USA', 'Sales', True, '2023-10-01', '2023-10-15', NULL),
+    ('Developer', 'Canada', 'IT', False, '2023-10-01', '2023-10-15', 1),
+    ('Manager', 'UK', 'Solutioning', True, '2023-10-01', '2023-10-15', 1);
     
     
