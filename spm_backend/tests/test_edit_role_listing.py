@@ -24,7 +24,6 @@ def test_edit_role_listing_success(client):
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
-        # skills="Python, JavaScript, SQL",
         country="USA",
         dept="Sales",
         is_open=True,
@@ -34,7 +33,6 @@ def test_edit_role_listing_success(client):
     )
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
@@ -65,7 +63,6 @@ def test_edit_role_listing_missing_fields_failure(client):
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
-        # skills="Python, JavaScript, SQL",
         country="USA",
         dept="Sales",
         is_open=True,
@@ -75,7 +72,6 @@ def test_edit_role_listing_missing_fields_failure(client):
     )
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
@@ -97,7 +93,6 @@ def test_edit_nonexistent_role_listing_failure(client):
     initialize_databases()
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
@@ -111,43 +106,32 @@ def test_edit_nonexistent_role_listing_failure(client):
     assert response.status_code == 404
     drop_tables()
 
-# Test for updating role listing with wrong data format for opening_date or closing_date
-def test_edit_role_listing_with_wrong_date_format(client):
+# Test for updating closed role lisiting
+def test_edit_closed_role_listing_failure(client):
     initialize_databases()
-    new_staff = Staff(
-        staff_first_name="James",
-        staff_last_name="Re",
-        dept="Sales",
-        country="USA",
-        email="james.re@example.com",
-        role="Product Manager"
-    )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
-        # skills="Python, JavaScript, SQL",
         country="USA",
         dept="Sales",
-        is_open=True,
+        is_open=False,
         opening_date="2023-10-01",
         closing_date="2023-10-15",
         reporting_manager=None
     )
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
-        "opening_date": "Testing",
-        "closing_date": "Testing",
+        "opening_date": "2023-09-01",
+        "closing_date": "2023-10-03",
         "reporting_manager": None
     }
     with app.app_context():
-        db.session.add(new_staff)
         db.session.add(new_open_role_listing)
         db.session.commit()
     response = client.put('/listing/1', json=updated_role_listing_data)
-    expected_message = {'message': 'Opening and closing date inputs must be in YYYY-MM-DD format'}
+    expected_message = {'message': "Role listing at index is already closed"}
     assert response.json == expected_message
     assert response.status_code == 400
     drop_tables()
