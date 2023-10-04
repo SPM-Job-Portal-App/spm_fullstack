@@ -50,7 +50,7 @@ class Application():
         }), 201
     
     def get_role_applications():
-        listings = Listing.get_all_listing()
+        listings = Listing.get_all_open_listing()
         applications = RoleApplication.query.all()
         application_list = []
         for application in applications:
