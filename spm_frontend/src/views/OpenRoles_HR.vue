@@ -63,7 +63,7 @@
             <div class="text-center mt-3 mb-6">
               <!-- Number of Applicants -->
               <v-btn @click="viewApplicants(index)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
-                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;applicants
+                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
               </v-btn>
             </div>
           </v-card>
@@ -87,19 +87,7 @@
     data: () => ({
       selectedDepartment: "All",
       selectedCountry: "All",
-      availableRoles: [
-        // { department: 'Engineering', label: 'Software Engineer', numApplications:0, country:'Singapore',reportingmanager: 'John Doe'},
-        // { department: 'Product Management', label: 'Product Manager', numApplications:7, country:'Singapore',reportingmanager: 'John Doe'},
-        // { department: 'Analytics', label: 'Data Analyst', numApplications:4, country:'Indonesia',reportingmanager: 'John Doe'},
-        // { department: 'Marketing', label: 'Marketing Specialist', numApplications:2, country:'Indonesia',reportingmanager: 'John Doe'},
-        // { department: 'Sales', label: 'Sales Representative', numApplications:8, country: 'Vietnam',reportingmanager: 'John Doe'},
-        // { department: 'Sales', label: 'Sales Associate', numApplications:3, country:'Indonesia',reportingmanager: 'John Doe'},
-        // { department: 'HR', label: 'HR Coordinator', numApplications:9, country: 'Vietnam',reportingmanager: 'John Doe'},
-      ],
-      // appliedRoles: [
-      //   { department: 'Sales', label: 'Sales Associate', numApplications:12,reportingmanager: 'John Doe'},
-      //   { department: 'HR', label: 'HR Coordinator', numApplications:1,reportingmanager: 'John Doe'},
-      // ],
+      availableRoles: [],
     }),
     mounted()
     {
@@ -134,42 +122,107 @@
       },
       editListing(index) {
         this.$router.push({ name: 'edit-listing', params: { index } });
-        },
+      },
       getDepartmentIcon(department) {
         const departmentIcons = {
-          'Engineering': 'mdi-code-braces',
-        'Product Management': 'mdi-chart-pie',
-        'Analytics': 'mdi-chart-bar',
-        'Marketing': 'mdi-bullhorn',
-        'Sales': 'mdi-cash-register',
-        'HR': 'mdi-account-supervisor',
-        'Others': 'mdi-account',
-        'Management': 'mdi-compass',
-        'IT': 'mdi-monitor',
-        'Design': 'mdi-palette'
+          'Design': 'mdi-palette',
+          'Chariman': 'mdi-chess-king',
+          'CEO': 'mdi-chess-queen',
+          'Sales': 'mdi-phone-in-talk',
+          'Solutioning': 'mdi-lightbulb',
+          'Engineering': 'mdi-state-machine',
+          'HR': 'mdi-account-group',
+          'Finance': 'mdi-cash-register',
+          'Consultancy': 'mdi-compass',
+          'IT': 'mdi-code-tags'
         };
         return departmentIcons[department] || 'mdi-help-circle';
       },
       getSkillIcon(skill) {
-      const skillIcons = {
-        'Python': 'mdi-language-python',
-        'HTML': 'mdi-language-html5',
-        'CSS': 'mdi-language-css3',
-        'JavaScript': 'mdi-language-javascript',
-        'PHP': 'mdi-language-php',
-        'C#': 'mdi-language-c',
-        'Ruby': 'mdi-language-ruby',
-        'Angular.js': 'mdi-angularjs',
-        'Vue.js': 'mdi-vuejs',
-        'Leadership': 'mdi-chess-king',
-        'Communication': 'mdi-message-outline',
-        'Programming': 'mdi-code-braces',
-        'Web Development': 'mdi-web',
-        'Graphic Design': 'mdi-draw',
-        'UI/UX': 'mdi-table-account'
-      };
-      return skillIcons[skill] || 'mdi-help-circle';
-    },
+        const skillIcons = {
+          'Account Management': 'mdi-bank',
+          'Accounting and Tax Systems': 'mdi-bank',
+          'Accounting Standards': 'mdi-bank',
+          'Applications Development': 'mdi-code-braces',
+          'Applications Integration': 'mdi-code-braces',
+          'Applications Support and Enhancement': 'mdi-code-braces',
+          'Audit Compliance': 'mdi-bank-check',
+          'Audit Frameworks': 'mdi-bank-check',
+          'Budgeting': 'mdi-cash',
+          'Business Acumen': 'mdi-cash',
+          'Business Development': 'mdi-cash',
+          'Business Environment Analysis': 'mdi-cash',
+          'Business Needs Analysis': 'mdi-cash',
+          'Business Negotiation': 'mdi-cash',
+          'Business Presentation Delivery': 'mdi-cash',
+          'Business Requirements Mapping': 'mdi-cash',
+          'Business Risk Management': 'mdi-cash',
+          'Call Centre Management': 'mdi-message-outline',
+          'Collaboration': 'mdi-message-outline',
+          'Communication': 'mdi-message-outline',
+          'Configuration Tracking': 'mdi-message-outline',
+          'Customer Acquisition Management': 'mdi-message-outline',
+          'Customer Relationship Management': 'mdi-message-outline',
+          'Data Analytics': 'mdi-data-matrix',
+          'Database Administration': 'mdi-data-matrix',
+          'Developing People': 'mdi-account-group',
+          'Digital Fluency': 'mdi-account-group',
+          'Employee Communication Management': 'mdi-account-group',
+          'Employee Engagement Management': 'mdi-account-group',
+          'Finance Business Partnering': 'mdi-finance',
+          'Financial Acumen': 'mdi-finance',
+          'Financial Closing': 'mdi-finance',
+          'Financial Management': 'mdi-finance',
+          'Financial Planning': 'mdi-finance',
+          'Financial Reporting': 'mdi-finance',
+          'Financial Statements Analysis': 'mdi-finance',
+          'Financial Transactions': 'mdi-finance',
+          'Human Resource Advisory': 'mdi-account-switch',
+          'Human Resource Practices Implementation': 'mdi-account-switch',
+          'Human Resource Strategy Formulation': 'mdi-account-switch',
+          'Human Resource Systems Management': 'mdi-account-switch',
+          'Infrastructure Deployment': 'mdi-domain',
+          'Infrastructure Support': 'mdi-domain',
+          'Learning and Development Programme Management': 'mdi-school',
+          'Learning Needs Analysis': 'mdi-school',
+          'Network Administration and Maintenance': 'mdi-domain',
+          'Onboarding': 'mdi-account-group',
+          'Organisational Design': 'mdi-account-group',
+          'People and Performance Management': 'mdi-account-group',
+          'Pricing Strategy': 'mdi-cash',
+          'Problem Management': 'mdi-help',
+          'Problem Solving': 'mdi-help',
+          'Product Management': 'mdi-clipboard-text',
+          'Professional and Business Ethics': 'mdi-clipboard-text',
+          'Project Management': 'mdi-clipboard-text',
+          'Regulatory Compliance': 'mdi-police-badge',
+          'Regulatory Risk Assessment': 'mdi-police-badge',
+          'Regulatory Strategy': 'mdi-police-badge',
+          'Sales Closure': 'mdi-sale',
+          'Sales Strategy': 'mdi-sale',
+          'Security Administration': 'mdi-electron-framework',
+          'Sense Making': 'mdi-electron-framework',
+          'Service Level Management': 'mdi-electron-framework',
+          'Skills Framework Adoption': 'mdi-electron-framework',
+          'Software Configuration': 'mdi-microsoft-visual-studio-code',
+          'Software Design': 'mdi-microsoft-visual-studio-code',
+          'Software Testing': 'mdi-microsoft-visual-studio-code',
+          'Solution Architecture': 'mdi-microsoft-visual-studio-code',
+          'Solutions Design Thinking': 'mdi-microsoft-visual-studio-code',
+          'SOP Development and Implementation': 'mdi-vhs',
+          'Stakeholder Management': 'mdi-vhs',
+          'Strategy Planning': 'mdi-vhs',
+          'System Integration': 'mdi-vhs',
+          'Talent Management': 'mdi-account-multiple',
+          'Tax Computation': 'mdi-cash',
+          'Tax Implications': 'mdi-cash',
+          'Technology Application': 'mdi-semantic-web',
+          'Technology Integration': 'mdi-semantic-web',
+          'Technology Road Mapping': 'mdi-semantic-web',
+          'User Interface Design': 'mdi-semantic-web'
+        };
+        return skillIcons[skill] || 'mdi-help-circle';
+      },
       getRandomApplicants() {
         return Math.floor(Math.random() * 10) + 1;
       },

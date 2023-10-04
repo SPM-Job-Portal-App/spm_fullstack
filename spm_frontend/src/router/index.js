@@ -44,6 +44,11 @@ const routes = [
         name: 'Open Roles HR',
         component: () => import('@/views/OpenRoles_HR.vue'),
       },
+      {
+        path: '/edit-listing/:index',
+        name: 'edit-listing',
+        component: () => import('@/components/EditListing.vue'),
+      },
     ],
   },
   {
@@ -78,12 +83,6 @@ const routes = [
         component: () => import('@/views/CreateRoleListing.vue'),
       },
     ],
-  },
-  {
-    path: '/edit-listing/:index', // Define a route parameter :index
-    name: 'edit-listing',
-    component: () => import('@/components/EditListing.vue'),
-    props: true,
   },
 ]
 
