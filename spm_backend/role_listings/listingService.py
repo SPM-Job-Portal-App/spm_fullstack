@@ -93,7 +93,7 @@ class Listing():
         listing_data = {
             'id': listing.id,
             'role_name': listing.role_name,
-            'skills': listing.skills,
+            # 'skills': listing.skills,
             'country': listing.country,
             'dept': listing.dept,
             'is_open': listing.is_open,
@@ -105,20 +105,21 @@ class Listing():
     def create_role_listing_feature(data):
         # Extract data from the input
         role_name = data.get('role_name')
-        skills = data.get('skills')
+        # skills = data.get('skills')
         country = data.get('country')
         dept = data.get('dept')
         is_open = data.get('is_open')
         reporting_manager = data.get('reporting_manager')
         
         # Validate the incoming data (e.g., check for required fields)
-        if not role_name or not skills or not country or not dept:
+        # if not role_name or not skills or not country or not dept:
+        if not role_name or not country or not dept:
             return {"message": "Missing required fields"}, 400
 
         # Check if a role listing with the same attributes exists
         existing_listing = RoleListing.query.filter_by(
             role_name=role_name,
-            skills=skills,
+            # skills=skills,
             country=country,
             dept=dept,
             is_open=is_open,
@@ -131,7 +132,7 @@ class Listing():
         # Create a new RoleListing object
         new_role = RoleListing(
             role_name=role_name,
-            skills=skills,
+            # skills=skills,
             country=country,
             dept=dept,
             is_open=is_open,
