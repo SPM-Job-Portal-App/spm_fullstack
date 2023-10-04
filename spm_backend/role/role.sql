@@ -13,6 +13,4 @@ VALUES
     ('Admin Executive',	"Admin Executive will act as the point of contact for all employees, providing administrative support and managing their queries."),
     ('Call Centre',	"Call Centre Executive is responsible for providing assistance to customers by addressing their queries and requests. "),
     ('Consultant', "The Consultant is responsible for providing Sales technical expertise to the sales team and clients during the sales process. He/She delivers presentations and technical demonstrations of the organisation's products to prospective clients. "),
-    ('Finance Director', "The Finance Director is the business partner for all the business units in an organisation.");
-
-    
+    ('Finance Director', "The Finance Director is the business partner for all the business units in an organisation.");    

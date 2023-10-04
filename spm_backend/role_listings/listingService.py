@@ -5,7 +5,6 @@ from staff.staffService import StaffService
 from role.roleService import RoleService
 from role_skill.roleSkillService import RoleSkillService
 from flask import jsonify
-import re
 
 class Listing():
     # helper functions
@@ -187,10 +186,6 @@ class Listing():
         if not existing_listing_is_open:
             return jsonify({'message': "Role listing at index is already closed"}), 400
         
-        # if opening date and closing date in wrong format
-        date_pattern = r'^\d{4}-\d{2}-\d{2}$'
-        if not re.match(date_pattern, opening_date) or not re.match(date_pattern, closing_date):
-            return jsonify({'message': "Opening and closing date inputs must be in YYYY-MM-DD format"}), 400
         existing_listing.role_name = role_name
         # existing_listing.skills = skills
         existing_listing.country = country

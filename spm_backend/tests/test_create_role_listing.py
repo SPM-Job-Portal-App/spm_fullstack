@@ -23,7 +23,6 @@ def test_create_success(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -53,7 +52,6 @@ def test_create_role_listing_with_missing_fields_failure(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -82,7 +80,6 @@ def test_create_duplicate_role_listing_failure(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -92,7 +89,6 @@ def test_create_duplicate_role_listing_failure(client):
     }
     duplicate_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -129,7 +125,6 @@ def test_create_role_listing_with_nonexistent_reporting_manager(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -146,73 +141,3 @@ def test_create_role_listing_with_nonexistent_reporting_manager(client):
     assert response.json == expected_message
     assert response.status_code == 404
     drop_tables()
-
-# # Test for creating a role listing with an empty field
-# def test_create_role_empty_fields(client):
-#     initialize_databases()
-#     new_staff = Staff(
-#         staff_first_name="James",
-#         staff_last_name="Re",
-#         dept="Sales",
-#         country="USA",
-#         email="james.re@example.com",
-#         role="Product Manager"
-#     )
-#     application_data = {
-#         "role_name": "",
-#         "skills": "Python, JavaScript, SQL",
-#         "country": "USA",
-#         "dept": "Sales",
-#         "is_open": True,
-#         "reporting_manager": None
-#     }
-#     with app.app_context():
-#         db.session.add(new_staff)
-#         db.session.commit()
-#     # Send the first POST request
-#     response = client.post('/listing/create', json=application_data)
-#     expected_message = {'message': 'Missing required fields'}
-#     assert response.json == expected_message
-#     assert response.status_code == 400
-#     drop_tables()
-
-##################################################################################################### 
-# def test_create_happy_path(client):
-#     initialize_databases()
-#     new_listing = RoleListing(
-#         role_name="Product Manager",
-#         skills="Python, JavaScript, SQL",
-#         country="USA",
-#         dept="Sales",
-#         is_open=True,
-#         reporting_manager=None
-#     )
-#     new_staff = Staff(
-#         staff_first_name="James",
-#         staff_last_name="Re",
-#         dept="Sales",
-#         country="USA",
-#         email="james.re@example.com",
-#         role="Product Manager"
-#     )
-#     # application_data = {
-#     #     "role_listing": 1,
-#     #     "staff_id": 1
-#     # }
-#     application_data = {
-#         "role_name": "Product Manager",
-#         "skills": "Python, JavaScript, SQL",
-#         "country": "USA",
-#         "dept": "Sales",
-#         "is_open": True,
-#         "reporting_manager": None
-#     }
-#     with app.app_context():
-#         db.session.add(new_listing)
-#         db.session.add(new_staff)
-#         db.session.commit()
-#     response = client.post('/listing/create', json=application_data)
-#     expected_message = {'message': 'Role Listing created successfully'}
-#     assert response.json == expected_message
-#     assert response.status_code == 201
-#     drop_tables()
