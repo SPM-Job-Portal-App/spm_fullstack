@@ -14,4 +14,3 @@ VALUES
     ('Developer', 'Application Integration'),
     ('Consultant', 'Account Management'),
     ('Finance Director', 'Accounting and Tax Systems')
-
