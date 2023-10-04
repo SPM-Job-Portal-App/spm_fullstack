@@ -24,7 +24,7 @@ def test_edit_role_listing_success(client):
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
-        skills="Python, JavaScript, SQL",
+        # skills="Python, JavaScript, SQL",
         country="USA",
         dept="Sales",
         is_open=True,
@@ -34,7 +34,7 @@ def test_edit_role_listing_success(client):
     )
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
@@ -65,7 +65,7 @@ def test_edit_role_listing_missing_fields_failure(client):
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
-        skills="Python, JavaScript, SQL",
+        # skills="Python, JavaScript, SQL",
         country="USA",
         dept="Sales",
         is_open=True,
@@ -75,7 +75,7 @@ def test_edit_role_listing_missing_fields_failure(client):
     )
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
@@ -97,7 +97,7 @@ def test_edit_nonexistent_role_listing_failure(client):
     initialize_databases()
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,
@@ -124,7 +124,7 @@ def test_edit_role_listing_with_wrong_date_format(client):
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
-        skills="Python, JavaScript, SQL",
+        # skills="Python, JavaScript, SQL",
         country="USA",
         dept="Sales",
         is_open=True,
@@ -134,7 +134,7 @@ def test_edit_role_listing_with_wrong_date_format(client):
     )
     updated_role_listing_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "Singapore",
         "dept": "Sales",
         "is_open": True,

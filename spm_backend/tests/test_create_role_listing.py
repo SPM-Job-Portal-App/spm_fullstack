@@ -23,7 +23,7 @@ def test_create_success(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -41,7 +41,7 @@ def test_create_success(client):
     drop_tables()
 
 # Test for creating a listing role with missing required fields
-def test_creat_role_listing_with_missing_fields_failure(client):
+def test_create_role_listing_with_missing_fields_failure(client):
     initialize_databases()
     new_staff = Staff(
         staff_first_name="James",
@@ -53,11 +53,11 @@ def test_creat_role_listing_with_missing_fields_failure(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
-        "opening_date": "2023-10-01",
+        "opening_date": "",
         "reporting_manager": None
     }
     with app.app_context():
@@ -82,7 +82,7 @@ def test_create_duplicate_role_listing_failure(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -92,7 +92,7 @@ def test_create_duplicate_role_listing_failure(client):
     }
     duplicate_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -129,7 +129,7 @@ def test_create_role_listing_with_nonexistent_reporting_manager(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,

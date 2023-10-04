@@ -13,14 +13,7 @@
 
 # def test_apply_for_open_role_listing_success(client):
 #     initialize_databases()
-#     new_listing = RoleListing(
-#         role_name="Software Engineer",
-#         skills="Python, JavaScript, SQL",
-#         country="USA",
-#         dept="Engineering",
-#         is_open=True,
-#         reporting_manager=None
-#     )
+
 #     new_staff = Staff(
 #         staff_first_name="John",
 #         staff_last_name="Doe",
@@ -29,14 +22,23 @@
 #         email="john.doe@example.com",
 #         role="Engineer"
 #     )
+#     new_listing = RoleListing(
+#         role_name="Software Engineer",
+#         # skills="Python, JavaScript, SQL",
+#         country="USA",
+#         dept="Engineering",
+#         is_open=True,
+#         reporting_manager=None
+#     )
 #     application_data = {
 #         "role_listing": 1,
 #         "staff_id": 1
 #     }
 #     with app.app_context():
-#         db.session.add(new_listing)
 #         db.session.add(new_staff)
+#         db.session.add(new_listing)
 #         db.session.commit()
+        
 #     response = client.post('/application', json=application_data)
 #     expected_message = {'message': 'Role application created successfully'}
 #     assert response.json == expected_message
@@ -47,7 +49,7 @@
 #     initialize_databases()
 #     new_listing = RoleListing(
 #         role_name="Software Engineer",
-#         skills="Python, JavaScript, SQL",
+#         # skills="Python, JavaScript, SQL",
 #         country="USA",
 #         dept="Engineering",
 #         is_open=False,
@@ -110,7 +112,7 @@
 #     )
 #     new_listing = RoleListing(
 #         role_name="Software Engineer",
-#         skills="Python, JavaScript, SQL",
+#         # skills="Python, JavaScript, SQL",
 #         country="USA",
 #         dept="Engineering",
 #         is_open=True,

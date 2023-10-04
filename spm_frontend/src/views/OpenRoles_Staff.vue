@@ -38,22 +38,23 @@
                 <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
                 <div class="d-flex align-center justify-center department-icon-container">
                   <!-- Department Icon -->
-                  <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.department) }}</v-icon>
+                  <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                 </div>
                 <div class="text-center" style="color:#664229; font-size: 18px; font-weight: bold;">
-                  {{ listing.label }}
+                  {{ listing.role_name }}
                 </div>
                 <div class="text-center mt-7" style="color:#8C7251; padding: 10px; font-size: 18px;">
-                  <b>Department:</b> {{ listing.department }}
+                  <b>Department:</b> {{ listing.dept }}
                 </div>
-                <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
-                  <b>Description:</b> Lorem ipsum lorem ipsum
+                <div class="text-center mt-2" style="color: #8C7251; padding-left: 10px; padding-right: 10px; font-size: 18px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; white-space: normal;">
+                  <b>Description:</b> {{  listing.description }}
                 </div>
                 <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
                 </div>
                 <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
-                  <b>Reporting Manager:</b> {{ getReportingManager() }}
+                  <!-- <b>Reporting Manager:</b> {{ listing.reporting_manager }} -->
+                  <b>Skills: </b> {{ listing.skills }}
                 </div>
                 <div class="text-center mt-3 mb-6">
                   <v-btn class="mx-auto px-4" @click="applyNow(index)" color="#ccbbaa" style="padding: 10px 0; font-size: 18px; margin-top:3px">Apply Now!</v-btn>
@@ -71,22 +72,22 @@
                 <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
                 <div class="d-flex align-center justify-center department-icon-container">
                   <!-- Department Icon -->
-                  <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.department) }}</v-icon>
+                  <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">
-                  {{ listing.label }}
+                  {{ listing.role_name }}
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                  <b>Department:</b> {{ listing.department }}
+                  <b>Department:</b> {{ listing.dept }}
                 </div>
-                <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                  <b>Description:</b> {{ listing.description }}
+                <div class="text-center mt-2" style="color: #8C7251; padding-left: 10px; padding-right: 10px; font-size: 18px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; white-space: normal;">
+                  <b>Description:</b> {{  listing.description }}
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
                 </div>
                 <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
-                  <b>Reporting Manager:</b> {{ listing.reportingmanager }}
+                  <b>Reporting Manager:</b> {{ listing.reporting_manager }}
                 </div>
                 <div class="text-center mt-3 mb-6">
                   <v-btn class="mx-auto px-4" @click="applyToAppliedRole(index)" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Applied</v-btn>
@@ -101,28 +102,31 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data: () => ({
     tab: 'availableRoles',
     selectedDepartment: 'All',
     selectedCountry: 'All',
-    availableRoles: [
-      { department: 'Engineering', label: 'Software Engineer', country: 'Singapore',reportingmanager: 'John Doe'},
-      { department: 'Product Management', label: 'Product Manager', country: 'Indonesia',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-      { department: 'Analytics', label: 'Data Analyst', country: 'Vietnam',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-      { department: 'Sales', label: 'Sales Associate', country: 'Singapore',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-      { department: 'HR', label: 'HR Coordinator', country: 'Indonesia',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-      // Add more roles with department and country properties
-    ],
+    availableRoles: [],
     appliedRoles: [
-      { department: 'Sales', label: 'Sales Associate', country: 'Singapore',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
-      { department: 'HR', label: 'HR Coordinator', country: 'Indonesia',reportingmanager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
+      { dept: 'Sales', role_name: 'Sales Associate', country: 'Singapore',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
+      { dept: 'HR', role_name: 'HR Coordinator', country: 'Indonesia',reporting_manager: 'John Doe',description:'Lorem ipsum lorem ipsum'},
       // Add more applied roles with department and country properties
     ],
   }),
+  mounted() {
+    const getOpenListingsUrl = "http://localhost:5000/listing/get_open_listings"
+    axios.get(getOpenListingsUrl)
+    .then(response => {
+      console.log(response.data)
+      this.availableRoles = response.data
+    })
+  },
   computed: {
     departmentOptions() {
-      const departments = [...new Set([...this.availableRoles, ...this.appliedRoles].map((role) => role.department))];
+      const departments = [...new Set([...this.availableRoles, ...this.appliedRoles].map((role) => role.dept))];
       return ['All', ...departments];
     },
     countryOptions() {
@@ -131,14 +135,14 @@ export default {
     },
     filteredAvailableRoles() {
       return this.availableRoles.filter((role) => {
-        const departmentMatch = this.selectedDepartment === 'All' || role.department === this.selectedDepartment;
+        const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
         const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
         return departmentMatch && countryMatch;
       });
     },
     filteredAppliedRoles() {
       return this.appliedRoles.filter((role) => {
-        const departmentMatch = this.selectedDepartment === 'All' || role.department === this.selectedDepartment;
+        const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
         const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
         return departmentMatch && countryMatch;
       });
@@ -146,26 +150,22 @@ export default {
   },
   methods: {
     applyNow(index) {
-      console.log(`Applied for ${this.filteredAvailableRoles[index].label}`);
+      console.log(`Applied for ${this.filteredAvailableRoles[index].role_name}`);
     },
     applyToAppliedRole(index) {
-      console.log(`Applied for ${this.filteredAppliedRoles[index].label}`);
+      console.log(`Applied for ${this.filteredAppliedRoles[index].role_name}`);
     },
     getDepartmentIcon(department) {
       const departmentIcons = {
-        Engineering: 'mdi-code-braces',
-        'Product Management': 'mdi-chart-pie',
-        Analytics: 'mdi-chart-bar',
-        Marketing: 'mdi-bullhorn',
-        Sales: 'mdi-cash-register',
-        HR: 'mdi-account-supervisor',
-        Others: 'mdi-account',
+        'Sales': 'mdi-phone-in-talk',
+        'Consultancy': 'mdi-lightbulb-on',
+        'Solutioning': 'mdi-code-json',
+        'Engineering': 'mdi-code-braces',
+        'HR': 'mdi-account-supervisor',
+        'Finance': 'mdi-cash-register',
+        'IT': 'mdi-laptop'
       };
       return departmentIcons[department] || 'mdi-help-circle';
-    },
-    getReportingManager() {
-      // Replace with your logic to get the reporting manager
-      return 'Reporting Manager';
     },
   },
 };
