@@ -2,6 +2,7 @@
 from models.model import db
 
 class Skill(db.Model):
+    __tablename__ = 'skill'
     skill_name = db.Column(db.String(255), nullable=False,primary_key=True)
     skill_description = db.Column(db.Text, nullable=False)
    

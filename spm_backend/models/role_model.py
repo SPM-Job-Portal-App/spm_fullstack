@@ -1,6 +1,7 @@
 from models.model import db
 
 class Role(db.Model):
+    __tablename__ = 'role'
     role_name = db.Column(db.String(255), nullable=False,primary_key=True)
     role_description = db.Column(db.Text, nullable=False)
    

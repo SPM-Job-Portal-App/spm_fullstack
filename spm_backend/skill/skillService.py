@@ -28,6 +28,10 @@ class SkillService():
         
         
     def import_skills():
+        existing_skill_count = db.session.query(Skill).count()
+    
+        if existing_skill_count > 0:
+            return 
         with open('./skill/skill.csv', newline='',encoding='utf-8-sig',errors='replace') as csv_file:
             csvreader = csv.DictReader(csv_file)
             

@@ -6,6 +6,10 @@ import csv
 class RoleService():
 
     def importRoles():
+        existing_role_count = db.session.query(Role).count()
+    
+        if existing_role_count > 0:
+            return 
         with open('./role/role.csv', newline='',encoding='utf-8-sig',errors='replace') as csv_file:
             csvreader = csv.DictReader(csv_file)
             
