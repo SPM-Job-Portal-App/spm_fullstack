@@ -12,6 +12,6 @@ CREATE TABLE staff (
 -- Insert data into the staff table
 INSERT INTO staff (staff_first_name, staff_last_name, dept, country, email, role)
 VALUES
-    ('John', 'Doe', 'Management', 'USA', 'john.doe@example.com', 'Manager'),
-    ('Alice', 'Smith', 'IT', 'Canada', 'alice.smith@example.com', 'Developer'),
-    ('Emma', 'Wilson', 'Design', 'UK', 'emma.wilson@example.com', 'Designer');
+    ('John', 'Doe', 'Sales', 'USA', 'john.doe@example.com', 'Manager'),
+    ('Alice', 'Smith', 'Engineering', 'Canada', 'alice.smith@example.com', 'Developer'),
+    ('Emma', 'Wilson', 'Solutioning', 'UK', 'emma.wilson@example.com', 'Designer');

@@ -1,20 +1,20 @@
--- Insert data into the staff table
+-- Insert data into the Staff table
 INSERT INTO staff (staff_first_name, staff_last_name, dept, country, email, role)
 VALUES
-    ('John', 'Doe', 'Management', 'USA', 'john.doe@example.com', 'Manager'),
-    ('Alice', 'Smith', 'IT', 'Canada', 'alice.smith@example.com', 'Developer'),
-    ('Emma', 'Wilson', 'Design', 'UK', 'emma.wilson@example.com', 'Designer');
+    ('John', 'Doe', 'HR', 'USA', 'john@example.com', 'Manager'),
+    ('Jane', 'Smith', 'IT', 'Canada', 'jane@example.com', 'Engineer'),
+    ('Alice', 'Johnson', 'Finance', 'UK', 'alice@example.com', 'Accountant');
 
--- Insert data into the role_listing table
-INSERT INTO role_listing (role_name, skills, country, dept, is_open, reporting_manager)
+-- Insert data into the RoleListing table
+INSERT INTO role_listing (role_name, skills, country, dept, is_open, opening_date, closing_date, reporting_manager)
 VALUES
-    ('Manager', 'Leadership, Communication', 'USA', 'Management', true, NULL),
-    ('Developer', 'Programming, Web Development', 'Canada', 'IT', false, 1),
-    ('Designer', 'Graphic Design, UI/UX', 'UK', 'Design', true, 1);
+    ('HR Manager', 'HR skills', 'USA', 'HR', 1, '2023-10-01', '2023-10-15', 1),
+    ('IT Engineer', 'IT skills', 'Canada', 'IT', 1, '2023-10-01', '2023-10-15', 2),
+    ('Finance Accountant', 'Finance skills', 'UK', 'Finance', 1, '2023-10-01', '2023-10-15', 3);
 
--- Insert data into the role_application table
+-- Insert data into the RoleApplication table
 INSERT INTO role_application (application_date, role_listing_id, staff_id)
 VALUES
-    ('2023-09-15', 2, 2),
-    ('2023-09-16', 3, 3),
-    ('2023-09-16', 2, 1);
+    ('2023-10-05', 1, 1),
+    ('2023-10-06', 2, 2),
+    ('2023-10-07', 3, 3);

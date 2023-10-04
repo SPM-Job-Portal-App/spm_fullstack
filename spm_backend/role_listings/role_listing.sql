@@ -2,17 +2,21 @@
 CREATE TABLE role_listing (
     id INT AUTO_INCREMENT PRIMARY KEY,
     role_name VARCHAR(255) NOT NULL,
-    skills VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     dept VARCHAR(255) NOT NULL,
     is_open BOOLEAN NOT NULL,
+    opening_date DATE,
+    closing_date DATE,
     reporting_manager INT,
+    FOREIGN KEY (role_name) REFERENCES role (role_name) ON DELETE CASCADE,
     FOREIGN KEY (reporting_manager) REFERENCES staff(id) ON DELETE CASCADE
 );
 
 -- Insert data into the role_listing table
-INSERT INTO role_listing (role_name, skills, country, dept, is_open, reporting_manager)
+INSERT INTO role_listing (role_name, country, dept, is_open, opening_date, closing_date, reporting_manager)
 VALUES
-    ('Manager', 'Leadership, Communication', 'USA', 'Management', true, NULL),
-    ('Developer', 'Programming, Web Development', 'Canada', 'IT', false, 1),
-    ('Designer', 'Graphic Design, UI/UX', 'UK', 'Design', true, 1);
+    ('Consultant', 'USA', 'Sales', True, '2023-10-01', '2023-10-15', NULL),
+    ('Developer', 'Canada', 'IT', False, '2023-10-01', '2023-10-15', 1),
+    ('Manager', 'UK', 'Solutioning', True, '2023-10-01', '2023-10-15', 1);
+    
+    
