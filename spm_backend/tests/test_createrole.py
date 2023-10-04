@@ -32,7 +32,7 @@ def test_create_success(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -58,7 +58,7 @@ def test_create_duplicate_roles(client):
     )
     application_data = {
         "role_name": "Product Manager",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
@@ -99,7 +99,7 @@ def test_create_role_empty_fields(client):
     )
     application_data = {
         "role_name": "",
-        "skills": "Python, JavaScript, SQL",
+        # "skills": "Python, JavaScript, SQL",
         "country": "USA",
         "dept": "Sales",
         "is_open": True,
