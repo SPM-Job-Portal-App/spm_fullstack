@@ -40,7 +40,7 @@ class Listing():
             listing_data = {
                 'id': listing.id,
                 'role_name': listing.role_name,
-                'skills': listing.skills,
+                # 'skills': listing.skills,
                 'country': listing.country,
                 'dept': listing.dept,
                 'is_open': listing.is_open,
