@@ -56,7 +56,9 @@ def test_get_open_role_listings(client):
                 country="Canada",
                 dept="IT",
                 is_open=True,
-                reporting_manager=1
+                reporting_manager=1,
+                opening_date="2023-10-01",
+                closing_date="2023-10-15"
             )
         db.session.add(new_listing)
         db.session.commit()
@@ -129,7 +131,9 @@ def test_get_closed_role_listings(client):
                 country="Canada",
                 dept="IT",
                 is_open=False,
-                reporting_manager=1
+                reporting_manager=1,
+                opening_date="2023-10-01",
+                closing_date="2023-10-15"
             )
         db.session.add(new_listing)
         db.session.commit()
