@@ -1,11 +1,17 @@
+
 from models.model import db
-from sqlalchemy.dialects.mysql import LONGTEXT
 
 class Skill(db.Model):
-    skill_name = db.Column(db.String(50), primary_key=True)
-    skill_desc = db.Column(LONGTEXT)
+    __tablename__ = 'skill'
+    skill_name = db.Column(db.String(255), nullable=False,primary_key=True)
+    skill_description = db.Column(db.Text, nullable=False)
+   
+    
 
-    def __init__(self, skill_name, skill_desc):
+    def __init__(self, skill_name,skill_description):
         self.skill_name = skill_name
-        self.skill_desc = skill_desc
-
+        self.skill_description = skill_description
+       
+    def json(self):
+        return {"Skill Name": self.skill_name, "Skill Description": self.skill_description}
+    

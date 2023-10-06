@@ -2,7 +2,7 @@ from flask import Flask
 from role_listings.listingController import listing_bp
 from role_application.applicationController import application_bp
 from staff.staffController import staff_bp
-from role.roleController import role_bp
+from role.roleContoller import role_bp
 from role_skill.roleSkillController import role_skill_bp
 from skill.skillController import skill_bp
 from models.model import db
