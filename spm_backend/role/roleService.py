@@ -13,4 +13,16 @@ class RoleService():
             return role
         except Exception as e:
             raise Exception("No role with this role name found")
+        
+    def get_all_role_names():
+        try:
+            # Query all roles and retrieve only the role names
+            roles = Role.query.with_entities(Role.role_name).all()
+
+            # Extract role names from the query result
+            role_names = [role[0] for role in roles]
+
+            return role_names
+        except Exception as e:
+            raise Exception("An error occurred while retrieving role names")
 
