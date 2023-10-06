@@ -35,7 +35,7 @@ class RoleSkillService():
             csvreader = csv.DictReader(csv_file)
             
             for row in csvreader:
-                print(row['Skill_Name'])
+               
               
                 new_role_skill = RoleSkill(
                     role_name=row['Role_Name'],
