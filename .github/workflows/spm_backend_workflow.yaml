@@ -1,0 +1,46 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        working-directory: spm_backend
+        run: |
+          pip install -r requirements.txt
+
+      - name: Set up MYSQL
+        working-directory: spm_backend
+        run: |
+          python -c "import mysql.connector; conn = mysql.connector.connect(host='localhost', user='user', password='password', database='db'); conn.close();"
+
+      - name: Run Tests
+        working-directory: spm_backend
+        run: pytest --exitfirst
