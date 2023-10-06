@@ -39,7 +39,7 @@ def test_get_open_role_listings(client):
 
         new_role = Role(
                 role_name="Developer",
-                role_desc="Write code all day everyday. Write code all day everyday. Write code all day everyday."
+                role_description="Write code all day everyday. Write code all day everyday. Write code all day everyday."
             )
         db.session.add(new_role)
         db.session.commit()

@@ -26,7 +26,7 @@ def test_import_role_desc(client):
             # Here, you can compare individual fields or attributes of the JSON and CSV items.
             assert json_item['Role'] == csv_item['Role_name'], "Role Name doesn't match."
             assert json_item['Role Description'] == csv_item['Role_Desc'], "Role description doesn't match."
-    drop_tables()
+    
 def test_import_skill_desc(client):
     initialize_databases()
     
@@ -41,14 +41,14 @@ def test_import_skill_desc(client):
             # Here, you can compare individual fields or attributes of the JSON and CSV items.
             assert json_item['Skill Name'] == csv_item['Skill_Name'], "Role name doesn't match."
             assert json_item['Skill Description'] == csv_item['Skill_Desc'], "Role description doesn't match."
-    drop_tables()
+    
 def test_import_role_skill(client):
     initialize_databases()
     
     #Check if the role is imported from the csv file properly and check wit the get request
     #iterate over every role and check the content match the csv file
     json_response = client.get('/roleskill/get_skills').get_json()
-    with open('./skill/skill.csv', newline='', encoding='utf-8-sig',errors='replace') as csv_file:
+    with open('./role_skill/role_skill.csv', newline='', encoding='utf-8-sig',errors='replace') as csv_file:
         csvreader = csv.DictReader(csv_file)
         print(json_response)
         # Iterate through the CSV file and JSON data together
