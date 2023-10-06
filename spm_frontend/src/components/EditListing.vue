@@ -63,28 +63,28 @@
         failureOverlay: false,
         feedbackMessage: '',
         availableRoles: [
-          'Account Manager',
-          'Consultancy Director',
-          'Consultant',
-          'Sales Director',
-          'Solutioning Director',
-          'Finance  Executive',
-          'Finance Director',
-          'Finance Manager',
-          'Developer',
-          'Senior Engineer',
-          'Engineering Director',
-          'Sales Manager',
-          'HR Director',
-          'IT Director',
-          'IT Analyst',
-          'Support Engineer',
-          'Call Centre',
-          'Admin Executive',
-          'HR Executive',
-          'Junior Engineer',
-          'L&D Executuve',
-          'Ops Planning Exec'
+          // 'Account Manager',
+          // 'Consultancy Director',
+          // 'Consultant',
+          // 'Sales Director',
+          // 'Solutioning Director',
+          // 'Finance  Executive',
+          // 'Finance Director',
+          // 'Finance Manager',
+          // 'Developer',
+          // 'Senior Engineer',
+          // 'Engineering Director',
+          // 'Sales Manager',
+          // 'HR Director',
+          // 'IT Director',
+          // 'IT Analyst',
+          // 'Support Engineer',
+          // 'Call Centre',
+          // 'Admin Executive',
+          // 'HR Executive',
+          // 'Junior Engineer',
+          // 'L&D Executuve',
+          // 'Ops Planning Exec'
         ],
         availableDepartments: [
           'Design',
@@ -206,6 +206,11 @@
           console.log(response)
           this.openingDate = response.data.opening_date
           this.closingDate = response.data.closing_date
+        }
+      ),
+      axios.get('http://localhost:5000/role/get_all_role_names').then(
+        (response)=>{
+          this.availableRoles = response.data
         }
       )
     },

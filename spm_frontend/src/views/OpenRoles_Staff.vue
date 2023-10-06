@@ -61,10 +61,43 @@
                     (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
                   </div>
                 </div>
+                <v-card-actions class="justify-center">
+                  <v-btn
+                    variant="flat"
+                    color="#e0b88a"
+                    @click="listing.revealDesc = !listing.revealDesc"
+                  >
+                    Learn More
+                  </v-btn>
+                </v-card-actions>
                 <div class="text-center mt-3 mb-6">
                   <v-btn v-if="listing.is_open" class="mx-auto px-4" :to="{ name: 'Apply Open Roles', params: { id: listing.id } }" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Apply Now</v-btn>
                   <v-btn v-else class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">Expired</v-btn>
                 </div>
+                <v-expand-transition>
+                  <v-card
+                    v-if="listing.revealDesc"
+                    class="v-card--reveal d-flex flex-column"
+                    style="height: 100%;"
+                  >
+                    <v-card-text class="pb-0">
+                      <p class="text-h6 text--primary mb-4">
+                        Description
+                      </p>
+                      <p>{{ listing.role_desc }}</p>
+                    </v-card-text>
+                    <v-spacer></v-spacer>
+                    <v-card-actions class="pt-0 justify-center">
+                      <v-btn
+                        variant="text"
+                        color="red"
+                        @click="listing.revealDesc = false"
+                        icon="mdi-close-circle"
+                      >
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-expand-transition>
               </v-card>
             </v-col>
           </v-row>
@@ -138,6 +171,7 @@ export default {
       'Audit Frameworks',
       'Budgeting'
     ],
+    revealDesc: false
   }),
   mounted()
     {
@@ -154,10 +188,23 @@ export default {
           console.log(this.appliedRoles)
         }
       )
-      axios.get('http://localhost:5000/listing/get_open_listings').then(
+      axios.get('http://localhost:5000/listing/get_open_listings')
+      .then(
         (response)=>{
           this.availableRoles = response.data;
-          console.log(this.availableRoles)
+          if (response) {
+            const roleRequests = response.data.map((role) => {
+              return axios.get(`http://localhost:5000/role/get_role_by_role_name/${role.role_name}`);
+            });
+            return Promise.all(roleRequests);
+          }
+        })
+        .then((roleResponses) => {
+          roleResponses.forEach((response, index) => {
+            this.availableRoles[index]['role_desc'] = response.data.role_desc;
+            this.availableRoles[index]['revealDesc'] = false;
+          });
+          console.log(this.availableRoles);
         }
       )
     },
@@ -312,5 +359,15 @@ export default {
 
 .department-icon {
   font-size: 100px;
+}
+
+.v-card--reveal {
+  bottom: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 100%;
+  background-color: #eae4dd;
+  color: #664229;
+  padding: 10px;
 }
 </style>
