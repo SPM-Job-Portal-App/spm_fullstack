@@ -144,28 +144,28 @@ export default {
     return {
       RoleTitle: '',
       roleOptions: [
-        'Account Manager',
-        'Consultancy Director',
-        'Consultant',
-        'Sales Director',
-        'Solutioning Director',
-        'Finance  Executive',
-        'Finance Director',
-        'Finance Manager',
-        'Developer',
-        'Senior Engineer',
-        'Engineering Director',
-        'Sales Manager',
-        'HR Director',
-        'IT Director',
-        'IT Analyst',
-        'Support Engineer',
-        'Call Centre',
-        'Admin Executive',
-        'HR Executive',
-        'Junior Engineer',
-        'L&D Executuve',
-        'Ops Planning Exec'
+        // 'Account Manager',
+        // 'Consultancy Director',
+        // 'Consultant',
+        // 'Sales Director',
+        // 'Solutioning Director',
+        // 'Finance  Executive',
+        // 'Finance Director',
+        // 'Finance Manager',
+        // 'Developer',
+        // 'Senior Engineer',
+        // 'Engineering Director',
+        // 'Sales Manager',
+        // 'HR Director',
+        // 'IT Director',
+        // 'IT Analyst',
+        // 'Support Engineer',
+        // 'Call Centre',
+        // 'Admin Executive',
+        // 'HR Executive',
+        // 'Junior Engineer',
+        // 'L&D Executuve',
+        // 'Ops Planning Exec'
       ],
       RoleDescription: '',
       deptOptions: [
@@ -276,6 +276,14 @@ export default {
       openingDate: new Date(),
       disabledDates: [{ start: null, end: new Date() }],
     };
+  },
+  mounted()
+  {
+    axios.get('http://localhost:5000/role/get_all_role_names').then(
+      (response)=>{
+        this.roleOptions = response.data
+      }
+    )
   },
   computed: {
     isConfirmButtonEnabled() {
