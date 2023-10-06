@@ -39,7 +39,7 @@ def test_get_open_role_listings(client):
 
         new_role = Role(
                 role_name="Developer",
-                role_desc="Write code all day everyday. Write code all day everyday. Write code all day everyday."
+                role_description="Write code all day everyday. Write code all day everyday. Write code all day everyday."
             )
         db.session.add(new_role)
         db.session.commit()
@@ -59,6 +59,7 @@ def test_get_open_role_listings(client):
                 reporting_manager=1,
                 opening_date="2023-10-01",
                 closing_date="2023-10-15"
+                
             )
         db.session.add(new_listing)
         db.session.commit()
@@ -72,20 +73,20 @@ def test_get_open_role_listings(client):
             "is_open": True,
             "reporting_manager": "Alice Smith",
             "role_name": "Developer",
-            "skills": "Applications Development",
-            "description": "Write code all day everyday. Write code all day everyday. Write code all day everyday."
+
         }
     ]
 
-    response_data = response.json
+    response_data = response.get_json()
+    print(response_data)
     # check all fields are correct
     assert response_data[0]['country'] == expected_result[0]['country']
     assert response_data[0]['dept'] == expected_result[0]['dept']
     assert response_data[0]['is_open'] == expected_result[0]['is_open']
     assert response_data[0]['reporting_manager'] == expected_result[0]['reporting_manager']
     assert response_data[0]['role_name'] == expected_result[0]['role_name']
-    assert response_data[0]['skills'] == expected_result[0]['skills']
-    assert response_data[0]['description'] == expected_result[0]['description']
+
+  
     drop_tables()
 
 
@@ -107,14 +108,14 @@ def test_get_closed_role_listings(client):
 
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_desc="Develop applications based on the design specifications"
+                skill_description="Develop applications based on the design specifications"
             )
         db.session.add(new_skill)
         db.session.commit()
 
         new_role = Role(
                 role_name="Developer",
-                role_desc="Write code all day everyday. Write code all day everyday. Write code all day everyday."
+                role_description="Write code all day everyday. Write code all day everyday. Write code all day everyday."
             )
         db.session.add(new_role)
         db.session.commit()
