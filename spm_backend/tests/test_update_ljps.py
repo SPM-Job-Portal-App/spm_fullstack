@@ -24,7 +24,7 @@ def test_import_role_desc(client):
         # Iterate through the CSV file and JSON data together
         for csv_item, json_item in zip(csvreader, json_response['roles']):
             # Here, you can compare individual fields or attributes of the JSON and CSV items.
-            assert json_item['Role'] == csv_item['Role_name'], "Role name doesn't match."
+            assert json_item['Role'] == csv_item['Role_name'], "Role Name doesn't match."
             assert json_item['Role Description'] == csv_item['Role_Desc'], "Role description doesn't match."
     drop_tables()
 def test_import_skill_desc(client):
