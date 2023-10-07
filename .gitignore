@@ -50,7 +50,7 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
+myenv/
 # environment
 spm_backend/myenv/
 spm_backend/myenv2/
