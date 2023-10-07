@@ -27,4 +27,24 @@ class StaffService():
         except Exception as e:
             raise Exception("No staff with this id found")
 
-            
+    # Get all staff members
+    def get_all_staff():
+        # Use SQLAlchemy to query the database to retrieve all staff members
+        staff_list = Staff.query.all()
+
+        # Convert the list of staff objects into a list of dictionaries
+        staff_info_list = []
+        for staff_response in staff_list:
+            staff_info = {
+                'staff_id': staff_response.id,
+                'staff_first_name': staff_response.staff_first_name,
+                'staff_last_name': staff_response.staff_last_name,
+                'dept': staff_response.dept,
+                'country': staff_response.country,
+                'email': staff_response.email,
+                'role': staff_response.role  
+            }
+            staff_info_list.append(staff_info)
+
+        # Return the list of staff information as a list of dictionaries
+        return staff_info_list       
