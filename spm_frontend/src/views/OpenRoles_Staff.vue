@@ -52,7 +52,7 @@
                 <div class="text-center mt-2" style="color: #8C7251; padding: 10px; font-size: 18px;">
                   <b>Country of Opening:</b> {{ listing.country }}
                 </div>
-                <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
+                <div class="text-center mt-2" style="color:#8C7251 ; padding-left: 10px; padding-right: 10px; font-size: 18px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; white-space: normal;">
                   <!-- <b>Reporting Manager:</b> {{ listing.reporting_manager }} -->
                   <b>Skills: </b> {{ listing.skills }}
                 </div>
