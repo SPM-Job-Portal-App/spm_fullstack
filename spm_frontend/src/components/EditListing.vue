@@ -5,7 +5,7 @@
       <v-select v-model="listing.role_name" :items="availableRoles" label="Role Name" class="mt-5"></v-select>
       <v-select v-model="listing.dept" :items="availableDepartments" label="Department"></v-select>
       <v-select v-model="listing.country" :items="availableCountries" label="Country of Opening"></v-select>
-      <v-text-field v-model="listing.reporting_manager" label="Reporting Manager"></v-text-field>
+      <v-select v-model="listing.reporting_manager" :items="reportingManagers" label="Reporting Manager"></v-select>
       <v-select v-model="listing.is_open"  :items="availableIsOpen" label="Open"></v-select>
       <v-row class="text-center">
         <v-col>
@@ -85,6 +85,8 @@
         ],
         availableCountries: ['Singapore', 'Malaysia', 'Indonesia', 'Vietnam', 'Hong Kong'],
         availableIsOpen: ['True', 'False'],
+        reportingManagers: ['Nil'],
+        reportingManagersIds: [],
       };
     },
     computed: {
@@ -124,11 +126,21 @@
           }
         }
       )
+      axios.get('http://localhost:5000/staff/get_all_staff').then(
+        (response)=>{
+          for(const staff of response.data){
+            if(staff.role == 'Manager'){
+              this.reportingManagers.push(staff.staff_first_name + ' ' + staff.staff_last_name)
+              this.reportingManagersIds[staff.staff_first_name + ' ' + staff.staff_last_name] = staff.staff_id
+            }
+          }
+        }
+      )
     },
     methods: {
       saveChanges() {
         // Handle saving changes here
-        this.listing.reporting_manager = this.listing.reporting_manager == 'Nil' ? null : parseInt(this.listing.reporting_manager)
+        this.listing.reporting_manager = this.listing.reporting_manager == 'Nil' ? null : this.reportingManagersIds[this.listing.reporting_manager]
         this.listing.is_open = this.listing.is_open == 'True' ? true : false
         const opening_date = new Date(this.openingDate)
         const closing_date =  new Date(this.closingDate)
