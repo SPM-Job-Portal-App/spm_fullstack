@@ -26,16 +26,14 @@ class RoleService():
         return jsonify({'message': 'Roles Updated'}), 201
 
 
-    
-
     def get_role_by_role_name(role_name_input):
-
+        print(role_name_input)
         try:
             role_response = Role.query.filter(Role.role_name == role_name_input).first()
 
             role =  {
                 'role_name': role_response.role_name,
-                'role_desc': role_response.role_desc
+                'role_desc': role_response.role_description
             }
             return role
         except Exception as e:

@@ -1,14 +1,8 @@
 from flask import jsonify, request, Blueprint
-import csv
-
 from models.model import db;
 from models.role_model import Role;
-
 from role.roleService import RoleService;
 role_bp = Blueprint('role', __name__)
-
-
-
 
 @role_bp.route('/',methods=['GET'])
 def get_roles():
