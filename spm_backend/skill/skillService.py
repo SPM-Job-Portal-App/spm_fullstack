@@ -10,7 +10,7 @@ class SkillService():
 
             skill = {
                 'skill_name': skills_response.skill_name,
-                'skill_desc': skills_response.skill_description
+                'skill_desc': skills_response.skill_desc
             }
 
             return skill
@@ -53,7 +53,7 @@ class SkillService():
                
                 new_skill = Skill(
                     skill_name=row['Skill_Name'],
-                    skill_description=row['Skill_Desc'],
+                    skill_desc=row['Skill_Desc'],
                     
                 )
                 db.session.add(new_skill)

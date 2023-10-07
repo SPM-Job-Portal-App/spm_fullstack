@@ -79,7 +79,7 @@
                     class="v-card--reveal d-flex flex-column"
                     style="height: 100%;"
                   >
-                    <v-card-text class="pb-0">
+                    <v-card-text class="pb-0" style="overflow-y: auto">
                       <p class="text-h6 text--primary mb-4">
                         Description
                       </p>

@@ -5,15 +5,24 @@
       <v-select v-model="listing.role_name" :items="availableRoles" label="Role Name" class="mt-5"></v-select>
       <v-select v-model="listing.dept" :items="availableDepartments" label="Department"></v-select>
       <v-select v-model="listing.country" :items="availableCountries" label="Country of Opening"></v-select>
-      <!-- <v-select v-model="listing.skills" :items="availableSkills" label="Skills" chips multiple></v-select> -->
       <v-text-field v-model="listing.reporting_manager" label="Reporting Manager"></v-text-field>
       <v-select v-model="listing.is_open"  :items="availableIsOpen" label="Open"></v-select>
-      <div class="text-center">
-        <p class="text-grey">Closing Date</p>
-        <VDatePicker v-model="closingDate" :disabled-dates="disabledDates" mode="date" expanded />
-        <v-btn @click="saveChanges" class="mt-3 mr-3" color="#ccbbaa" :loading="loading">Save Changes</v-btn>
-        <v-btn to="/openroles/hr" class="mt-3" color="#ccbbaa" :loading="loading">Discard Changes</v-btn>
-      </div>
+      <v-row class="text-center">
+        <v-col>
+          <p class="text-grey">Opening Date</p>
+          <VDatePicker v-model="openingDate" mode="date" expanded />
+        </v-col>
+        <v-col>
+          <p class="text-grey">Closing Date</p>
+          <VDatePicker v-model="closingDate" mode="date" expanded />
+        </v-col>
+      </v-row>
+      <v-row class="text-center">
+        <v-col>
+          <v-btn @click="saveChanges" class="mt-3 mr-3" color="#ccbbaa" :loading="loading" :disabled="!isConfirmButtonEnabled">Save Changes</v-btn>
+          <v-btn to="/openroles/hr" class="mt-3" color="#ccbbaa" :loading="loading">Discard Changes</v-btn>
+        </v-col>
+      </v-row>
     </div>
 
     <!-- success message with overlay -->
@@ -53,39 +62,15 @@
   export default {
     data() {
       return {
-        closingDate: null,
-        openingDate: null,
-        disabledDates: [{ start: null, end: new Date() }],
+        closingDate: new Date(),
+        openingDate: new Date(),
         index: this.$route.params.index,
         listing: {},
         loading: false,
         successOverlay: false,
         failureOverlay: false,
         feedbackMessage: '',
-        availableRoles: [
-          // 'Account Manager',
-          // 'Consultancy Director',
-          // 'Consultant',
-          // 'Sales Director',
-          // 'Solutioning Director',
-          // 'Finance  Executive',
-          // 'Finance Director',
-          // 'Finance Manager',
-          // 'Developer',
-          // 'Senior Engineer',
-          // 'Engineering Director',
-          // 'Sales Manager',
-          // 'HR Director',
-          // 'IT Director',
-          // 'IT Analyst',
-          // 'Support Engineer',
-          // 'Call Centre',
-          // 'Admin Executive',
-          // 'HR Executive',
-          // 'Junior Engineer',
-          // 'L&D Executuve',
-          // 'Ops Planning Exec'
-        ],
+        availableRoles: [],
         availableDepartments: [
           'Design',
           'Chariman',
@@ -99,90 +84,16 @@
           'IT'
         ],
         availableCountries: ['Singapore', 'Malaysia', 'Indonesia', 'Vietnam', 'Hong Kong'],
-        // availableSkills: [
-        //   'Account Management',
-        //   'Accounting and Tax Systems',
-        //   'Accounting Standards',
-        //   'Applications Development',
-        //   'Applications Integration',
-        //   'Applications Support and Enhancement',
-        //   'Audit Compliance',
-        //   'Audit Frameworks',
-        //   'Budgeting',
-        //   'Business Acumen',
-        //   'Business Development',
-        //   'Business Environment Analysis',
-        //   'Business Needs Analysis',
-        //   'Business Negotiation',
-        //   'Business Presentation Delivery',
-        //   'Business Requirements Mapping',
-        //   'Business Risk Management',
-        //   'Call Centre Management',
-        //   'Collaboration',
-        //   'Communication',
-        //   'Configuration Tracking',
-        //   'Customer Acquisition Management',
-        //   'Customer Relationship Management',
-        //   'Data Analytics',
-        //   'Database Administration',
-        //   'Developing People',
-        //   'Digital Fluency',
-        //   'Employee Communication Management',
-        //   'Employee Engagement Management',
-        //   'Finance Business Partnering',
-        //   'Financial Acumen',
-        //   'Financial Closing',
-        //   'Financial Management',
-        //   'Financial Planning',
-        //   'Financial Reporting',
-        //   'Financial Statements Analysis',
-        //   'Financial Transactions',
-        //   'Human Resource Advisory',
-        //   'Human Resource Practices Implementation',
-        //   'Human Resource Strategy Formulation',
-        //   'Human Resource Systems Management',
-        //   'Infrastructure Deployment',
-        //   'Infrastructure Support',
-        //   'Learning and Development Programme Management',
-        //   'Learning Needs Analysis',
-        //   'Network Administration and Maintenance',
-        //   'Onboarding',
-        //   'Organisational Design',
-        //   'People and Performance Management',
-        //   'Pricing Strategy',
-        //   'Problem Management',
-        //   'Problem Solving',
-        //   'Product Management',
-        //   'Professional and Business Ethics',
-        //   'Project Management',
-        //   'Regulatory Compliance',
-        //   'Regulatory Risk Assessment',
-        //   'Regulatory Strategy',
-        //   'Sales Closure',
-        //   'Sales Strategy',
-        //   'Security Administration',
-        //   'Sense Making',
-        //   'Service Level Management',
-        //   'Skills Framework Adoption',
-        //   'Software Configuration',
-        //   'Software Design',
-        //   'Software Testing',
-        //   'Solution Architecture',
-        //   'Solutions Design Thinking',
-        //   'SOP Development and Implementation',
-        //   'Stakeholder Management',
-        //   'Strategy Planning',
-        //   'System Integration',
-        //   'Talent Management',
-        //   'Tax Computation',
-        //   'Tax Implications',
-        //   'Technology Application',
-        //   'Technology Integration',
-        //   'Technology Road Mapping',
-        //   'User Interface Design'
-        // ],
         availableIsOpen: ['True', 'False'],
       };
+    },
+    computed: {
+      isConfirmButtonEnabled() {
+        const isDatesValid = this.openingDate <= this.closingDate;
+        return (
+          isDatesValid
+        );
+      },
     },
     mounted()
     {
@@ -192,8 +103,6 @@
           for (let item of listings){
             if (item.id == this.index) {
               this.listing = item
-              // this.listing.skills = this.listing.skills.length > 0 ? this.listing.skills.split(/, |,/) : []
-              // this.listing.skills = this.listing.skills.filter((skill) => {return skill != 'Nil'})
               this.listing.is_open = this.listing.is_open ? 'True' : 'False'
               break
             }
@@ -208,17 +117,17 @@
           this.closingDate = response.data.closing_date
         }
       ),
-      axios.get('http://localhost:5000/role/get_all_role_names').then(
+      axios.get('http://localhost:5000/role').then(
         (response)=>{
-          this.availableRoles = response.data
+          for(const idx in response.data.roles){
+            this.availableRoles.push(response.data.roles[idx].Role)
+          }
         }
       )
     },
     methods: {
       saveChanges() {
         // Handle saving changes here
-        // this.listing.skills = this.listing.skills.filter((skill) => {return skill !== ''})
-        // this.listing.skills = this.listing.skills.join(", ")
         this.listing.reporting_manager = this.listing.reporting_manager == 'Nil' ? null : parseInt(this.listing.reporting_manager)
         this.listing.is_open = this.listing.is_open == 'True' ? true : false
         const opening_date = new Date(this.openingDate)
@@ -251,9 +160,6 @@
             }
             console.error(error);
         })
-      // Emit an event to notify the parent component (Open Roles HR) about the changes
-        // EventBus.$emit('listing-updated', this.editedListing);
-      // You can also use an API call to save the changes to your backend
       },
       toggleOverlay() {
         this.loading = false
