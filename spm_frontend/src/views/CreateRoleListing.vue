@@ -53,23 +53,6 @@
             <v-radio v-for="country in countryOptions" :label="country" :value="country"></v-radio>
           </v-radio-group>
         </v-col>
-
-        <!-- <v-col cols="4" class="text-center">
-          <div class="mb-2">
-            <h3 style="color: #664229; text-align: left;">Required Skills</h3>
-          </div>
-          <v-select
-            v-model="selectedSkills"
-            :items="skillOptions"
-            label="Select required skills"
-            multiple
-            outlined
-            chips
-            small-chips
-            class="custom-select"
-            style="width: 100%;"
-          ></v-select>
-        </v-col> -->
         <v-col cols="2"></v-col>
       </v-row>
 
@@ -77,7 +60,13 @@
       <v-row justify="center">
         <v-col cols="2"></v-col>
 
-        <v-col cols="8" class="text-center">
+        <v-col cols="4" class="text-center">
+          <div class="text-center">
+            <h3 style="color: #664229; font-size: 18px;">Opening Date</h3>
+            <VDatePicker v-model="openingDate" :disabled-dates="disabledDates" mode="date" expanded />
+          </div>
+        </v-col>
+        <v-col cols="4" class="text-center">
           <div class="text-center">
             <h3 style="color: #664229; font-size: 18px;">Closing Date</h3>
             <VDatePicker v-model="closingDate" :disabled-dates="disabledDates" mode="date" expanded />
@@ -143,30 +132,7 @@ export default {
   data() {
     return {
       RoleTitle: '',
-      roleOptions: [
-        // 'Account Manager',
-        // 'Consultancy Director',
-        // 'Consultant',
-        // 'Sales Director',
-        // 'Solutioning Director',
-        // 'Finance  Executive',
-        // 'Finance Director',
-        // 'Finance Manager',
-        // 'Developer',
-        // 'Senior Engineer',
-        // 'Engineering Director',
-        // 'Sales Manager',
-        // 'HR Director',
-        // 'IT Director',
-        // 'IT Analyst',
-        // 'Support Engineer',
-        // 'Call Centre',
-        // 'Admin Executive',
-        // 'HR Executive',
-        // 'Junior Engineer',
-        // 'L&D Executuve',
-        // 'Ops Planning Exec'
-      ],
+      roleOptions: [],
       RoleDescription: '',
       deptOptions: [
         'Design',
@@ -181,89 +147,6 @@ export default {
         'IT'
       ],
       SelectedDept: null,
-      // skillOptions: [
-      //   'Account Management',
-      //   'Accounting and Tax Systems',
-      //   'Accounting Standards',
-      //   'Applications Development',
-      //   'Applications Integration',
-      //   'Applications Support and Enhancement',
-      //   'Audit Compliance',
-      //   'Audit Frameworks',
-      //   'Budgeting',
-      //   'Business Acumen',
-      //   'Business Development',
-      //   'Business Environment Analysis',
-      //   'Business Needs Analysis',
-      //   'Business Negotiation',
-      //   'Business Presentation Delivery',
-      //   'Business Requirements Mapping',
-      //   'Business Risk Management',
-      //   'Call Centre Management',
-      //   'Collaboration',
-      //   'Communication',
-      //   'Configuration Tracking',
-      //   'Customer Acquisition Management',
-      //   'Customer Relationship Management',
-      //   'Data Analytics',
-      //   'Database Administration',
-      //   'Developing People',
-      //   'Digital Fluency',
-      //   'Employee Communication Management',
-      //   'Employee Engagement Management',
-      //   'Finance Business Partnering',
-      //   'Financial Acumen',
-      //   'Financial Closing',
-      //   'Financial Management',
-      //   'Financial Planning',
-      //   'Financial Reporting',
-      //   'Financial Statements Analysis',
-      //   'Financial Transactions',
-      //   'Human Resource Advisory',
-      //   'Human Resource Practices Implementation',
-      //   'Human Resource Strategy Formulation',
-      //   'Human Resource Systems Management',
-      //   'Infrastructure Deployment',
-      //   'Infrastructure Support',
-      //   'Learning and Development Programme Management',
-      //   'Learning Needs Analysis',
-      //   'Network Administration and Maintenance',
-      //   'Onboarding',
-      //   'Organisational Design',
-      //   'People and Performance Management',
-      //   'Pricing Strategy',
-      //   'Problem Management',
-      //   'Problem Solving',
-      //   'Product Management',
-      //   'Professional and Business Ethics',
-      //   'Project Management',
-      //   'Regulatory Compliance',
-      //   'Regulatory Risk Assessment',
-      //   'Regulatory Strategy',
-      //   'Sales Closure',
-      //   'Sales Strategy',
-      //   'Security Administration',
-      //   'Sense Making',
-      //   'Service Level Management',
-      //   'Skills Framework Adoption',
-      //   'Software Configuration',
-      //   'Software Design',
-      //   'Software Testing',
-      //   'Solution Architecture',
-      //   'Solutions Design Thinking',
-      //   'SOP Development and Implementation',
-      //   'Stakeholder Management',
-      //   'Strategy Planning',
-      //   'System Integration',
-      //   'Talent Management',
-      //   'Tax Computation',
-      //   'Tax Implications',
-      //   'Technology Application',
-      //   'Technology Integration',
-      //   'Technology Road Mapping',
-      //   'User Interface Design'
-      // ],
-      // selectedSkills: [],
       countryOptions: ['USA', 'UK', 'Canada', 'Singapore', 'Malaysia', 'Indonesia', 'Vietnam', 'Hong Kong'],
       selectedCountry: null,
       reportingManagers: ['None', '1'],
@@ -272,32 +155,34 @@ export default {
       successOverlay: false,
       failureOverlay: false,
       feedbackMessage: '',
-      closingDate: null,
+      closingDate: new Date(),
       openingDate: new Date(),
-      disabledDates: [{ start: null, end: new Date() }],
+      disabledDates: this.getDisabledDates(),
     };
   },
   mounted()
   {
-    axios.get('http://localhost:5000/role/get_all_role_names').then(
-      (response)=>{
-        this.roleOptions = response.data
-      }
-    )
+    axios.get('http://localhost:5000/role').then(
+        (response)=>{
+          for(const idx in response.data.roles){
+            this.roleOptions.push(response.data.roles[idx].Role)
+          }
+        }
+      )
   },
   computed: {
     isConfirmButtonEnabled() {
       const isRoleTitleValid = this.RoleTitle.length != '';
       const isDeptSelected = this.SelectedDept != null;
-      // const isAtLeastOneSkillSelected = this.selectedSkills.length >= 1;
       const isCountrySelected = this.selectedCountry != null;
       const isReportingManagerSelected = this.selectedReportingManager != null;
+      const isDatesValid = this.openingDate <= this.closingDate;
       return (
         isRoleTitleValid &&
         isDeptSelected &&
-        // isAtLeastOneSkillSelected &&
         isCountrySelected &&
-        isReportingManagerSelected
+        isReportingManagerSelected &&
+        isDatesValid
       );
     },
   },
@@ -307,6 +192,11 @@ export default {
     },
     resetButtonColor(buttonType) {
       // Reset button color after hover
+    },
+    getDisabledDates(){
+      const currentDate = new Date()
+      currentDate.setDate(currentDate.getDate() - 1)
+      return [{ start: null, end: currentDate }]
     },
     toggleOverlay(){
       this.loading = false
