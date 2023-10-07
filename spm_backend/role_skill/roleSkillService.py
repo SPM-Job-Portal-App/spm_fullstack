@@ -4,7 +4,7 @@ import csv;
 from flask import jsonify;
 
 class RoleSkillService():
-    def get_skill_by_role_name(role_name_input):
+    def get_skills_by_role_name(role_name_input):
         try:
             role_skills_response = RoleSkill.query.filter(RoleSkill.role_name == role_name_input).all()
 
