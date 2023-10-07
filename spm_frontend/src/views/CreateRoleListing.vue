@@ -149,7 +149,8 @@ export default {
       SelectedDept: null,
       countryOptions: ['USA', 'UK', 'Canada', 'Singapore', 'Malaysia', 'Indonesia', 'Vietnam', 'Hong Kong'],
       selectedCountry: null,
-      reportingManagers: ['None', '1'],
+      reportingManagers: ['None'],
+      reportingManagersIds: [],
       selectedReportingManager: null,
       loading: false,
       successOverlay: false,
@@ -166,6 +167,16 @@ export default {
         (response)=>{
           for(const idx in response.data.roles){
             this.roleOptions.push(response.data.roles[idx].Role)
+          }
+        }
+      )
+    axios.get('http://localhost:5000/staff/get_all_staff').then(
+        (response)=>{
+          for(const staff of response.data){
+            if(staff.role == 'Manager'){
+              this.reportingManagers.push(staff.staff_first_name + ' ' + staff.staff_last_name)
+              this.reportingManagersIds[staff.staff_first_name + ' ' + staff.staff_last_name] = staff.staff_id
+            }
           }
         }
       )
@@ -208,10 +219,9 @@ export default {
         this.loading = true
         const listing = {
           role_name: this.RoleTitle,
-          // skills: this.selectedSkills.join(', '),
           country: this.selectedCountry,
           dept: this.SelectedDept,
-          reporting_manager: this.selectedReportingManager == 'None' ? null : parseInt(this.selectedReportingManager),
+          reporting_manager: this.selectedReportingManager == 'None' ? null : this.reportingManagersIds[this.selectedReportingManager],
           is_open: true,
           opening_date: `${this.openingDate.getFullYear()}-${this.openingDate.getMonth()+1}-${this.openingDate.getDate()}`,
           closing_date: `${this.closingDate.getFullYear()}-${this.closingDate.getMonth()+1}-${this.closingDate.getDate()}`
