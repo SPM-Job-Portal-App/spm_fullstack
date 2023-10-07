@@ -4,6 +4,21 @@ import csv;
 from flask import jsonify;
 
 class RoleSkillService():
+    def get_skill_by_role_name(role_name_input):
+        try:
+            role_skills_response = RoleSkill.query.filter(RoleSkill.role_name == role_name_input).all()
+
+            skills_list = []
+            for role_skill in role_skills_response:
+                skills_list.append(role_skill.skill_name)
+
+            if len(skills_list) == 0:
+                raise Exception("No skills with this role name found")
+
+            return skills_list
+        except Exception as e:
+                raise Exception("No skills with this role name found")
+
     def get_all_skills():
 
         try:

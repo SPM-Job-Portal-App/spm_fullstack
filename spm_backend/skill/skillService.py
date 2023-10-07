@@ -4,6 +4,20 @@ from models.model import db
 from flask import jsonify;
 
 class SkillService():
+    def get_skill_by_skill_name(skill_name_input):
+        try:
+            skills_response = Skill.query.filter(Skill.skill_name == skill_name_input).first()
+
+            skill = {
+                'skill_name': skills_response.skill_name,
+                'skill_desc': skills_response.skill_description
+            }
+
+            return skill
+        
+        except Exception as e:
+            raise Exception("No skill with the skill_name found")
+
     def get_all_skills():
 
         try:
@@ -46,9 +60,3 @@ class SkillService():
             db.session.commit()
             
         return jsonify({'message': 'Roles Updated'}), 201
-
-
-
-# class SkillService():
-#     def get_skills_by_role_name():
-#         return "Hello"
