@@ -11,7 +11,7 @@
           <!-- Filter by Department Dropdown -->
           <v-select
             v-model="selectedDepartment"
-            :items="departmentOptions"
+            :items="tab === 'availableRoles' ? departmentOptionsForAvailable : departmentOptionsForApplied"
             label="Filter by Department"
             dense
           ></v-select>
@@ -20,7 +20,7 @@
         <!-- Filter by Country Dropdown -->
         <v-select
           v-model="selectedCountry"
-          :items="countryOptions"
+          :items="tab === 'availableRoles' ? countryOptionsForAvailable : countryOptionsForApplied"
           label="Filter by Country"
           dense
         ></v-select>
@@ -37,7 +37,6 @@
                 <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
                 <div class="d-flex align-center justify-center department-icon-container">
                   <!-- Department Icon -->
-                  <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                   <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
@@ -112,7 +111,6 @@
                 <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
                 <div class="d-flex align-center justify-center department-icon-container">
                   <!-- Department Icon -->
-                  <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                   <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
                 </div>
                 <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
@@ -209,13 +207,25 @@ export default {
       )
     },
   computed: {
-    departmentOptions() {
-      const departments = [...new Set([...this.availableRoles, ...this.appliedRoles].map((role) => role.dept))];
+    departmentOptionsForAvailable() {
+      const availableDepartments = [...new Set([...this.availableRoles].map((role) => role.dept))];
+      const appliedDepartments = [...new Set([...this.appliedRoles].map((role) => role.dept))];
+      const departments = availableDepartments.filter((department) => !appliedDepartments.includes(department));      
+      return ['All', ...departments];
+    },
+    departmentOptionsForApplied() {
+      const departments = [...new Set([...this.appliedRoles].map((role) => role.dept))];
       
       return ['All', ...departments];
     },
-    countryOptions() {
-      const countries = [...new Set([...this.availableRoles, ...this.appliedRoles].map((role) => role.country))];
+    countryOptionsForAvailable() {
+      const availableCountries = [...new Set([...this.availableRoles].map((role) => role.country))];
+      const appliedCountries = [...new Set([...this.appliedRoles].map((role) => role.country))];
+      const countries = availableCountries.filter((country) => !appliedCountries.includes(country));  
+      return ['All', ...countries];
+    },
+    countryOptionsForApplied() {
+      const countries = [...new Set([...this.appliedRoles].map((role) => role.country))];
       return ['All', ...countries];
     },
     
