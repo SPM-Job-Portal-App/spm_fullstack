@@ -27,7 +27,6 @@ class RoleService():
 
 
     def get_role_by_role_name(role_name_input):
-        print(role_name_input)
         try:
             role_response = Role.query.filter(Role.role_name == role_name_input).first()
 

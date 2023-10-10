@@ -28,7 +28,6 @@ app.register_blueprint(staff_bp, url_prefix='/staff')
 app.register_blueprint(role_bp, url_prefix='/role')
 app.register_blueprint(role_skill_bp, url_prefix='/roleskill')
 app.register_blueprint(skill_bp, url_prefix='/skill')
-# app.register_blueprint(role_bp, url_prefix='/role')
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000, debug=True)

@@ -18,7 +18,6 @@ def test_get_open_role_listings(client):
     initialize_databases()
 
     with app.app_context():
-
         new_staff = Staff(
             staff_first_name="Alice",
             staff_last_name="Smith",
@@ -28,29 +27,21 @@ def test_get_open_role_listings(client):
             role="Developer"
         )
         db.session.add(new_staff)
-        db.session.commit()
-
         new_skill = Skill(
                 skill_name="Applications Development",
                 skill_description="Develop applications based on the design specifications"
             )
         db.session.add(new_skill)
-        db.session.commit()
-
         new_role = Role(
                 role_name="Developer",
                 role_description="Write code all day everyday. Write code all day everyday. Write code all day everyday."
             )
         db.session.add(new_role)
-        db.session.commit()
-
         new_role_skill = RoleSkill(
                 role_name="Developer",
                 skill_name="Applications Development"
             )
         db.session.add(new_role_skill)
-        db.session.commit()
-
         new_listing = RoleListing(
                 role_name="Developer",
                 country="Canada",
@@ -58,8 +49,7 @@ def test_get_open_role_listings(client):
                 is_open=True,
                 reporting_manager=1,
                 opening_date="2023-10-01",
-                closing_date="2023-10-15"
-                
+                closing_date="2023-10-15", 
             )
         db.session.add(new_listing)
         db.session.commit()
@@ -69,23 +59,17 @@ def test_get_open_role_listings(client):
         {
             "country": "Canada",
             "dept": "IT",
+            "description": "Write code all day everyday. Write code all day everyday. Write code all day everyday.",
             "id": 1,
             "is_open": True,
             "reporting_manager": "Alice Smith",
             "role_name": "Developer",
-
+            "skills": "Applications Development"
         }
     ]
 
-    response_data = response.get_json()
-    print(response_data)
-    # check all fields are correct
-    assert response_data[0]['country'] == expected_result[0]['country']
-    assert response_data[0]['dept'] == expected_result[0]['dept']
-    assert response_data[0]['is_open'] == expected_result[0]['is_open']
-    assert response_data[0]['reporting_manager'] == expected_result[0]['reporting_manager']
-    assert response_data[0]['role_name'] == expected_result[0]['role_name']
-
+    assert response.json == expected_result
+    assert response.status_code == 200
   
     drop_tables()
 

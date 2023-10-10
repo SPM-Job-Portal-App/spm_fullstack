@@ -4,6 +4,8 @@ from models.model import db
 from staff.staffService import StaffService
 from role.roleService import RoleService
 from role_skill.roleSkillService import RoleSkillService
+from role.roleService import RoleService
+from role_skill.roleSkillService import RoleSkillService
 from flask import jsonify
 
 class Listing():
@@ -35,6 +37,9 @@ class Listing():
 
     def get_all_listing():
         listings = RoleListing.query.all()
+        role = RoleService.get_role_by_role_name(listing.role_name)
+        role_description = role['role_desc']
+        skills = RoleSkillService.get_skills_by_role_name(listing.role_name)
         listing_list = []
         for listing in listings:
             listing_data = {
@@ -46,7 +51,9 @@ class Listing():
                 'is_open': listing.is_open,
                 'opening_date': listing.opening_date,
                 'closing_date': listing.closing_date,
-                'reporting_manager': listing.reporting_manager
+                'reporting_manager': listing.reporting_manager,
+                'role_desc': role_description,
+                'skills': skills
             }
             listing_list.append(listing_data)
         return listing_list
@@ -95,16 +102,20 @@ class Listing():
         listing = RoleListing.query.get(id)
         if listing is None:
             return jsonify({"message": f"Listing at index {id} does not exist"}), 404
+        role = RoleService.get_role_by_role_name(listing.role_name)
+        role_description = role['role_desc']
+        skills = RoleSkillService.get_skills_by_role_name(listing.role_name)
         listing_data = {
             'id': listing.id,
             'role_name': listing.role_name,
-            # 'skills': listing.skills,
             'country': listing.country,
             'dept': listing.dept,
             'is_open': listing.is_open,
             'opening_date': listing.opening_date,
             'closing_date': listing.closing_date,
-            'reporting_manager': listing.reporting_manager
+            'reporting_manager': listing.reporting_manager,
+            'role_desc': role_description,
+            'skills': skills
         }
         return listing_data, 201
     

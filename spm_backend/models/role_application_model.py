@@ -5,8 +5,8 @@ class RoleApplication(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     application_date = db.Column(db.Date, nullable=False)
-    role_listing_id = db.Column(db.Integer, nullable=False)
-    staff_id = db.Column(db.Integer, nullable=False)
+    role_listing_id = db.Column(db.Integer, db.ForeignKey('role_listing.id'), nullable=False)
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
 
     def __init__(self, application_date, role_listing_id, staff_id):
         self.application_date = application_date
