@@ -21,17 +21,17 @@ const routes = [
   },
   {
     path: '/openroles/staff',
-    component: DefaultLayout,
+    component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
         path: '',
         name: 'Open Roles Staff',
-        component: OpenRolesStaff,
+        component: () => import('@/views/OpenRoles_Staff.vue'),
       },
       {
         path: 'apply/:id',
         name: 'Apply Open Roles',
-        component: ApplyOpenRoles,
+        component: () => import('@/views/ApplyOpenRoles.vue'),
       },
     ],
   },
