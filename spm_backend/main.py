@@ -46,9 +46,9 @@ app.register_blueprint(skill_bp, url_prefix='/skill')
 # app.register_blueprint(role_bp, url_prefix='/role')
 
 # Create a thread for the timer
-timer_thread = threading.Thread(target=start_test_timer)
+# timer_thread = threading.Thread(target=start_test_timer)
 # timer_thread = threading.Thread(target=start_timer)
 
 if __name__ == '__main__':
-    timer_thread.start()
+    # timer_thread.start()
     app.run(host='localhost', port=5000, debug=False)
