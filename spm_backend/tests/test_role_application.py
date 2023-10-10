@@ -13,6 +13,7 @@ def client():
 
 def test_apply_for_open_role_listing_success(client):
     initialize_databases()
+    client.get('/access/get_access')
 
     new_staff = Staff(
         id = 130001,
@@ -21,7 +22,7 @@ def test_apply_for_open_role_listing_success(client):
         dept="Engineering",
         country="USA",
         email="john.doe@example.com",
-        role="Engineer"
+        role=1
     )
     new_listing = RoleListing(
         role_name="Software Engineer",
@@ -49,6 +50,8 @@ def test_apply_for_open_role_listing_success(client):
 
 def test_apply_for_closed_role_listing_failure(client):
     initialize_databases()
+    client.get('/access/get_access')
+    
     new_listing = RoleListing(
         role_name="Software Engineer",
         country="USA",
@@ -65,7 +68,7 @@ def test_apply_for_closed_role_listing_failure(client):
         dept="Engineering",
         country="USA",
         email="john.doe@example.com",
-        role="Engineer"
+        role=1
     )
     application_data = {
         "role_listing": 1,
@@ -83,6 +86,8 @@ def test_apply_for_closed_role_listing_failure(client):
 
 def test_apply_for_nonexistent_role_listing_failure(client):
     initialize_databases()
+    client.get('/access/get_access')
+
     new_staff = Staff(
         id = 130001,
         staff_first_name="John",
@@ -90,7 +95,7 @@ def test_apply_for_nonexistent_role_listing_failure(client):
         dept="Engineering",
         country="USA",
         email="john.doe@example.com",
-        role="Engineer"
+        role=1
     )
     application_data = {
         "role_listing": 1,
@@ -107,6 +112,8 @@ def test_apply_for_nonexistent_role_listing_failure(client):
 
 def test_apply_for_role_listing_with_active_application_failure(client):
     initialize_databases()
+    client.get('/access/get_access')
+
     new_staff = Staff(
         id = 130001,
         staff_first_name="John",
@@ -114,7 +121,7 @@ def test_apply_for_role_listing_with_active_application_failure(client):
         dept="Engineering",
         country="USA",
         email="john.doe@example.com",
-        role="Engineer"
+        role=1
     )
     new_listing = RoleListing(
         role_name="Software Engineer",

@@ -15,4 +15,4 @@ def initialize_databases():
 if __name__ == '__main__':
     initialize_databases()
     # Run all tests in the 'tests/' directory
-    pytest.main(['tests/test_create_role_listing.py'])
+    pytest.main(['tests/'])
