@@ -15,6 +15,7 @@ def test_apply_for_open_role_listing_success(client):
     initialize_databases()
 
     new_staff = Staff(
+        id = 130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -58,6 +59,7 @@ def test_apply_for_closed_role_listing_failure(client):
         reporting_manager=None
     )
     new_staff = Staff(
+        id = 130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -82,6 +84,7 @@ def test_apply_for_closed_role_listing_failure(client):
 def test_apply_for_nonexistent_role_listing_failure(client):
     initialize_databases()
     new_staff = Staff(
+        id = 130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -105,6 +108,7 @@ def test_apply_for_nonexistent_role_listing_failure(client):
 def test_apply_for_role_listing_with_active_application_failure(client):
     initialize_databases()
     new_staff = Staff(
+        id = 130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",

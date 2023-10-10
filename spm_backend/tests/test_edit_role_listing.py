@@ -15,6 +15,7 @@ def client():
 def test_edit_role_listing_success(client):
     initialize_databases()
     new_staff = Staff(
+        id = 130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
@@ -54,6 +55,7 @@ def test_edit_role_listing_success(client):
 def test_edit_role_listing_missing_fields_failure(client):
     initialize_databases()
     new_staff = Staff(
+        id = 130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",

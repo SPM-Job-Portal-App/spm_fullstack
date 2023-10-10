@@ -96,6 +96,7 @@ def test_get_closed_role_listings(client):
     with app.app_context():
 
         new_staff = Staff(
+            id = 130001,
             staff_first_name="Alice",
             staff_last_name="Smith",
             dept="Engineering",
