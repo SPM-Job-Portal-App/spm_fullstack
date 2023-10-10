@@ -40,18 +40,24 @@
           <div>
             <h3 style="color: #664229; text-align: left;">Department</h3>
           </div>
-          <v-radio-group v-model="SelectedDept" style="margin-left: 10px">
-            <v-radio v-for="dept in deptOptions" :label="dept" :value="dept"></v-radio>
-          </v-radio-group>
+          <v-select
+            v-model="SelectedDept"
+            :items="deptOptions"
+            label="Select Department"
+            outlined
+          ></v-select>
         </v-col>
 
         <v-col cols="4" class="text-center">
           <div>
             <h3 style="color: #664229; text-align: left; font-size: 18px;">Country of Opening</h3>
           </div>
-          <v-radio-group v-model="selectedCountry" style="margin-left: 10px">
-            <v-radio v-for="country in countryOptions" :label="country" :value="country"></v-radio>
-          </v-radio-group>
+          <v-select
+            v-model="selectedCountry"
+            :items="countryOptions"
+            label="Select Country of Opening"
+            outlined
+          ></v-select>
         </v-col>
         <v-col cols="2"></v-col>
       </v-row>
@@ -132,6 +138,8 @@ export default {
   data() {
     return {
       RoleTitle: '',
+      SelectedDept: null,
+      SelectedCountry: null,
       roleOptions: [],
       RoleDescription: '',
       deptOptions: [
@@ -261,6 +269,8 @@ export default {
 
 <style>
 .custom-container {
+  background-color: #eae4dd;
+  height: 100;
   margin-left: 10%;
   max-width: 80%;
   margin-right: auto;
