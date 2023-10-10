@@ -14,13 +14,15 @@ def client():
 # Test for successful editing of role listing 
 def test_edit_role_listing_success(client):
     initialize_databases()
+    client.get('/access/get_access')
     new_staff = Staff(
+        id = 130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
         country="USA",
         email="james.re@example.com",
-        role="Product Manager"
+        role=1
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",
@@ -53,13 +55,15 @@ def test_edit_role_listing_success(client):
 # Test for updating listing data with missing fields failure
 def test_edit_role_listing_missing_fields_failure(client):
     initialize_databases()
+    client.get('/access/get_access')
     new_staff = Staff(
+        id = 130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
         country="USA",
         email="james.re@example.com",
-        role="Product Manager"
+        role=1
     )
     new_open_role_listing = RoleListing(
         role_name="Product Manager",

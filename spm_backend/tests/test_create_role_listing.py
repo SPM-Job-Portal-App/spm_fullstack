@@ -13,13 +13,15 @@ def client():
 # Test for successful creation of role listing 
 def test_create_success(client):
     initialize_databases()
+    client.get('/access/get_access')
     new_staff = Staff(
+        id = 130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
         country="USA",
         email="james.re@example.com",
-        role="Product Manager"
+        role=1
     )
     application_data = {
         "role_name": "Product Manager",
@@ -42,13 +44,15 @@ def test_create_success(client):
 # Test for creating a listing role with missing required fields
 def test_create_role_listing_with_missing_fields_failure(client):
     initialize_databases()
+    client.get('/access/get_access')
     new_staff = Staff(
+        id = 130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
         country="USA",
         email="james.re@example.com",
-        role="Product Manager"
+        role=1
     )
     application_data = {
         "role_name": "Product Manager",
@@ -71,13 +75,15 @@ def test_create_role_listing_with_missing_fields_failure(client):
 # Test for creating a duplicate role listing which already exists in the database
 def test_create_duplicate_role_listing_failure(client):
     initialize_databases()
+    client.get('/access/get_access')
     new_staff = Staff(
+        id =130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
         country="USA",
         email="james.re@example.com",
-        role="Product Manager"
+        role=1
     )
     application_data = {
         "role_name": "Product Manager",
@@ -116,13 +122,15 @@ def test_create_duplicate_role_listing_failure(client):
 # Test for creating a role listing with a non-null reporting_manager value for a nonexistent reporting manager
 def test_create_role_listing_with_nonexistent_reporting_manager(client):
     initialize_databases()
+    client.get('/access/get_access')
     new_staff = Staff(
+        id =130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
         country="USA",
         email="james.re@example.com",
-        role="Product Manager"
+        role=1
     )
     application_data = {
         "role_name": "Product Manager",

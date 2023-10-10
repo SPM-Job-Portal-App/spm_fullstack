@@ -208,9 +208,15 @@ export default {
     },
   computed: {
     departmentOptionsForAvailable() {
-      const availableDepartments = [...new Set([...this.availableRoles].map((role) => role.dept))];
-      const appliedDepartments = [...new Set([...this.appliedRoles].map((role) => role.dept))];
-      const departments = availableDepartments.filter((department) => !appliedDepartments.includes(department));      
+      const availableDepartments = [...this.availableRoles].map((role) => role.dept);
+      const appliedDepartments = [...this.appliedRoles].map((role) => role.dept);
+      appliedDepartments.forEach((dept) => {
+        const index = availableDepartments.indexOf(dept);
+        if (index !== -1) {
+          availableDepartments.splice(index, 1);
+        }
+      });     
+      const departments = [...new Set(availableDepartments)];
       return ['All', ...departments];
     },
     departmentOptionsForApplied() {
@@ -219,9 +225,15 @@ export default {
       return ['All', ...departments];
     },
     countryOptionsForAvailable() {
-      const availableCountries = [...new Set([...this.availableRoles].map((role) => role.country))];
-      const appliedCountries = [...new Set([...this.appliedRoles].map((role) => role.country))];
-      const countries = availableCountries.filter((country) => !appliedCountries.includes(country));  
+      const availableCountries = [...this.availableRoles].map((role) => role.country);
+      const appliedCountries = [...this.appliedRoles].map((role) => role.country);
+      appliedCountries.forEach((country) => {
+        const index = availableCountries.indexOf(country);
+        if (index !== -1) {
+          availableCountries.splice(index, 1);
+        }
+      });     
+      const countries = [...new Set(availableCountries)];
       return ['All', ...countries];
     },
     countryOptionsForApplied() {
