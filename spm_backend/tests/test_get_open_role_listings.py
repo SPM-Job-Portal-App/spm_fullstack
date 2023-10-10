@@ -16,20 +16,22 @@ def client():
 
 def test_get_open_role_listings(client):
     initialize_databases()
+    client.get('/access/get_access')
 
     with app.app_context():
         new_staff = Staff(
+            id = 130001,
             staff_first_name="Alice",
             staff_last_name="Smith",
             dept="Engineering",
             country="Canada",
             email="alice.smith@example.com",
-            role="Developer"
+            role=1
         )
         db.session.add(new_staff)
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_description="Develop applications based on the design specifications"
+                skill_desc="Develop applications based on the design specifications"
             )
         db.session.add(new_skill)
         new_role = Role(
@@ -47,7 +49,7 @@ def test_get_open_role_listings(client):
                 country="Canada",
                 dept="IT",
                 is_open=True,
-                reporting_manager=1,
+                reporting_manager=130001,
                 opening_date="2023-10-01",
                 closing_date="2023-10-15", 
             )
@@ -78,21 +80,24 @@ def test_get_closed_role_listings(client):
     initialize_databases()
 
     with app.app_context():
+        client.get('/access/get_access')
+
 
         new_staff = Staff(
+            id = 130001,
             staff_first_name="Alice",
             staff_last_name="Smith",
             dept="Engineering",
             country="Canada",
             email="alice.smith@example.com",
-            role="Developer"
+            role=1
         )
         db.session.add(new_staff)
         db.session.commit()
 
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_description="Develop applications based on the design specifications"
+                skill_desc="Develop applications based on the design specifications"
             )
         db.session.add(new_skill)
         db.session.commit()
