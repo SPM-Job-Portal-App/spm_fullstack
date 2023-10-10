@@ -1,6 +1,5 @@
-from time import sleep
 import pytest
-from main import app, drop_tables, initialize_databases, start_test_timer
+from main import app, drop_tables, initialize_databases
 from models.model import db
 from models.role_listing_model import RoleListing
 from models.staff_model import Staff
