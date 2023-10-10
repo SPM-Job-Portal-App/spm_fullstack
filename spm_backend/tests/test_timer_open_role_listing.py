@@ -1,6 +1,6 @@
 from time import sleep
 import pytest
-from main import app, drop_tables, initialize_databases
+from main import app, drop_tables, initialize_databases, start_test_timer
 from models.model import db
 from models.role_listing_model import RoleListing
 from models.staff_model import Staff
@@ -66,6 +66,9 @@ def test_timer_open_role_listing_on_opening_date(client):
         db.session.add(new_listing)
         db.session.commit()
 
+    # start timer
+    start_test_timer()
+
     sleep(15)
     response = client.get('/listing/get_open_listings')
     expected_result = [
@@ -79,18 +82,18 @@ def test_timer_open_role_listing_on_opening_date(client):
         }
     ]
 
-    # response_data = response.get_json()
-    # # check all fields are correct
-    # assert response_data[0]['country'] == expected_result[0]['country']
-    # assert response_data[0]['dept'] == expected_result[0]['dept']
-    # assert response_data[0]['is_open'] == expected_result[0]['is_open']
-    # assert response_data[0]['reporting_manager'] == expected_result[0]['reporting_manager']
-    # assert response_data[0]['role_name'] == expected_result[0]['role_name']
-
     response_data = response.get_json()
+    # check all fields are correct
+    assert response_data[0]['country'] == expected_result[0]['country']
+    assert response_data[0]['dept'] == expected_result[0]['dept']
+    assert response_data[0]['is_open'] == expected_result[0]['is_open']
+    assert response_data[0]['reporting_manager'] == expected_result[0]['reporting_manager']
+    assert response_data[0]['role_name'] == expected_result[0]['role_name']
 
-    assert response.status_code == 500
-    assert response_data == { "error": "No open role listings" }
+    # response_data = response.get_json()
+
+    # assert response.status_code == 500
+    # assert response_data == { "error": "No open role listings" }
   
     drop_tables()
 
@@ -138,12 +141,15 @@ def test_timer_open_role_listing_not_on_opening_date(client):
                 dept="IT",
                 is_open=False,
                 reporting_manager=1,
-                opening_date="2023-10-12",
+                opening_date="2023-12-12",
                 closing_date="2023-10-15"
                 
             )
         db.session.add(new_listing)
         db.session.commit()
+
+    # start timer
+    start_test_timer()
 
     sleep(15)
     response = client.get('/listing/get_open_listings')
