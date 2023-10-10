@@ -6,7 +6,7 @@ class Staff(db.Model):
     staff_last_name = db.Column(db.String(255), nullable=False)
     dept = db.Column(db.String(255), nullable=False)
     country = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), nullable=False, unique=True)
+    email = db.Column(db.String(255), nullable=False)
 
     # Define a foreign key relationship to AccessControl
     role = db.Column(db.Integer, db.ForeignKey('access_control.access_id'), nullable=False)
@@ -26,5 +26,5 @@ class Staff(db.Model):
         self.role = role
 
     def json(self):
-        return {"Staff Name": self.staff_first_name + " " + self.staff_last_name, "Department": self.dept, "Country": self.country, "Email": self.email, "Role": self.role}
+        return {"Staff Id": self.id,"Staff Name": self.staff_first_name + " " + self.staff_last_name, "Department": self.dept, "Country": self.country, "Email": self.email, "Role": self.role}
     

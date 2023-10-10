@@ -15,7 +15,7 @@ class AccessService():
                 return jsonify(
                     {
                         "code": 200,
-                        "skills": [access.json() for access in access_response]
+                        "Access": [access.json() for access in access_response]
                     }
                 )
             return jsonify(

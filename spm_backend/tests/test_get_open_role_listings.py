@@ -34,7 +34,7 @@ def test_get_open_role_listings(client):
 
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_description="Develop applications based on the design specifications"
+                skill_desc="Develop applications based on the design specifications"
             )
         db.session.add(new_skill)
         db.session.commit()
@@ -113,7 +113,7 @@ def test_get_closed_role_listings(client):
 
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_description="Develop applications based on the design specifications"
+                skill_desc="Develop applications based on the design specifications"
             )
         db.session.add(new_skill)
         db.session.commit()
