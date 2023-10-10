@@ -61,8 +61,8 @@ class TestTimer():
 
         return schedule.CancelJob
 
-    # schedule.every(10).seconds.do(open_role_listing_job)
-    schedule.every().day.at('09:07').do(open_role_listing_job)
+    schedule.every(10).seconds.do(open_role_listing_job)
+    # schedule.every().day.at('09:07').do(open_role_listing_job)
 
     while True:
         schedule.run_pending()
