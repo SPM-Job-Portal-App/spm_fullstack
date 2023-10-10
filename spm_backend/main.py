@@ -6,6 +6,7 @@ from staff.staffController import staff_bp
 from role.roleContoller import role_bp
 from role_skill.roleSkillController import role_skill_bp
 from skill.skillController import skill_bp
+from staff_skill.staffSkillController import staff_skill_bp;
 from models.model import db
 from flask_cors import CORS
 
@@ -27,7 +28,7 @@ app.register_blueprint(listing_bp, url_prefix='/listing')
 app.register_blueprint(application_bp, url_prefix='/application')
 app.register_blueprint(staff_bp, url_prefix='/staff')
 app.register_blueprint(role_bp, url_prefix='/role')
-
+app.register_blueprint(staff_skill_bp, url_prefix='/staffskill')
 app.register_blueprint(skill_bp, url_prefix='/skill')
 # app.register_blueprint(role_bp, url_prefix='/role')
 app.register_blueprint(role_skill_bp, url_prefix='/roleskill')

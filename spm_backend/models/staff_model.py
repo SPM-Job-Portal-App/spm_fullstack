@@ -13,6 +13,8 @@ class Staff(db.Model):
 
     # Define a relationship with the AccessControl model
     access_control = db.relationship('AccessControl', backref='staff', foreign_keys=[role])
+    skills = db.relationship("StaffSkill", back_populates="staff")
+
 
     def __init__(self, id,staff_first_name, staff_last_name, dept, country, email, role):
         self.id =id
