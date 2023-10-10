@@ -14,5 +14,5 @@ def initialize_databases():
 
 if __name__ == '__main__':
     initialize_databases()
-    # Run all tests in the 'tests/' directory
+    # Run all tests in the 'tests/' directory.
     pytest.main(['tests/'])
