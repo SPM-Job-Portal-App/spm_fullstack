@@ -54,3 +54,12 @@ myenv/
 # environment
 spm_backend/myenv/
 spm_backend/myenv2/
+
+# Python bytecode files
+*.pyc
+
+# pytest cache
+__pycache__
+
+# pytest cache directories
+.pytest_cache/
