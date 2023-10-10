@@ -70,7 +70,7 @@ def test_timer_open_role_listing_on_opening_date(client):
     # start_test_timer()
 
     # sleep(5)
-    response = client.get('/listing/get_open_listings')
+    # response = client.get('/listing/get_open_listings')
     # expected_result = [
     #     {
     #         "country": "Canada",
