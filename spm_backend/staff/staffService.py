@@ -83,6 +83,4 @@ class StaffService():
             db.session.commit()
             
         return jsonify({'message': 'Roles Updated'}), 201
-    
-
-            
+     

@@ -2,7 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/default/Default.vue'
 import Home from '@/views/Home.vue'
-import OpenRoles from '@/views/OpenRoles.vue'
+import OpenRolesStaff from '@/views/OpenRoles_Staff.vue'
 import ApplyOpenRoles from '@/views/ApplyOpenRoles.vue'
 import Candidates from '@/views/Candidates.vue'
 import Settings from '@/views/Settings.vue'
@@ -28,6 +28,11 @@ const routes = [
         name: 'Open Roles Staff',
         component: () => import('@/views/OpenRoles_Staff.vue'),
       },
+      {
+        path: 'apply/:id',
+        name: 'Apply Open Roles',
+        component: () => import('@/views/ApplyOpenRoles.vue'),
+      },
     ],
   },
   {
@@ -38,6 +43,11 @@ const routes = [
         path: '',
         name: 'Open Roles HR',
         component: () => import('@/views/OpenRoles_HR.vue'),
+      },
+      {
+        path: '/edit-listing/:index',
+        name: 'edit-listing',
+        component: () => import('@/components/EditListing.vue'),
       },
     ],
   },
@@ -73,12 +83,6 @@ const routes = [
         component: () => import('@/views/CreateRoleListing.vue'),
       },
     ],
-  },
-  {
-    path: '/edit-listing/:index', // Define a route parameter :index
-    name: 'edit-listing',
-    component: () => import('@/components/EditListing.vue'),
-    props: true,
   },
 ]
 

@@ -16,4 +16,3 @@ def get_all_skills():
     StaffService.importRoleSkill()
     response = StaffService.get_all_staff()
     return response, 200
-

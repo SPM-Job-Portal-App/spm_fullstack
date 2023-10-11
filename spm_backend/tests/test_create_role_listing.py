@@ -60,6 +60,7 @@ def test_create_role_listing_with_missing_fields_failure(client):
         "dept": "Sales",
         "is_open": True,
         "opening_date": "",
+        "closing_date": "",
         "reporting_manager": None
     }
     with app.app_context():

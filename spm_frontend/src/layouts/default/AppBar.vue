@@ -26,7 +26,7 @@
       return {
         items: [
           {name: "Home", icon: "mdi-home", routerLink: "/"},
-          {name: "Open Roles", icon: "mdi-briefcase", routerLink: "/openroles"},
+          {name: "Open Roles", icon: "mdi-briefcase", routerLink: "/openroles/staff"},
           {name: "Candidates", icon: "mdi-account-group", routerLink: "/candidates"},
           {name: "Settings", icon: "mdi-cog", routerLink: "/settings"}
         ],
