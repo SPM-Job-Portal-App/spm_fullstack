@@ -16,12 +16,3 @@ def get_all_skills():
     StaffService.importRoleSkill()
     response = StaffService.get_all_staff()
     return response, 200
-
-# Get all staff
-@staff_bp.route('/get_all_staff')
-def get_all_staff():
-    try:
-        response = StaffService.get_all_staff()
-        return jsonify(response), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}, 500)
