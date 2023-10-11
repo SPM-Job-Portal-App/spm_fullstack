@@ -126,12 +126,12 @@
           }
         }
       )
-      axios.get('http://localhost:5000/staff/get_all_staff').then(
+      axios.get('http://localhost:5000/staff/get_staff').then(
         (response)=>{
-          for(const staff of response.data){
-            if(staff.role == 'Manager'){
-              this.reportingManagers.push(staff.staff_first_name + ' ' + staff.staff_last_name)
-              this.reportingManagersIds[staff.staff_first_name + ' ' + staff.staff_last_name] = staff.staff_id
+          for(const staff of response.data.staff){
+            if(staff.Role == 3){
+              this.reportingManagers.push(staff['Staff Name'])
+              this.reportingManagersIds[staff['Staff Name']] = staff['Staff Id']
             }
           }
         }
