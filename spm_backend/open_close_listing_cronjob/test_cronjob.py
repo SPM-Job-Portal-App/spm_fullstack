@@ -1,19 +1,17 @@
 import schedule
-from datetime import date
 from time import sleep
-
+from datetime import date
 from sqlalchemy import inspect
 from models.model import db
 from models.role_listing_model import RoleListing
 from role_listings.listingService import Listing
 from main import app
-# from flask_sqlalchemy import inspect
 
 # task: create a cron job that runs everyday at midnight to iterate through all role listings and check which opening_date is the date today (since midnight so next day already) and if the opening_date is the date today, change to open
 
 # to test: run the job in the next minute to iterate through all role listings. Then check which opening_date  is the date today and if yes, change to open from closed
 
-class TestTimer():
+class TestCronjob():
 
     # cron job to open role listing on opening_date
     def open_role_listing_job():
@@ -26,16 +24,10 @@ class TestTimer():
         
         with app.app_context():
 
-            # inspector = inspect(db.engine)
-            # print(inspector.has_table("user")) # output: Boolean
-
             # check whether role_listing table exists before running
-            # if not db.engine.dialect.has_table(db.engine, "role_listing"):
             if not inspect(db.engine).has_table('role_listing'):
                 print("Did not run because role_listing table does not exist")
                 return
-
-            # table_names = db.inspect(db.engine).get_table_names()
 
             all_role_listings_response = Listing.get_all_listing()
 
@@ -57,16 +49,15 @@ class TestTimer():
                     db.session.commit()
                     db.session.close()
 
-        print("Ran!")
+        print("Running cron job to open or close role listings!")
 
         return schedule.CancelJob
 
     schedule.every(10).seconds.do(open_role_listing_job)
-    # schedule.every().day.at('09:07').do(open_role_listing_job)
 
     while True:
         schedule.run_pending()
-        print("DONE!")
+        print("Breaking loop!")
         sleep(1)
         break
 

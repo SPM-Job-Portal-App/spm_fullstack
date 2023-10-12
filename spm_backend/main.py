@@ -24,17 +24,17 @@ def initialize_databases():
         db.create_all()
 
 # import Timer class from timer.py and start cron job
-def start_timer():
-    timer_module = importlib.import_module("timer.timer")
-    timer_class = getattr(timer_module, "Timer")
-    timer_class.open_role_listing_job()
+def start_cronjob():
+    cronjob_module = importlib.import_module("open_close_listing_cronjob.cronjob")
+    cronjob_class = getattr(cronjob_module, "Cronjob")
+    cronjob_class.open_role_listing_job()
 
 # import Timer class from timer.py and start cron job
 # timer for test
-def start_test_timer():
-    timer_module = importlib.import_module("timer.test_timer")
-    timer_class = getattr(timer_module, "TestTimer")
-    timer_class.open_role_listing_job()
+def start_test_cronjob():
+    cronjob_module = importlib.import_module("open_close_listing_cronjob.test_cronjob")
+    cronjob_class = getattr(cronjob_module, "TestCronjob")
+    cronjob_class.open_role_listing_job()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
 db.init_app(app)
@@ -50,8 +50,8 @@ app.register_blueprint(role_skill_bp, url_prefix='/roleskill')
 app.register_blueprint(access_bp, url_prefix='/access')
 
 # Create a thread for the timer
-timer_thread = threading.Thread(target=start_test_timer)
+cronjob_thread = threading.Thread(target=start_test_cronjob)
 
 if __name__ == '__main__':
-    timer_thread.start()
-    app.run(host='localhost', port=5000, debug=True)
+    cronjob_thread.start()
+    # app.run(host='localhost', port=5000, debug=True)

@@ -1,6 +1,6 @@
 from time import sleep
 import pytest
-from main import app, drop_tables, initialize_databases, start_test_timer
+from main import app, drop_tables, initialize_databases, start_test_cronjob
 from models.model import db
 from models.role_listing_model import RoleListing
 from models.staff_model import Staff
@@ -16,7 +16,7 @@ def client():
         yield client
 
 # test whether the timer opens the role listing on opening date
-def test_timer_open_role_listing_on_opening_date(client):
+def test_cronjob_open_role_listing_on_opening_date(client):
     initialize_databases()
     client.get('/access/get_access')
 
@@ -68,8 +68,9 @@ def test_timer_open_role_listing_on_opening_date(client):
         db.session.add(new_listing)
         db.session.commit()
 
-    start_test_timer()
-    # sleep(20)
+    # test is using the test cron job that runs once only, not the real cron job repeatedly
+    start_test_cronjob()
+
     response = client.get('/listing/get_open_listings')
     expected_result = [
         {
@@ -145,8 +146,9 @@ def test_timer_open_role_listing_not_on_opening_date(client):
         db.session.add(new_listing)
         db.session.commit()
 
-    start_test_timer()
-    # sleep(15)
+    # test is using the test cron job that runs once only, not the real cron job repeatedly
+    start_test_cronjob()
+    
     response = client.get('/listing/get_open_listings')
     response_data = response.get_json()
 
