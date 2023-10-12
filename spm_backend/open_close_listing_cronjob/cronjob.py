@@ -49,7 +49,7 @@ class Cronjob():
                     db.session.commit()
                     db.session.close()
 
-        print("Ran!")
+        print("Running cron job to open or close role listings!")
 
         return
 

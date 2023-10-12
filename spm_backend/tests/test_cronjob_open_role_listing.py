@@ -1,4 +1,3 @@
-from time import sleep
 import pytest
 from main import app, drop_tables, initialize_databases, start_test_cronjob
 from models.model import db

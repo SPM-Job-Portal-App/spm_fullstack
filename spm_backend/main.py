@@ -23,14 +23,14 @@ def initialize_databases():
     with app.app_context():
         db.create_all()
 
-# import Timer class from timer.py and start cron job
+# import Cronjob class from cronjob.py and start cron job
 def start_cronjob():
     cronjob_module = importlib.import_module("open_close_listing_cronjob.cronjob")
     cronjob_class = getattr(cronjob_module, "Cronjob")
     cronjob_class.open_role_listing_job()
 
-# import Timer class from timer.py and start cron job
-# timer for test
+# import TestCronjob class from test_cronjob.py and start cron job
+# cronjob for test
 def start_test_cronjob():
     cronjob_module = importlib.import_module("open_close_listing_cronjob.test_cronjob")
     cronjob_class = getattr(cronjob_module, "TestCronjob")
@@ -45,13 +45,15 @@ app.register_blueprint(staff_bp, url_prefix='/staff')
 app.register_blueprint(role_bp, url_prefix='/role')
 app.register_blueprint(staff_skill_bp, url_prefix='/staffskill')
 app.register_blueprint(skill_bp, url_prefix='/skill')
-# app.register_blueprint(role_bp, url_prefix='/role')
 app.register_blueprint(role_skill_bp, url_prefix='/roleskill')
 app.register_blueprint(access_bp, url_prefix='/access')
 
 # Create a thread for the timer
-cronjob_thread = threading.Thread(target=start_test_cronjob)
+cronjob_thread = threading.Thread(target=start_cronjob)
 
 if __name__ == '__main__':
-    cronjob_thread.start()
-    # app.run(host='localhost', port=5000, debug=True)
+    # cronjob_thread.start()
+
+    # debug = True does not work well with multithreading because once you save some code and the Flask server restarts, there will be some error. So I commented out the "cronjob_thread.start()" line. If you want to use it, set change debug to False and uncomment the line
+    app.run(host='localhost', port=5000, debug=True)
+
