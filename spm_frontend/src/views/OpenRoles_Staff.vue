@@ -51,7 +51,7 @@
                       class="text-center"
                       color="#664229"
                       style="font-size: 12px;"
-                      @click="showSkillsOverlay"
+                      @click="showSkillsOverlay(listing)"
                     >
                       Skills Required: {{ calculateSkillPercentage(listing.skills) }}
                     </v-chip>
@@ -140,7 +140,7 @@
                       class="text-center"
                       color=#664229
                       style="font-size: 12px;"
-                      @click="showSkillsOverlay"
+                      @click="showSkillsOverlay(listing)"
                     >
                       Skills Required: {{ calculateSkillPercentage(listing.skills) }}
                     </v-chip>
@@ -271,56 +271,11 @@
                     View Status
                   </v-btn>
                 </div>
-                <v-overlay v-model="skillsOverlay" @click="closeSkillsOverlay" class="align-center justify-center">
-                  <v-sheet
-                    elevation="12"
-                    max-width="800"
-                    rounded="lg"
-                    width="100%"
-                    class="pa-4 text-center mx-auto"
-                    style="background-color: #eae4dd; color: #664229;"
-                  >
-                    <h2 class="text-h5 mb-6">Required Skills</h2>
-                
-                    <!-- Display all skills with color coding -->
-                    <div class="text-medium-emphasis text-body-2">
-                      <ul>
-                        <li v-for="skill in listing.skills" :key="skill">
-                          <v-chip
-                            :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
-                            :prepend-icon="getSkillIcon(skill)"
-                            class="ma-1"
-                            style="font-size: 12px;"
-                          >
-                            {{ skill }}
-                          </v-chip>
-                        </li>
-                      </ul>
-                    </div>
-                
-                    <v-divider class="mb-4"></v-divider>
-                
-                    <div class="text-end">
-                      <v-btn
-                        class="text-none"
-                        :color="buttonColor"
-                        rounded
-                        variant="flat"
-                        width="90"
-                        @click="closeSkillsOverlay"
-                      >
-                        Close
-                      </v-btn>
-                    </div>
-                  </v-sheet>
-                </v-overlay>
-                
-                
-                
               </v-card>
             </v-col>
           </v-row>
         </v-window-item>
+        <skills-overlay v-model="skillsOverlay" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
       </v-window>
     </v-card-text>
   </v-card>
@@ -329,7 +284,9 @@
 
 <script>
 import axios from'axios';
+import SkillsOverlay from '../components/SkillsOverlay.vue';
 export default {
+  components: { SkillsOverlay },
  
   data: () => ({
     tab: 'availableRoles',
@@ -354,7 +311,8 @@ export default {
       'Customer Relationship Management',
       'Data Analysis'],
     halfSkillsCount: 0,
-    revealDesc: false
+    revealDesc: false,
+    listingData: Object
   }),
   mounted()
     {
@@ -453,7 +411,8 @@ export default {
       }
       return false
     },
-    showSkillsOverlay() {
+    showSkillsOverlay(listing) {
+      this.listingData = listing
       this.skillsOverlay = true;
     },
     closeSkillsOverlay() {
@@ -475,12 +434,10 @@ export default {
       return departmentIcons[department] || 'mdi-help-circle';
     },
     calculateSkillPercentage(requiredSkills) {
-      if (!Array.isArray(requiredSkills)) {
-        return 'Invalid skills';
-      }
+      const requiredSkillsArr = requiredSkills.split(',').map(item => item.trim());
 
-      const totalSkills = requiredSkills.length;
-      const acquiredSkillsCount = requiredSkills.filter(skill => this.acquiredSkills.includes(skill)).length;
+      const totalSkills = requiredSkillsArr.length;
+      const acquiredSkillsCount = requiredSkillsArr.filter(skill => this.acquiredSkills.includes(skill)).length;
 
       if (totalSkills === 0) {
         return '0% (0 out of 0)';
@@ -489,6 +446,11 @@ export default {
       const percentage = ((acquiredSkillsCount / totalSkills) * 100).toFixed(2);
 
       return `${percentage}% (${acquiredSkillsCount} out of ${totalSkills})`;
+    },
+    getSkillsRequired(requiredSkills){
+      const requiredSkillsArr = requiredSkills.split(',').map(item => item.trim());
+      console.log(requiredSkills)
+      return requiredSkillsArr
     },
     getSkillIcon(skill) {
       const skillIcons = {
@@ -599,5 +561,9 @@ export default {
   background-color: #eae4dd;
   color: #664229;
   padding: 10px;
+}
+.sheet-header{
+  margin-left: 50px;
+  margin-right: 50px;
 }
 </style>
