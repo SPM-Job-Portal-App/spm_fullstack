@@ -14,7 +14,7 @@ from main import app
 class Cronjob():
 
     # cron job to open role listing on opening_date
-    def open_role_listing_job():
+    def open_close_role_listing_cronjob():
         # get all the role listings
         # iterate through all role listings
             # for each role listing
@@ -49,13 +49,10 @@ class Cronjob():
                     db.session.query(RoleListing).filter(RoleListing.id == listing_id).update({'is_open': True})
 
                     db.session.commit()
-                    # db.session.close()
 
                 # FOR OPENING ROLE LISTING
                 # check:
                 # if today's date is at least one day after the closing date for the role listing. If yes, then close role listing. Why one day after is because if the closing date is for example 14 October means the listing should be open till 11.59pm on that day and so when the time reaches 12.00am the next day, this is when the role listing can be closed.
-                print("Closing date:", closing_date)
-                print("Date to check with today's date: ", closing_date + datetime.timedelta(days=1))
 
                 if closing_date + datetime.timedelta(days=1) == today_date:
                     # update role listing from open to closed
@@ -70,7 +67,7 @@ class Cronjob():
 
         return
 
-    schedule.every(15).seconds.do(open_role_listing_job)
+    schedule.every(15).seconds.do(open_close_role_listing_cronjob)
 
     while True:
         schedule.run_pending()

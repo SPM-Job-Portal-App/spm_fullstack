@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from main import app, drop_tables, initialize_databases, start_test_cronjob
 from models.model import db
 from models.role_listing_model import RoleListing
@@ -54,14 +55,16 @@ def test_cronjob_open_role_listing_on_opening_date(client):
         db.session.add(new_role_skill)
         db.session.commit()
 
+        today_date = datetime.date.today()
+
         new_listing = RoleListing(
                 role_name="Developer",
                 country="Canada",
                 dept="IT",
                 is_open=False,
                 reporting_manager=130001,
-                opening_date="2023-10-08",
-                closing_date="2023-10-15"
+                opening_date=today_date,
+                closing_date="2023-12-15"
 
             )
         db.session.add(new_listing)
@@ -93,7 +96,7 @@ def test_cronjob_open_role_listing_on_opening_date(client):
     drop_tables()
 
 # tests whether the timer opens a role listing not on its opening date
-def test_timer_open_role_listing_not_on_opening_date(client):
+def test_cron_open_role_listing_not_on_opening_date(client):
     initialize_databases()
     client.get('/access/get_access')
 
@@ -139,8 +142,7 @@ def test_timer_open_role_listing_not_on_opening_date(client):
                 is_open=False,
                 reporting_manager=130001,
                 opening_date="2023-12-15",
-                closing_date="2023-10-15"
-
+                closing_date="2023-12-16"
             )
         db.session.add(new_listing)
         db.session.commit()
