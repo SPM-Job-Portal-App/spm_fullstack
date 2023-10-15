@@ -1,7 +1,7 @@
 # import json
 # import pytest
 # from main import app, db  # Replace with the actual import statement for your Flask app
-# from models import RoleListing # Replace with the actual import statements for your models
+# from models.role_listing_model import RoleListing # Replace with the actual import statements for your models
 
 # # Define a fixture to create a test client for the Flask app
 # @pytest.fixture

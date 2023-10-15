@@ -82,6 +82,8 @@ class Listing():
                 'country': listing.country,
                 'dept': listing.dept,
                 'is_open': listing.is_open,
+                'opening_date': listing.opening_date,
+                'closing_date': listing.closing_date,
                 'reporting_manager': reporting_manager_full_name,
                 'description': description
             }

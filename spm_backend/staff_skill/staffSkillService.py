@@ -4,7 +4,6 @@ from models.model import db
 from flask import jsonify;
 class StaffSkillService():
     def get_all_skills():
-
             try:
                 skills_response = StaffSkill.query.all()
 
