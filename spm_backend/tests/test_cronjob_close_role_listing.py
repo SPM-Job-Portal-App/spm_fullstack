@@ -82,7 +82,7 @@ def test_cronjob_close_role_listing_after_closing_date(client):
     drop_tables()
 
 # tests whether the timer opens a role listing not on its opening date
-def test_timer_close_role_listing_before_closing_date(client):
+def test_cronjob_close_role_listing_before_closing_date(client):
     initialize_databases()
     client.get('/access/get_access')
 
