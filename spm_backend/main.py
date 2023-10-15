@@ -27,14 +27,14 @@ def initialize_databases():
 def start_cronjob():
     cronjob_module = importlib.import_module("open_close_listing_cronjob.cronjob")
     cronjob_class = getattr(cronjob_module, "Cronjob")
-    cronjob_class.open_role_listing_job()
+    cronjob_class.open_close_role_listing_cronjob()
 
 # import TestCronjob class from test_cronjob.py and start cron job
 # cronjob for test
 def start_test_cronjob():
     cronjob_module = importlib.import_module("open_close_listing_cronjob.test_cronjob")
     cronjob_class = getattr(cronjob_module, "TestCronjob")
-    cronjob_class.open_role_listing_job()
+    cronjob_class.open_close_role_listing_cronjob()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
 db.init_app(app)
@@ -52,6 +52,7 @@ app.register_blueprint(access_bp, url_prefix='/access')
 cronjob_thread = threading.Thread(target=start_cronjob)
 
 if __name__ == '__main__':
+    # Uncomment to run cronjob to open or close role listings
     # cronjob_thread.start()
 
     # debug = True does not work well with multithreading because once you save some code and the Flask server restarts, there will be some error. So I commented out the "cronjob_thread.start()" line. If you want to use it, set change debug to False and uncomment the line

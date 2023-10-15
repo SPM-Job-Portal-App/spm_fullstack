@@ -1,5 +1,5 @@
 import schedule
-from datetime import date
+import datetime
 from time import sleep
 from sqlalchemy import inspect
 from models.model import db
@@ -14,7 +14,7 @@ from main import app
 class Cronjob():
 
     # cron job to open role listing on opening_date
-    def open_role_listing_job():
+    def open_close_role_listing_cronjob():
         # get all the role listings
         # iterate through all role listings
             # for each role listing
@@ -37,23 +37,37 @@ class Cronjob():
                 closing_date = listing['closing_date']
                 
                 # format: 2023-12-11 where YYYY-MM-DD
-                today_date = date.today()
+                today_date = datetime.date.today()
 
+                # FOR OPENING ROLE LISTING
                 # check:
                 # 1. if today's date is the opening date for the role listing OR
                 # 2. if the app is not on every day, then for some days, this timer is not activated to open role listings
                 if opening_date == today_date or (opening_date < today_date and today_date < closing_date):
+                    # update role listing from closed to open
                     listing_id = listing['id']
                     db.session.query(RoleListing).filter(RoleListing.id == listing_id).update({'is_open': True})
 
                     db.session.commit()
-                    db.session.close()
+
+                # FOR OPENING ROLE LISTING
+                # check:
+                # if today's date is at least one day after the closing date for the role listing. If yes, then close role listing. Why one day after is because if the closing date is for example 14 October means the listing should be open till 11.59pm on that day and so when the time reaches 12.00am the next day, this is when the role listing can be closed.
+
+                if closing_date + datetime.timedelta(days=1) == today_date:
+                    # update role listing from open to closed
+                    listing_id = listing['id']
+                    db.session.query(RoleListing).filter(RoleListing.id == listing_id).update({'is_open': False})
+
+                    db.session.commit()
+
+                db.session.close()
 
         print("Running cron job to open or close role listings!")
 
         return
 
-    schedule.every(10).seconds.do(open_role_listing_job)
+    schedule.every(15).seconds.do(open_close_role_listing_cronjob)
 
     while True:
         schedule.run_pending()
