@@ -15,6 +15,9 @@ class RoleListing(db.Model):
     role_name = db.Column(db.String(255), db.ForeignKey('role.role_name'), nullable=False)
     reporting_manager = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=True)
     
+    role = db.relationship('Role', backref='RoleListing', foreign_keys=[role_name])
+    staff = db.relationship('Staff', backref='RoleListing', foreign_keys=[reporting_manager])
+
     # relationships
     # var = db.relationship('Role', foreign_keys=[role_name], cascade="save-update, merge")
     # var2 = db.relationship('Role', foreign_keys=[reporting_manager], cascade="save-update, merge")
