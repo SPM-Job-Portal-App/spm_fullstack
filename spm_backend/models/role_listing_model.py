@@ -18,10 +18,6 @@ class RoleListing(db.Model):
     role = db.relationship('Role', backref='RoleListing', foreign_keys=[role_name])
     staff = db.relationship('Staff', backref='RoleListing', foreign_keys=[reporting_manager])
 
-    # relationships
-    # var = db.relationship('Role', foreign_keys=[role_name], cascade="save-update, merge")
-    # var2 = db.relationship('Role', foreign_keys=[reporting_manager], cascade="save-update, merge")
-
     def __init__(self, role_name, country, dept, is_open, opening_date, closing_date, reporting_manager):
         self.role_name = role_name
         self.country = country

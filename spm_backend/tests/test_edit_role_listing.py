@@ -33,15 +33,6 @@ def test_edit_role_listing_success(client):
         db.session.add(new_role)
         db.session.add(new_open_role_listing)
         db.session.commit()
-    # application_data = {
-    #     "role_name": "Product Manager",
-    #     "country": "USA",
-    #     "dept": "Sales",
-    #     "is_open": True,
-    #     "opening_date": "2023-10-01",
-    #     "closing_date": "2023-10-15",
-    #     "reporting_manager": None
-    # }
     updated_role_listing_data = {
         "role_name": "Developer",
         "country": "Singapore",
@@ -51,7 +42,6 @@ def test_edit_role_listing_success(client):
         "closing_date": "2023-10-15",
         "reporting_manager": None
     }
-    # response = client.post('/listing/create', json=application_data)
     response = client.put('/listing/1', json=updated_role_listing_data)
     expected_message = {'message': 'Role listing updated successfully'}
     assert response.json == expected_message
