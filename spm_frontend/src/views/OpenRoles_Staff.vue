@@ -57,7 +57,7 @@
                     </v-chip>
                   </div>
                 </v-card-text>
-                <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
+                <!-- <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
                   <v-chip
                     v-for="skill in listing.skills.split(', ').slice(0,4)"
                     :key="skill"
@@ -74,7 +74,7 @@
                   >
                     (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
                   </div>
-                </div>
+                </div> -->
                 <v-card-actions class="justify-center">
                   <v-btn
                     variant="flat"
@@ -146,8 +146,6 @@
                     </v-chip>
                   </div>
                 </v-card-text>
-                
-                
                 
                 <!-- <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
                   <v-chip
@@ -302,6 +300,7 @@ export default {
       'Accounting and Tax Systems',
       'Accounting Standards',
       'Applications Development',
+      'Budgeting',
       'Business Presentation Delivery',
       'Business Requirements Mapping',
       'Business Risk Management',

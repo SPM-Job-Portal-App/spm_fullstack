@@ -27,31 +27,31 @@
 
     <!-- success message with overlay -->
     <OverlayMessage
-    :show.sync="successOverlay"
-    title="Application Sent Successfully"
-    :message="feedbackMessage"
-    buttonText="Done"
-    buttonColor="success"
-    icon="mdi-check-circle"
-    iconColor="success"
-    iconSize="112"
-    @close-overlay="toggleOverlay"
-    route="/openroles/hr"
+      :show.sync="successOverlay"
+      title="Update Is Successful"
+      :message="feedbackMessage"
+      buttonText="Done"
+      buttonColor="success"
+      icon="mdi-check-circle"
+      iconColor="success"
+      iconSize="112"
+      @close-overlay="toggleOverlay"
+      route="/openroles/hr"
     ></OverlayMessage>
 
-<!-- failure message with overlay -->
-    <OverlayMessage
-    :show.sync="failureOverlay"
-    title="Application Sent Unsuccessfully"
-    :message="feedbackMessage"
-    buttonText="Close"
-    buttonColor="red"
-    icon="mdi-close-circle"
-    iconColor="red"
-    iconSize="112"
-    @close-overlay="toggleOverlay"
-    route="/openroles/hr"
-    ></OverlayMessage>
+  <!-- failure message with overlay -->
+      <OverlayMessage
+      :show.sync="failureOverlay"
+      title="Update Is Unsuccessful"
+      :message="feedbackMessage"
+      buttonText="Close"
+      buttonColor="red"
+      icon="mdi-close-circle"
+      iconColor="red"
+      iconSize="112"
+      @close-overlay="toggleOverlay"
+      route="/openroles/hr"
+      ></OverlayMessage>
 
   </template>
   
