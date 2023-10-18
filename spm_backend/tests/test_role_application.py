@@ -3,6 +3,7 @@ from main import app, drop_tables, initialize_databases
 from models.model import db
 from models.role_listing_model import RoleListing
 from models.staff_model import Staff
+from models.role_model import Role
 
 # Set up the Flask app for testing
 @pytest.fixture
@@ -24,6 +25,10 @@ def test_apply_for_open_role_listing_success(client):
         email="john.doe@example.com",
         role=1
     )
+    new_role = Role(
+        role_name="Software Engineer",
+        role_description="I call the manager's assistance"
+    )
     new_listing = RoleListing(
         role_name="Software Engineer",
         country="USA",
@@ -39,6 +44,7 @@ def test_apply_for_open_role_listing_success(client):
     }
     with app.app_context():
         db.session.add(new_staff)
+        db.session.add(new_role)
         db.session.add(new_listing)
         db.session.commit()
         
@@ -61,6 +67,10 @@ def test_apply_for_closed_role_listing_failure(client):
         closing_date="2023-09-30",
         reporting_manager=None
     )
+    new_role = Role(
+        role_name="Software Engineer",
+        role_description="I call the manager's assistance"
+    )
     new_staff = Staff(
         id = 130001,
         staff_first_name="John",
@@ -76,6 +86,7 @@ def test_apply_for_closed_role_listing_failure(client):
     }
     with app.app_context():
         db.session.add(new_listing)
+        db.session.add(new_role)
         db.session.add(new_staff)
         db.session.commit()
     response = client.post('/application', json=application_data)
@@ -123,6 +134,10 @@ def test_apply_for_role_listing_with_active_application_failure(client):
         email="john.doe@example.com",
         role=1
     )
+    new_role = Role(
+        role_name="Software Engineer",
+        role_description="I call the manager's assistance"
+    )
     new_listing = RoleListing(
         role_name="Software Engineer",
         country="USA",
@@ -138,6 +153,7 @@ def test_apply_for_role_listing_with_active_application_failure(client):
     }
     with app.app_context():
         db.session.add(new_staff)
+        db.session.add(new_role)
         db.session.add(new_listing)
         db.session.commit()
     client.post('/application', json=application_data)

@@ -137,7 +137,7 @@ def test_get_closed_role_listings(client):
                 country="Canada",
                 dept="IT",
                 is_open=False,
-                reporting_manager=1,
+                reporting_manager=130001,
                 opening_date="2023-10-01",
                 closing_date="2023-10-15"
             )

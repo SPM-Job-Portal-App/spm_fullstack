@@ -2,6 +2,7 @@ import pytest
 from main import app, drop_tables, initialize_databases
 from models.model import db
 from models.staff_model import Staff
+from models.role_model import Role
 
 # Set up the Flask app for testing
 @pytest.fixture
@@ -23,6 +24,10 @@ def test_create_success(client):
         email="james.re@example.com",
         role=1
     )
+    new_role = Role(
+        role_name="Product Manager",
+        role_description="I call the manager's assistance"
+    )
     application_data = {
         "role_name": "Product Manager",
         "country": "USA",
@@ -34,6 +39,7 @@ def test_create_success(client):
     }
     with app.app_context():
         db.session.add(new_staff)
+        db.session.add(new_role)
         db.session.commit()
     response = client.post('/listing/create', json=application_data)
     expected_message = {'message': 'Role Listing created successfully'}
@@ -85,6 +91,10 @@ def test_create_duplicate_role_listing_failure(client):
         email="james.re@example.com",
         role=1
     )
+    new_role = Role(
+        role_name="Product Manager",
+        role_description="I call the manager's assistance"
+    )
     application_data = {
         "role_name": "Product Manager",
         "country": "USA",
@@ -104,6 +114,7 @@ def test_create_duplicate_role_listing_failure(client):
         "reporting_manager": None
     }
     with app.app_context():
+        db.session.add(new_role)
         db.session.add(new_staff)
         db.session.commit()
     # Send the first POST request
