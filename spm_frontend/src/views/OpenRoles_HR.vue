@@ -2,80 +2,92 @@
     <v-card class>
       <!-- Title -->
       <h1 class="page-title ml-8">Job Listings</h1>
-  
-      <v-row>
-        <v-col cols="12" md="6">
-          <!-- Filter by Department Dropdown -->
-          <v-select
-            v-model="selectedDepartment"
-            :items="departmentOptions"
-            label="Filter by Department"
-            dense
-            class="ml-8"
-          ></v-select>
-        </v-col>
+      
+      <v-card-text>
+        <v-row>
+          <v-col cols="12">
+            <!-- Search Bar -->
+            <v-text-field
+              v-model="searchText"
+              label="Search"
+              dense
+              outlined
+            ></v-text-field>
+          </v-col>
+        </v-row>
 
-        <v-col cols="12" md="6">
-          <!-- Filter by Country Dropdown -->
-          <v-select
-            v-model="selectedCountry"
-            :items="countryOptions"
-            label="Filter by Country"
-            dense
-            class="ml-8"
-          ></v-select>
-        </v-col>
-      </v-row>
-  
-      <v-row class="ml-4">
-        <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAvailableRoles" :key="index">
-          <!-- Listing Card with Margin -->
-          <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
-            <!-- Edit Button (Top Right) -->
-            <v-btn icon class="edit-button" @click="editListing(listing.id)">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
-            <div class="d-flex align-center justify-center department-icon-container">
-              <!-- Department Icon -->
-              <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
-            </div>
-            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
-            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ listing.dept }} - {{ listing.country }}</div>
-            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
-            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
-              <v-chip
-                v-for="skill in listing.skills.split(', ').slice(0,4)"
-                :key="skill"
-                :prepend-icon="getSkillIcon(skill)"
-                class="ma-1"
-                style="font-size: 12px;"
-              >
-                {{ skill || 'None' }}
-              </v-chip>
-              <div
-                v-if="listing.skills.split(', ').length > 4"
-                class="text-grey text-caption align-self-center"
-              >
-                (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
-              </div>
-            </div>
-            <div class="text-center mt-3 mb-6">
-              <!-- Number of Applicants -->
-              <v-btn @click="viewApplicants(index)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
-                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
+        <v-row>
+          <v-col cols="12" md="6">
+            <!-- Filter by Department Dropdown -->
+            <v-select
+              v-model="selectedDepartment"
+              :items="departmentOptions"
+              label="Filter by Department"
+              dense
+              class="ml-8"
+            ></v-select>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <!-- Filter by Country Dropdown -->
+            <v-select
+              v-model="selectedCountry"
+              :items="countryOptions"
+              label="Filter by Country"
+              dense
+              class="ml-8"
+            ></v-select>
+          </v-col>
+        </v-row>
+    
+        <v-row class="ml-4">
+          <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAvailableRoles" :key="index">
+            <!-- Listing Card with Margin -->
+            <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
+              <!-- Edit Button (Top Right) -->
+              <v-btn icon class="edit-button" @click="editListing(listing.id)">
+                <v-icon>mdi-pencil</v-icon>
               </v-btn>
-            </div>
-          </v-card>
-        </v-col>
-      </v-row>
+              <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
+              <div class="d-flex align-center justify-center department-icon-container">
+                <!-- Department Icon -->
+                <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
+              </div>
+              <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
+              <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ listing.dept }} - {{ listing.country }}</div>
+              <!-- <div class="text-center mt-2" style="color: #664229; font-size: 12px;">
+                Application Period: {{ new Date(listing.opening_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }} - {{ new Date(listing.closing_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }}
+              </div>  -->
+              <v-card-text>
+                <div class="text-center mt-2">
+                  <v-chip
+                    class="text-center"
+                    color="#664229"
+                    style="font-size: 12px;"
+                    @click="showSkillsOverlay(listing)"
+                  >
+                    Skills Required: {{ calculateSkillPercentage(listing.skills) }}
+                  </v-chip>
+                </div>
+              </v-card-text>
+              <div class="text-center mt-3 mb-6">
+                <!-- Number of Applicants -->
+                <v-btn @click="viewApplicants(index)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
+                  View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
+                </v-btn>
+              </div>
+              <skills-overlay v-model="skillsOverlay" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
+
     <v-card-actions>
       <v-btn
         class="add-button"
         to="/createrolelisting"
-        icon
-      >
+        icon>
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-card-actions>
@@ -83,11 +95,17 @@
   
   <script>
   import axios from'axios';
+  import SkillsOverlay from '../components/SkillsOverlayHR.vue';
   export default {
+    components: { SkillsOverlay },
+    
     data: () => ({
       selectedDepartment: "All",
       selectedCountry: "All",
+      showSkills: false,
       availableRoles: [],
+      skillsOverlay: false,
+      listingData: Object
     }),
     mounted()
     {
@@ -99,6 +117,17 @@
       )
     },
     computed: {
+      filteredListings() {
+        if (this.tab === 'availableRoles') {
+          return this.filteredAvailableRoles.filter((listing) =>
+            listing.role_name.toLowerCase().includes(this.searchText.toLowerCase())
+          );
+        } else if (this.tab === 'appliedRoles') {
+          return this.filteredAppliedRoles.filter((listing) =>
+            listing.role_name.toLowerCase().includes(this.searchText.toLowerCase())
+          );
+        }
+      },
       departmentOptions() {
         const departments = [...new Set(this.availableRoles.map((role) => role.dept))];
         return ['All', ...departments];
@@ -120,6 +149,13 @@
       applyNow(index) {
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
+      showSkillsOverlay(listing) {
+      this.listingData = listing
+      this.skillsOverlay = true;
+      },
+      closeSkillsOverlay() {
+        this.skillsOverlay = false;
+      },
       editListing(index) {
         this.$router.push({ name: 'edit-listing', params: { index } });
       },
@@ -137,6 +173,11 @@
           'IT': 'mdi-code-tags'
         };
         return departmentIcons[department] || 'mdi-help-circle';
+      },
+      calculateSkillPercentage(requiredSkills) {
+        const requiredSkillsArr = requiredSkills.split(',').map(item => item.trim());
+        const totalSkills = requiredSkillsArr.length;
+        return totalSkills
       },
       getSkillIcon(skill) {
         const skillIcons = {
@@ -231,14 +272,9 @@
   </script>
   
   <style scoped>
-  .page-title {
-    color: #664229;
-    font-weight: bold;
-    margin: 20px 0;
-  }
-  
+
   .department-icon-container {
-    height: 180px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -246,6 +282,26 @@
   
   .department-icon {
     font-size: 100px;
+  }
+  
+  .v-card--reveal {
+    bottom: 0;
+    opacity: 1 !important;
+    position: absolute;
+    width: 100%;
+    background-color: #eae4dd;
+    color: #664229;
+    padding: 10px;
+  }
+  .sheet-header{
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  
+  .page-title {
+    color: #664229;
+    font-weight: bold;
+    margin: 20px 0;
   }
   
   .edit-button {
