@@ -11,7 +11,7 @@
           <!-- Search Bar -->
           <v-text-field
             v-model="searchText"
-            label="Search"
+            label="Search by role title or skill"
             dense
             outlined
           ></v-text-field>
@@ -248,16 +248,20 @@ export default {
     },
   computed: {
     filteredListings() {
-    if (this.tab === 'availableRoles') {
-      return this.filteredAvailableRoles.filter((listing) =>
-        listing.role_name.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    } else if (this.tab === 'appliedRoles') {
-      return this.filteredAppliedRoles.filter((listing) =>
-        listing.role_name.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    }
-  },
+      const searchTextLower = this.searchText.toLowerCase();
+
+      if (this.tab === 'availableRoles') {
+        return this.filteredAvailableRoles.filter((listing) =>
+          listing.role_name.toLowerCase().startsWith(searchTextLower) ||
+          listing.skills.toLowerCase().includes(searchTextLower)
+        );
+      } else if (this.tab === 'appliedRoles') {
+        return this.filteredAppliedRoles.filter((listing) =>
+          listing.role_name.toLowerCase().startsWith(searchTextLower) ||
+          listing.skills.toLowerCase().includes(searchTextLower)
+        );
+      }
+    },
     departmentOptionsForAvailable() {
       const availableDepartments = [...this.availableRoles].map((role) => role.dept);
       const appliedDepartments = [...this.appliedRoles].map((role) => role.dept);

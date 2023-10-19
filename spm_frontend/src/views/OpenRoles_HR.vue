@@ -4,17 +4,6 @@
       <h1 class="page-title ml-8">Job Listings</h1>
       
       <v-card-text>
-        <v-row>
-          <v-col cols="12">
-            <!-- Search Bar -->
-            <v-text-field
-              v-model="searchText"
-              label="Search"
-              dense
-              outlined
-            ></v-text-field>
-          </v-col>
-        </v-row>
 
         <v-row>
           <v-col cols="12" md="6">
