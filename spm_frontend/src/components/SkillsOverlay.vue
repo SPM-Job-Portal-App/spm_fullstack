@@ -11,7 +11,7 @@
       <h2 class="text-h5 mb-6 sheet-header">Required Skills</h2>
 
       <div class="text-medium-emphasis text-body-2">
-        <h3 style="margin-bottom: 15px">Skills match: {{ calculateSkillPercentage(listingData.skills) }}</h3>
+        <h3 style="margin-bottom: 15px">Skills match: {{ calculateSkillPercentage(useAcquiredSkills ? acquiredSkills : listingData.skills) }}</h3>
         <p>A red highlight indicates that you do not possess this skill</p>
         <p>A green highlight indicates that you possess this skill</p>
         <ul style="margin-top: 15px">
@@ -53,7 +53,8 @@ export default {
     closeSkillsOverlay: Function,
     getSkillIcon: Function,
     acquiredSkills: Array,
-    calculateSkillPercentage: Function
+    calculateSkillPercentage: Function,
+    useAcquiredSkills: Boolean
   },
   methods: {
     getListingSkills(){

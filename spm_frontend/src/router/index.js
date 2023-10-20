@@ -49,6 +49,11 @@ const routes = [
         name: 'edit-listing',
         component: () => import('@/components/EditListing.vue'),
       },
+      {
+        path: '/view-applicants/:id',
+        name: 'view-applicants',
+        component: () => import('@/views/ViewApplicants.vue'),
+      },
     ],
   },
   {
