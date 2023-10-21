@@ -4,7 +4,7 @@
       <h1 class="page-title ml-8">Applicants</h1>
   
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="5">
           <!-- Filter by Department Dropdown -->
           <v-select
             v-model="selectedDepartment"
@@ -15,7 +15,7 @@
           ></v-select>
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="5">
           <!-- Filter by Country Dropdown -->
           <v-select
             v-model="selectedCountry"
@@ -24,6 +24,12 @@
             dense
             class="ml-8"
           ></v-select>
+        </v-col>
+
+        <v-col cols="12" md="1" class="d-flex justify-center">
+          <v-btn icon @click="sortApplicants()" :color="sort ? '#eae4dd' : 'white'">
+            <v-icon>mdi-filter-variant</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
   
@@ -84,7 +90,8 @@
       skillsOverlay: false,
       showSkills: false,
       listingData: Object,
-      loading: true
+      loading: true,
+      sort: false
     }),
     mounted()
     {
@@ -120,6 +127,13 @@
                     .then(
                       (r)=>{
                         tempApplicant['skills'] = r.data;
+                        if(this.listing != null && this.listing.skills != null){
+                          const requiredSkillsArr = this.listing.skills;
+                          const totalSkills = requiredSkillsArr.length;
+                          const acquiredSkillsCount = requiredSkillsArr.filter(skill => tempApplicant['skills'].includes(skill)).length;
+                          const percentage = ((acquiredSkillsCount / totalSkills) * 100).toFixed(2);
+                          tempApplicant['skillsMatch'] = parseFloat(percentage)
+                        }
                         this.applicants.push(tempApplicant);
                       }
                     )
@@ -153,14 +167,21 @@
           return ['All', ...countries];
       },
       filteredApplicants() {
-        return this.applicants.filter((applicant) => {
+        const filtered = this.applicants.filter((applicant) => {
           const departmentMatch = this.selectedDepartment === 'All' || applicant.dept === this.selectedDepartment;
           const countryMatch = this.selectedCountry === 'All' || applicant.country === this.selectedCountry;
           return departmentMatch && countryMatch;
         });
+        if(this.sort) {
+          return filtered.sort((a,b) => b.skillsMatch - a.skillsMatch);
+        }
+        return filtered
       },
     },
     methods: {
+      sortApplicants() {
+        this.sort = !this.sort
+      },
       getDepartmentIcon(department) {
         const departmentIcons = {
           'Design': 'mdi-palette',
