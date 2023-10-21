@@ -79,3 +79,35 @@ class Application():
             }
             combined_list.append(combined_data)
         return combined_list
+    
+    def get_role_applications_for_all_listings():
+        listings = Listing.get_all_listing()
+        applications = RoleApplication.query.all()
+        application_list = []
+        for application in applications:
+            application_data = {
+                'id': application.id,
+                'application_date': application.application_date,
+                'role_listing_id': application.role_listing_id,
+                'staff_id': application.staff_id,
+            }
+            application_list.append(application_data)
+        combined_list = []
+        for listing in listings:
+            applicants = []
+            for application in application_list:
+                if application['role_listing_id'] == listing['id']:
+                    applicants.append({'id': application['id'], 'application_date': application['application_date'], 'staff_id': application['staff_id']})
+            combined_data = {
+                'id': listing['id'],
+                'role_name': listing['role_name'],
+                'skills': listing['skills'],
+                'country': listing['country'],
+                'dept': listing['dept'],
+                'is_open': listing['is_open'],
+                'reporting_manager': listing['reporting_manager'],
+                'applicants': applicants
+            }
+            combined_list.append(combined_data)
+        return combined_list
+    
