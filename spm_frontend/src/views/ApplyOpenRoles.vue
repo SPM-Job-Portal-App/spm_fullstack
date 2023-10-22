@@ -78,16 +78,30 @@
 
                 <!-- success message with overlay -->
                 <OverlayMessage
-                    :show.sync="overlay"
+                    :show.sync="successOverlay"
                     title="Application Sent Successfully"
-                    message="You will receive an update 3 working days later!"
+                    :message="feedbackMessage"
                     buttonText="Done"
                     buttonColor="success"
                     icon="mdi-check-circle"
                     iconColor="success"
                     iconSize="112"
                     @close-overlay="toggleOverlay"
-                    route="/openroles"
+                    route="/openroles/staff"
+                ></OverlayMessage>
+
+                <!-- failure message with overlay -->
+                <OverlayMessage
+                    :show.sync="failureOverlay"
+                    title="Application Sent Unsuccessfully"
+                    :message="feedbackMessage"
+                    buttonText="Close"
+                    buttonColor="red"
+                    icon="mdi-close-circle"
+                    iconColor="red"
+                    iconSize="112"
+                    @close-overlay="toggleOverlay"
+                    route="/openroles/staff"
                 ></OverlayMessage>
 
         </v-responsive>
@@ -122,8 +136,20 @@
             coverLetter: '',
             terms: false,
             loading: false,
-            overlay: false
+            successOverlay: false,
+            failureOverlay: false,
+            listingData: [],
+            feedbackMessage: ''
         }),
+        mounted() {
+            // const id = this.$route.params.id;
+            // axios.get(`http://localhost:5000/listing/${id}`).then(
+            //     (response)=>{
+            //         this.listingData = response.data;
+            //         console.log(this.listingData)
+            //     }
+            // )
+        },
         methods: {
             isValid() {
                 if(this.$refs.form){
@@ -133,12 +159,40 @@
             submitForm() {
                 if (this.isValid()) {
                     this.loading = true
-                    this.overlay = true
+                    const id = this.$route.params.id;
+                    let application_data = {
+                        "role_listing": id,
+                        "staff_id": 1
+                    }
+                    axios.post('http://localhost:5000/application', application_data)
+                    .then(
+                        (response)=>{
+                            this.successOverlay = true
+                            if(response.data.message) {
+                                this.feedbackMessage = response.data.message
+                            }
+                            else {
+                                this.feedbackMessage = "You will be contacted shortly!"
+                            }
+                            console.log(response)
+                        }
+                    )
+                    .catch(error => {
+                        this.failureOverlay = true
+                        if(error.response.data.message) {
+                                this.feedbackMessage = error.response.data.message
+                            }
+                        else {
+                            this.feedbackMessage = "An error occured during the application process!"
+                        }
+                        console.error(error);
+                    })
                 }
             },
             toggleOverlay() {
                 this.loading = false
-                this.overlay = false
+                this.successOverlay = false
+                this.failureOverlay = false
             }
         },
         components: {

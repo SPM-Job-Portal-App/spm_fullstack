@@ -5,22 +5,22 @@
   
       <v-row>
         <v-col cols="12" md="6">
+          <!-- Filter by Department Dropdown -->
           <v-select
             v-model="selectedDepartment"
             :items="departmentOptions"
             label="Filter by Department"
-            @input="filterRoles"
             dense
             class="ml-8"
           ></v-select>
         </v-col>
 
         <v-col cols="12" md="6">
+          <!-- Filter by Country Dropdown -->
           <v-select
             v-model="selectedCountry"
             :items="countryOptions"
             label="Filter by Country"
-            @input="filterRoles"
             dense
             class="ml-8"
           ></v-select>
@@ -28,125 +28,200 @@
       </v-row>
   
       <v-row class="ml-4">
-        <v-col cols="4" v-for="(listing, index) in filteredAvailableRoles" :key="index">
+        <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAvailableRoles" :key="index">
           <!-- Listing Card with Margin -->
-          <v-card class="mt-3 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
+          <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
             <!-- Edit Button (Top Right) -->
-            <v-btn icon class="edit-button" @click="editListing(index)">
+            <v-btn icon class="edit-button" @click="editListing(listing.id)">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
             <div class="d-flex align-center justify-center department-icon-container">
               <!-- Department Icon -->
-              <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.department) }}</v-icon>
+              <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
             </div>
-            <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px; font-weight: bold;">
-                {{ listing.label }}
+            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
+            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ listing.dept }} - {{ listing.country }}</div>
+            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
+            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
+              <v-chip
+                v-for="skill in listing.skills.split(', ').slice(0,4)"
+                :key="skill"
+                :prepend-icon="getSkillIcon(skill)"
+                class="ma-1"
+                style="font-size: 12px;"
+              >
+                {{ skill || 'None' }}
+              </v-chip>
+              <div
+                v-if="listing.skills.split(', ').length > 4"
+                class="text-grey text-caption align-self-center"
+              >
+                (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
               </div>
-              <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                <b>Department:</b> {{ listing.department }}
-              </div>
-              <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                <b>Description:</b> Lorem ipsum lorem ipsum
-              </div>
-              <div class="text-center mt-2" style="color: #664229; padding: 10px; font-size: 18px;">
-                <b>Country of Opening:</b> {{ listing.country }}
-              </div>
-              <div class="text-center mt-2" style="color:#8C7251 ; padding: 10px; font-size: 18px;">
-                <b>Reporting Manager:</b> {{ listing.reportingmanager }}
-              </div>
+            </div>
             <div class="text-center mt-3 mb-6">
               <!-- Number of Applicants -->
               <v-btn @click="viewApplicants(index)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
-                View&nbsp; <span class="numapp">{{ listing.numApplications }}</span> &nbsp;applicants
+                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
               </v-btn>
             </div>
           </v-card>
         </v-col>
       </v-row>
     </v-card>
+    <v-card-actions>
+      <v-btn
+        class="add-button"
+        to="/createrolelisting"
+        icon
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-card-actions>
   </template>
   
   <script>
-  import { EventBus } from '@/main';
+  import axios from'axios';
   export default {
     data: () => ({
-      selectedDepartment: null,
-      selectedCountry: null,
-      availableRoles: [
-        { department: 'Engineering', label: 'Software Engineer', numApplications:0, country:'Singapore',reportingmanager: 'John Doe'},
-        { department: 'Product Management', label: 'Product Manager', numApplications:7, country:'Singapore',reportingmanager: 'John Doe'},
-        { department: 'Analytics', label: 'Data Analyst', numApplications:4, country:'Indonesia',reportingmanager: 'John Doe'},
-        { department: 'Marketing', label: 'Marketing Specialist', numApplications:2, country:'Indonesia',reportingmanager: 'John Doe'},
-        { department: 'Sales', label: 'Sales Representative', numApplications:8, country: 'Vietnam',reportingmanager: 'John Doe'},
-        { department: 'Sales', label: 'Sales Associate', numApplications:3, country:'Indonesia',reportingmanager: 'John Doe'},
-        { department: 'HR', label: 'HR Coordinator', numApplications:9, country: 'Vietnam',reportingmanager: 'John Doe'},
-      ],
-      appliedRoles: [
-        { department: 'Sales', label: 'Sales Associate', numApplications:12,reportingmanager: 'John Doe'},
-        { department: 'HR', label: 'HR Coordinator', numApplications:1,reportingmanager: 'John Doe'},
-      ],
+      selectedDepartment: "All",
+      selectedCountry: "All",
+      availableRoles: [],
     }),
-    // created() {
-    // // Listen for the 'listing-updated' event
-    // EventBus.$on('listing-updated', (updatedListing) => {
-    //   // Find the index of the updated listing in the 'availableRoles' array
-    //   const index = this.availableRoles.findIndex((listing) => listing.label === updatedListing.label);
-
-    //   if (index !== -1) {
-    //     // Update the listing in the 'availableRoles' array
-    //     this.availableRoles[index] = updatedListing;
-    //   }
-    // });
-    // },
+    mounted()
+    {
+      axios.get('http://localhost:5000/application').then(
+        (response)=>{
+          this.availableRoles = response.data[0];
+          console.log(this.availableRoles)
+        }
+      )
+    },
     computed: {
       departmentOptions() {
-        const departments = [...new Set(this.availableRoles.map((role) => role.department))];
+        const departments = [...new Set(this.availableRoles.map((role) => role.dept))];
         return ['All', ...departments];
       },
-        countryOptions() {
-            const countries = [...new Set(this.availableRoles.map((role) => role.country))];
-            console.log(countries); 
-            return ['All', ...countries];
-        },
-        filteredAvailableRoles() {
-            if (this.selectedDepartment === 'All' || !this.selectedDepartment) {
-            if (this.selectedCountry === 'All' || !this.selectedCountry) {
-                return this.availableRoles;
-            } else {
-                return this.availableRoles.filter((role) => role.country === this.selectedCountry);
-            }
-            } else {
-            if (this.selectedCountry === 'All' || !this.selectedCountry) {
-                return this.availableRoles.filter((role) => role.department === this.selectedDepartment);
-            } else {
-                return this.availableRoles.filter((role) =>
-                role.department === this.selectedDepartment && role.country === this.selectedCountry
-                );
-                }
-            }
-        },
+      countryOptions() {
+          const countries = [...new Set(this.availableRoles.map((role) => role.country))];
+          console.log(countries); 
+          return ['All', ...countries];
+      },
+      filteredAvailableRoles() {
+        return this.availableRoles.filter((role) => {
+          const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
+          const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
+          return departmentMatch && countryMatch;
+        });
+      },
     },
     methods: {
       applyNow(index) {
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
       editListing(index) {
-        const selectedListing = this.filteredAvailableRoles[index];
-        console.log(`Editing ${selectedListing.label}`);
         this.$router.push({ name: 'edit-listing', params: { index } });
-        },
+      },
       getDepartmentIcon(department) {
         const departmentIcons = {
-          Engineering: 'mdi-code-braces',
-          'Product Management': 'mdi-chart-pie',
-          Analytics: 'mdi-chart-bar',
-          Marketing: 'mdi-bullhorn',
-          Sales: 'mdi-cash-register',
-          HR: 'mdi-account-supervisor',
-          Others: 'mdi-account',
+          'Design': 'mdi-palette',
+          'Chariman': 'mdi-chess-king',
+          'CEO': 'mdi-chess-queen',
+          'Sales': 'mdi-phone-in-talk',
+          'Solutioning': 'mdi-lightbulb',
+          'Engineering': 'mdi-state-machine',
+          'HR': 'mdi-account-group',
+          'Finance': 'mdi-cash-register',
+          'Consultancy': 'mdi-compass',
+          'IT': 'mdi-code-tags'
         };
         return departmentIcons[department] || 'mdi-help-circle';
+      },
+      getSkillIcon(skill) {
+        const skillIcons = {
+          'Account Management': 'mdi-bank',
+          'Accounting and Tax Systems': 'mdi-bank',
+          'Accounting Standards': 'mdi-bank',
+          'Applications Development': 'mdi-code-braces',
+          'Applications Integration': 'mdi-code-braces',
+          'Applications Support and Enhancement': 'mdi-code-braces',
+          'Audit Compliance': 'mdi-bank-check',
+          'Audit Frameworks': 'mdi-bank-check',
+          'Budgeting': 'mdi-cash',
+          'Business Acumen': 'mdi-cash',
+          'Business Development': 'mdi-cash',
+          'Business Environment Analysis': 'mdi-cash',
+          'Business Needs Analysis': 'mdi-cash',
+          'Business Negotiation': 'mdi-cash',
+          'Business Presentation Delivery': 'mdi-cash',
+          'Business Requirements Mapping': 'mdi-cash',
+          'Business Risk Management': 'mdi-cash',
+          'Call Centre Management': 'mdi-message-outline',
+          'Collaboration': 'mdi-message-outline',
+          'Communication': 'mdi-message-outline',
+          'Configuration Tracking': 'mdi-message-outline',
+          'Customer Acquisition Management': 'mdi-message-outline',
+          'Customer Relationship Management': 'mdi-message-outline',
+          'Data Analytics': 'mdi-data-matrix',
+          'Database Administration': 'mdi-data-matrix',
+          'Developing People': 'mdi-account-group',
+          'Digital Fluency': 'mdi-account-group',
+          'Employee Communication Management': 'mdi-account-group',
+          'Employee Engagement Management': 'mdi-account-group',
+          'Finance Business Partnering': 'mdi-finance',
+          'Financial Acumen': 'mdi-finance',
+          'Financial Closing': 'mdi-finance',
+          'Financial Management': 'mdi-finance',
+          'Financial Planning': 'mdi-finance',
+          'Financial Reporting': 'mdi-finance',
+          'Financial Statements Analysis': 'mdi-finance',
+          'Financial Transactions': 'mdi-finance',
+          'Human Resource Advisory': 'mdi-account-switch',
+          'Human Resource Practices Implementation': 'mdi-account-switch',
+          'Human Resource Strategy Formulation': 'mdi-account-switch',
+          'Human Resource Systems Management': 'mdi-account-switch',
+          'Infrastructure Deployment': 'mdi-domain',
+          'Infrastructure Support': 'mdi-domain',
+          'Learning and Development Programme Management': 'mdi-school',
+          'Learning Needs Analysis': 'mdi-school',
+          'Network Administration and Maintenance': 'mdi-domain',
+          'Onboarding': 'mdi-account-group',
+          'Organisational Design': 'mdi-account-group',
+          'People and Performance Management': 'mdi-account-group',
+          'Pricing Strategy': 'mdi-cash',
+          'Problem Management': 'mdi-help',
+          'Problem Solving': 'mdi-help',
+          'Product Management': 'mdi-clipboard-text',
+          'Professional and Business Ethics': 'mdi-clipboard-text',
+          'Project Management': 'mdi-clipboard-text',
+          'Regulatory Compliance': 'mdi-police-badge',
+          'Regulatory Risk Assessment': 'mdi-police-badge',
+          'Regulatory Strategy': 'mdi-police-badge',
+          'Sales Closure': 'mdi-sale',
+          'Sales Strategy': 'mdi-sale',
+          'Security Administration': 'mdi-electron-framework',
+          'Sense Making': 'mdi-electron-framework',
+          'Service Level Management': 'mdi-electron-framework',
+          'Skills Framework Adoption': 'mdi-electron-framework',
+          'Software Configuration': 'mdi-microsoft-visual-studio-code',
+          'Software Design': 'mdi-microsoft-visual-studio-code',
+          'Software Testing': 'mdi-microsoft-visual-studio-code',
+          'Solution Architecture': 'mdi-microsoft-visual-studio-code',
+          'Solutions Design Thinking': 'mdi-microsoft-visual-studio-code',
+          'SOP Development and Implementation': 'mdi-vhs',
+          'Stakeholder Management': 'mdi-vhs',
+          'Strategy Planning': 'mdi-vhs',
+          'System Integration': 'mdi-vhs',
+          'Talent Management': 'mdi-account-multiple',
+          'Tax Computation': 'mdi-cash',
+          'Tax Implications': 'mdi-cash',
+          'Technology Application': 'mdi-semantic-web',
+          'Technology Integration': 'mdi-semantic-web',
+          'Technology Road Mapping': 'mdi-semantic-web',
+          'User Interface Design': 'mdi-semantic-web'
+        };
+        return skillIcons[skill] || 'mdi-help-circle';
       },
       getRandomApplicants() {
         return Math.floor(Math.random() * 10) + 1;
@@ -181,9 +256,18 @@
     color: #664229;
   }
 
+  .add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    color: white;
+    background-color: #664229;
+  }
+
   .numapp {
     font-weight: bold;
-    font-size: 24px;
+    /* font-size: 24px; */
   }
 
   </style>

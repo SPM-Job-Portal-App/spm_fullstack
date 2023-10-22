@@ -13,7 +13,17 @@ import { createApp } from 'vue'
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+// V Calendar
+import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+
 const app = createApp(App)
+
+app.use(setupCalendar, {})
+
+// Use the components
+app.component('VCalendar', Calendar)
+app.component('VDatePicker', DatePicker)
 
 // export const EventBus = new Vue();
 
