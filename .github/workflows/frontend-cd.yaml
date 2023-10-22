@@ -22,7 +22,6 @@ jobs:
         if: contains(steps.file_changes.outputs.files , 'spm_frontend/')
         working-directory: spm_frontend
         run: |
-          cd spm_frontend
           npm install
           npm run build
           aws s3 sync ./build/ s3://spm-frontend --delete
