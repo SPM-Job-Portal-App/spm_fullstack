@@ -1,55 +1,41 @@
--- Insert data into the AccessControl table
-INSERT INTO access_control (access_id, access_control_name)
-VALUES
-    (1, 'Admin'),
-    (2, 'User'),
-    (3, 'Guest');
+-- Insert dummy data into the AccessControl table
+INSERT INTO access_control (access_control_name) VALUES
+    ('Admin'),
+    ('Manager'),
+    ('Employee');
 
--- Insert data into the RoleApplication table
-INSERT INTO role_application (application_date, role_listing_id, staff_id)
-VALUES
-    ('2023-10-14', 1, 1),
-    ('2023-10-15', 2, 2),
-    ('2023-10-16', 3, 3);
+-- Insert dummy data into the Role table
+INSERT INTO role (role_name, role_description) VALUES
+    ('Admin', 'Administrator role'),
+    ('Manager', 'Manager role'),
+    ('Employee', 'Employee role');
 
--- Insert data into the RoleListing table
-INSERT INTO role_listing (role_name, country, dept, is_open, opening_date, closing_date, reporting_manager)
-VALUES
-    ('Manager', 'USA', 'HR', true, '2023-10-14', '2023-10-21', 1),
-    ('Developer', 'Canada', 'IT', true, '2023-10-14', '2023-10-20', 2),
-    ('Designer', 'UK', 'Creative', true, '2023-10-14', '2023-10-19', 3);
+-- Insert dummy data into the Skill table
+INSERT INTO skill (skill_name, skill_desc) VALUES
+    ('Programming', 'Programming skills'),
+    ('Database Management', 'Database management skills'),
+    ('Project Management', 'Project management skills');
 
--- Insert data into the Role table
-INSERT INTO role (role_name, role_description)
-VALUES
-    ('Manager', 'Manages the HR department.'),
-    ('Developer', 'Develops software applications.'),
-    ('Designer', 'Designs creative assets.');
+-- Insert dummy data into the RoleSkill table
+INSERT INTO role_skill (role_name, skill_name) VALUES
+    ('Admin', 'Programming'),
+    ('Manager', 'Project Management'),
+    ('Employee', 'Database Management');
 
--- Insert data into the Skill table
-INSERT INTO skill (skill_name, skill_desc)
-VALUES
-    ('Management', 'Skills related to management and leadership.'),
-    ('Programming', 'Programming languages and development tools.'),
-    ('Design', 'Graphic design and creative skills.');
+-- Insert dummy data into the Staff table
+INSERT INTO staff (staff_first_name, staff_last_name, dept, country, email, role) VALUES
+    ('John', 'Doe', 'IT', 'USA', 'john.doe@example.com', 1),
+    ('Jane', 'Smith', 'HR', 'Canada', 'jane.smith@example.com', 2),
+    ('Robert', 'Johnson', 'Sales', 'UK', 'robert.johnson@example.com', 3);
 
--- Insert data into the RoleSkill table
-INSERT INTO role_skill (role_name, skill_name)
-VALUES
-    ('Manager', 'Management'),
-    ('Developer', 'Programming'),
-    ('Designer', 'Design');
+-- Insert dummy data into the RoleListing table
+INSERT INTO role_listing (role_name, country, dept, is_open, opening_date, closing_date, reporting_manager) VALUES
+    ('Admin', 'USA', 'IT', true, '2023-10-01', '2023-11-01', 1),
+    ('Manager', 'Canada', 'HR', false, '2023-09-15', '2023-10-15', 2),
+    ('Employee', 'UK', 'Sales', true, '2023-10-05', '2023-11-05', 3);
 
--- Insert data into the Staff table
-INSERT INTO staff (id, staff_first_name, staff_last_name, dept, country, email, role)
-VALUES
-    (1, 'John', 'Doe', 'HR', 'USA', 'john@example.com', 1),
-    (2, 'Alice', 'Smith', 'IT', 'Canada', 'alice@example.com', 2),
-    (3, 'Bob', 'Johnson', 'Creative', 'UK', 'bob@example.com', 3);
-
--- Insert data into the StaffSkill table
-INSERT INTO staff_skill (staff_id, skill_name)
-VALUES
-    (1, 'Management'),
-    (2, 'Programming'),
-    (3, 'Design');
+-- Insert dummy data into the RoleApplication table
+INSERT INTO role_application (application_date, role_listing_id, staff_id) VALUES
+    ('2023-10-02', 1, 1),
+    ('2023-09-20', 2, 2),
+    ('2023-10-06', 3, 3);
