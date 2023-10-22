@@ -2,31 +2,41 @@ name: Run Frontend CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Check for Frontend Changes
+        id: frontend_changes
+        run: |
+          if [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) == *'spm_frontend/'* ]]; then
+            echo "Changes in spm_frontend directory detected."
+            echo "::set-output name=frontend_changed::true"
+          else
+            echo "No changes in spm_frontend directory detected."
+            echo "::set-output name=frontend_changed::false"
+          fi
+
       - name: Trigger Frontend Workflow
-        if: contains(steps.file_changes.outputs.files , 'spm_frontend/')
+        if: steps.frontend_changes.outputs.frontend_changed == 'true'
         working-directory: spm_frontend
         run: |
-          cd spm_frontend
           npm install
           npm run build
           aws s3 sync ./build/ s3://spm-frontend --delete
-          
-     
-
-  
