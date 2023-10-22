@@ -1,0 +1,16 @@
+name: Run Frontend CD
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+  - name: Trigger frontend workflow
+      if: contains(steps.file_changes.outputs.files , 'frontend/')
+      working-directory: frontend
+      run: echo Hello, frontend!
