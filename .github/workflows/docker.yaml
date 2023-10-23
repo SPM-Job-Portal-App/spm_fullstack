@@ -35,4 +35,4 @@ jobs:
         with:
           push: true
           tags: radamel/spm-backend:latest
-          dockerfile: ./spm_backend/dockefile
+          dockerfile: ./spm_backend/dockerfile
