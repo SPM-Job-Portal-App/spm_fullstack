@@ -22,10 +22,7 @@ jobs:
         name: Checkout Repository
         uses: actions/checkout@v2
         # This step checks out your code repository, so you have access to your code.
-      
-      -
-        name: Change Directory to spm_backend
-        run: cd spm_backend
+
       
       -
         name: Login to Docker Hub
@@ -37,5 +34,6 @@ jobs:
       -
         name: Build and push
         run: |
+          cd spm_backend
           docker build -t radamel/spm-backend:latest -f ./Dockerfile .
           docker push radamel/spm-backend:latest
