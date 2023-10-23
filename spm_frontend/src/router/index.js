@@ -36,12 +36,12 @@ const routes = [
     ],
   },
   {
-    path: '/openroles/hr',
+    path: '/roles/hr',
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
         path: '',
-        name: 'Open Roles HR',
+        name: 'Roles HR',
         component: () => import('@/views/OpenRoles_HR.vue'),
       },
       {

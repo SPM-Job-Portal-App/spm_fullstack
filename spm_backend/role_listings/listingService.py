@@ -33,23 +33,45 @@ class Listing():
             return []
 
 
+    # get all listings, open and closed
     def get_all_listing():
         listings = RoleListing.query.all()
-        listing_list = []
+
+        if len(listings) == 0:
+            raise Exception('No role listings')
+        
+        # if got listings
+        role_listing_list = []
         for listing in listings:
+            
+            # get reporting_manager using staff id
+            reporting_manager_full_name = Listing.get_staff_full_name_with_id(listing.reporting_manager)
+            # get role description using role_name 
+            description = Listing.get_role_desc(listing.role_name)
+            # get skills for a role using role_name
+            skills_list = Listing.get_skills_with_role_name(listing.role_name)
+            skills_string = "Nil"
+            
+            # if skills list is not empty then only update skills_string
+            if skills_list != []:
+                skills_string = ", ".join(skills_list)
+
             listing_data = {
                 'id': listing.id,
                 'role_name': listing.role_name,
-                # 'skills': listing.skills,
+                'skills': skills_string,
                 'country': listing.country,
                 'dept': listing.dept,
                 'is_open': listing.is_open,
                 'opening_date': listing.opening_date,
                 'closing_date': listing.closing_date,
-                'reporting_manager': listing.reporting_manager
+                'reporting_manager': reporting_manager_full_name,
+                'description': description
             }
-            listing_list.append(listing_data)
-        return listing_list
+            role_listing_list.append(listing_data)
+        
+        return role_listing_list
+
     
     # get all open roles
     def get_all_open_listing():

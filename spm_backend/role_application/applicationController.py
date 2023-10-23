@@ -29,6 +29,14 @@ def get_role_applications():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+# read role applications for all role listings, open and closed
+@application_bp.route('/getapplications', methods=['GET'])
+def get_role_applications_for_all_listings():
+    try:
+        return jsonify(Application.get_role_applications_for_all_listings(), 200)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 # delete role application
 @application_bp.route('', methods=['DELETE'])
 def delete_role_application():
