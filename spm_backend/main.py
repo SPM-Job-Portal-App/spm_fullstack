@@ -36,6 +36,10 @@ def start_test_cronjob():
     cronjob_class = getattr(cronjob_module, "TestCronjob")
     cronjob_class.open_close_role_listing_cronjob()
 
+@app.route('/')
+def test():
+    return "test"
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
 # db.init_app(app)
 # initialize_databases()
