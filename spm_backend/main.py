@@ -40,7 +40,7 @@ def start_test_cronjob():
 def test():
     return "test"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:admin123@database-1.cwudcijp7uqz.ap-southeast-2.rds.amazonaws.com:3306/SBRP'
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
 
 
 db.init_app(app)
