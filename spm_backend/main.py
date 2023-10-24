@@ -15,13 +15,13 @@ import threading
 app = Flask(__name__)
 CORS(app)
 
-# def drop_tables():
-#     with app.app_context():
-#         db.drop_all()
+def drop_tables():
+    with app.app_context():
+        db.drop_all()
 
-# def initialize_databases():
-#     with app.app_context():
-#         db.create_all()
+def initialize_databases():
+    with app.app_context():
+        db.create_all()
 
 # import Cronjob class from cronjob.py and start cron job
 def start_cronjob():
@@ -40,9 +40,11 @@ def start_test_cronjob():
 def test():
     return "test"
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
-# db.init_app(app)
-# initialize_databases()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://admin:admin123@database-1.cwudcijp7uqz.ap-southeast-2.rds.amazonaws.com:3306/SBRP'
+
+
+db.init_app(app)
+initialize_databases()
 app.register_blueprint(listing_bp, url_prefix='/listing')
 app.register_blueprint(application_bp, url_prefix='/application')
 app.register_blueprint(staff_bp, url_prefix='/staff')

@@ -21,7 +21,7 @@ def get_roles():
     return jsonify(
         {
             "code": 404,
-            "message": "There are no crops."
+            "message": "There are no roles."
         }
     ), 404
 
