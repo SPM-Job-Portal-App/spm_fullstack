@@ -252,12 +252,12 @@ export default {
 
       if (this.tab === 'availableRoles') {
         return this.filteredAvailableRoles.filter((listing) =>
-          listing.role_name.toLowerCase().startsWith(searchTextLower) ||
+          listing.role_name.toLowerCase().includes(searchTextLower) ||
           listing.skills.toLowerCase().includes(searchTextLower)
         );
       } else if (this.tab === 'appliedRoles') {
         return this.filteredAppliedRoles.filter((listing) =>
-          listing.role_name.toLowerCase().startsWith(searchTextLower) ||
+          listing.role_name.toLowerCase().includes(searchTextLower) ||
           listing.skills.toLowerCase().includes(searchTextLower)
         );
       }
