@@ -43,4 +43,4 @@ jobs:
 
       - name: Run Tests
         working-directory: spm_backend
-        run: python test_backend.py --exitfirst
+        run: pytest --exitfirst
