@@ -18,11 +18,7 @@ def test_create_success(client):
     new_staff = Staff(
         id = 130001,
         staff_first_name="James",
-        staff_last_name="Re",
-        dept="Sales",
-        country="USA",
-        email="james.re@example.com",
-        role=1
+        staff_last_name="Re"
     )
     new_role = Role(
         role_name="Product Manager",
