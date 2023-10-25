@@ -18,21 +18,16 @@ def test_create_success(client):
     new_staff = Staff(
         id = 130001,
         staff_first_name="James",
-        staff_last_name="Re"
+        staff_last_name="Re",
+        dept="Sales",
+        country="USA",
+        email="james.re@example.com",
+        role=1
     )
     new_role = Role(
         role_name="Product Manager",
         role_description="I call the manager's assistance"
     )
-    application_data = {
-        "role_name": "Product Manager",
-        "country": "USA",
-        "dept": "Sales",
-        "is_open": True,
-        "opening_date": "2023-10-01",
-        "closing_date": "2023-10-15",
-        "reporting_manager": None
-    }
     with app.app_context():
         db.session.add(new_staff)
         db.session.add(new_role)
