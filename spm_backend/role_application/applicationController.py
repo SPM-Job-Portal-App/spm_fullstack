@@ -33,7 +33,7 @@ def get_role_listings():
 @application_bp.route('/get_applicants/<int:role_listing_id>', methods=['GET'])
 def get_applicants(role_listing_id):
     try:
-        applicants = Application.get_role_application_by_listing_id(role_listing_id)
-        return jsonify(applicants), 200
+        response, status_code = Application.get_role_application_by_listing_id(role_listing_id)
+        return response, status_code
     except Exception as e:
         return jsonify({'error': str(e)}), 500

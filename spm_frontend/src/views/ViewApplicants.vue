@@ -113,8 +113,8 @@
       )
       axios.get(`http://localhost:5000/application/get_applicants/${this.roleListingId}`)
       .then(
-        (response)=>{
-          this.staffIds = response.data;
+        (response,)=>{
+          this.staffIds = response.data.applicants_list;
           if (this.staffIds) {
             const requests = this.staffIds.map((staffId) => {
               return axios.get(`http://localhost:5000/staff/get_staff_by_id/${staffId}`)

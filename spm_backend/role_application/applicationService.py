@@ -86,6 +86,9 @@ class Application():
             if not role_application_response:
                 raise Exception("No application found for role listing with ID: " + str(role_listing_id))
             applicants_list = [role_application.staff_id for role_application in role_application_response]
-            return applicants_list
+            return jsonify({
+                'message': 'Applicants retrieved successfully',
+                'applicants_list': applicants_list
+            }), 200
         except Exception as e:
             raise Exception("No applicants found")
