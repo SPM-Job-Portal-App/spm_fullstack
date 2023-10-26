@@ -17,9 +17,13 @@ import { registerPlugins } from '@/plugins'
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 
+// cookies
+import VueCookies from 'vue-cookies'
+
 const app = createApp(App)
 
 app.use(setupCalendar, {})
+app.use(VueCookies)
 
 // Use the components
 app.component('VCalendar', Calendar)
