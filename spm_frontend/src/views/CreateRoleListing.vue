@@ -84,7 +84,7 @@
 
       <!-- Cancel / Confirm -->
       <v-row justify="center" class="mt-8">
-        <v-btn to="/openroles/hr" style="color: #664229;" class="mr-16 my-6 custom-button" @mouseover="hoverButton('cancel')" @mouseout="resetButtonColor('cancel')" large color="#c1ad98">
+        <v-btn to="/roles/hr" style="color: #664229;" class="mr-16 my-6 custom-button" @mouseover="hoverButton('cancel')" @mouseout="resetButtonColor('cancel')" large color="#c1ad98">
           Cancel
         </v-btn>
         <v-btn
@@ -113,7 +113,7 @@
   iconColor="success"
   iconSize="112"
   @close-overlay="toggleOverlay"
-  route="/openroles/hr"
+  route="/roles/hr"
   ></OverlayMessage>
 
   <!-- failure message with overlay -->
@@ -127,7 +127,7 @@
   iconColor="red"
   iconSize="112"
   @close-overlay="toggleOverlay"
-  route="/openroles/hr"
+  route="/roles/hr"
   ></OverlayMessage>
 </template>
 
