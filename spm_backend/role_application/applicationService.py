@@ -80,6 +80,18 @@ class Application():
             combined_list.append(combined_data)
         return combined_list
     
+    def get_role_application_by_listing_id(role_listing_id):
+        try:
+            role_application_response = RoleApplication.query.filter(RoleApplication.role_listing_id == role_listing_id).all()
+            if not role_application_response:
+                raise Exception("No application found for role listing with ID: " + str(role_listing_id))
+            applicants_list = [role_application.staff_id for role_application in role_application_response]
+            return jsonify({
+                'message': 'Applicants retrieved successfully',
+                'applicants_list': applicants_list
+            }), 200
+        except Exception as e:
+            raise Exception("No applicants found")
     def get_role_applications_for_all_listings():
         listings = Listing.get_all_listing()
         applications = RoleApplication.query.all()

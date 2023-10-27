@@ -20,7 +20,7 @@
       <v-row class="text-center">
         <v-col>
           <v-btn @click="saveChanges" class="mt-3 mr-3" color="#ccbbaa" :loading="loading" :disabled="!isConfirmButtonEnabled">Save Changes</v-btn>
-          <v-btn to="/openroles/hr" class="mt-3" color="#ccbbaa" :loading="loading">Discard Changes</v-btn>
+          <v-btn to="/roles/hr" class="mt-3" color="#ccbbaa" :loading="loading">Discard Changes</v-btn>
         </v-col>
       </v-row>
     </div>
@@ -36,7 +36,7 @@
       iconColor="success"
       iconSize="112"
       @close-overlay="toggleOverlay"
-      route="/openroles/hr"
+      route="/roles/hr"
     ></OverlayMessage>
 
   <!-- failure message with overlay -->
@@ -50,7 +50,7 @@
       iconColor="red"
       iconSize="112"
       @close-overlay="toggleOverlay"
-      route="/openroles/hr"
+      route="/roles/hr"
       ></OverlayMessage>
 
   </template>
