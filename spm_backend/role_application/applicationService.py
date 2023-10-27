@@ -92,3 +92,52 @@ class Application():
             }), 200
         except Exception as e:
             raise Exception("No applicants found")
+    def get_role_applications_for_all_listings():
+        listings = Listing.get_all_listing()
+        applications = RoleApplication.query.all()
+        application_list = []
+        for application in applications:
+            application_data = {
+                'id': application.id,
+                'application_date': application.application_date,
+                'role_listing_id': application.role_listing_id,
+                'staff_id': application.staff_id,
+            }
+            application_list.append(application_data)
+        combined_list = []
+        for listing in listings:
+            applicants = []
+            for application in application_list:
+                if application['role_listing_id'] == listing['id']:
+                    applicants.append({'id': application['id'], 'application_date': application['application_date'], 'staff_id': application['staff_id']})
+            combined_data = {
+                'id': listing['id'],
+                'role_name': listing['role_name'],
+                'skills': listing['skills'],
+                'country': listing['country'],
+                'dept': listing['dept'],
+                'is_open': listing['is_open'],
+                'reporting_manager': listing['reporting_manager'],
+                'applicants': applicants
+            }
+            combined_list.append(combined_data)
+        return combined_list
+    
+    def delete_role_application(data):
+        listing_data, listing_data_status = Listing.get_listing_by_index(data['role_listing'])
+        # if listing does not exist
+        if listing_data_status == 404:
+            return jsonify({'message': 'Role application at index does not exist'}), 404
+        # if listing exists
+        else:
+            # check if staff applied for listing
+            existing_application = db.session.query(RoleApplication).filter_by(
+                staff_id=data['staff_id'],
+                role_listing_id=data['role_listing']
+            ).first()
+            if existing_application:
+                db.session.delete(existing_application)
+                db.session.commit()
+                return jsonify({'message': 'Role application deleted successfully'}), 201
+            else:
+                return jsonify({'message': 'You have not applied for this role listing'}), 400

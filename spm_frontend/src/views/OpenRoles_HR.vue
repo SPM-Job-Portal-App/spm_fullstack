@@ -31,6 +31,17 @@
         <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAvailableRoles" :key="index">
           <!-- Listing Card with Margin -->
           <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
+            <!-- Badge to indicate open or closed listing (Top Left) -->
+            <span class="ml-5">
+              <v-badge v-if="!listing.is_open"
+                color="error"
+                content="Closed"
+              ></v-badge>
+              <v-badge v-else
+                color="success"
+                content="Open"
+              ></v-badge>
+            </span>
             <!-- Edit Button (Top Right) -->
             <v-btn icon class="edit-button" @click="editListing(listing.id)">
               <v-icon>mdi-pencil</v-icon>
@@ -91,7 +102,7 @@
     }),
     mounted()
     {
-      axios.get('http://localhost:5000/application').then(
+      axios.get('http://localhost:5000/application/getapplications').then(
         (response)=>{
           this.availableRoles = response.data[0];
           console.log(this.availableRoles)

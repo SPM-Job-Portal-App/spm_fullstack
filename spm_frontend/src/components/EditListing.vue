@@ -99,7 +99,7 @@
     },
     mounted()
     {
-      axios.get('http://localhost:5000/listing/get_open_listings').then(
+      axios.get('http://localhost:5000/listing/get_all_listings').then(
         (response)=>{
           const listings = response.data;
           for (let item of listings){

@@ -41,6 +41,11 @@ def edit_role_listing_data_by_id(id):
         return jsonify({'error': str(e)}), 500
     
 # Read all role listings
-@listing_bp.route('/', methods=['GET'])
+@listing_bp.route('/get_all_listings', methods=['GET'])
 def get_all_role_listings():
-    return jsonify(Listing.get_all_listing(), 200)
+    try:
+        response = Listing.get_all_listing()
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
