@@ -60,11 +60,13 @@ const routes = [
         path: '/edit-listing/:index',
         name: 'edit-listing',
         component: () => import('@/components/EditListing.vue'),
+        meta: { requiresAuth: true, allowedRoles: [1,4] },
       },
       {
         path: '/view-applicants/:id',
         name: 'view-applicants',
         component: () => import('@/views/ViewApplicants.vue'),
+        meta: { requiresAuth: true, allowedRoles: [1,3,4] },
       },
     ],
   },
