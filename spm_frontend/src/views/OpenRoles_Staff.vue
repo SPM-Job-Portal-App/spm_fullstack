@@ -273,7 +273,7 @@
             </v-col>
           </v-row>
         </v-window-item>
-        <skills-overlay v-model="skillsOverlay" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
+        <skills-overlay v-model="skillsOverlay" :useAcquiredSkills="false" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
       </v-window>
     </v-card-text>
   </v-card>
@@ -293,7 +293,7 @@ export default {
     availableRoles: [],
     appliedRoles: [],
     skillsOverlay: false,
-    id: 1,
+    id: 130001,
     showSkills: false,
     acquiredSkills: [
       'Account Management',

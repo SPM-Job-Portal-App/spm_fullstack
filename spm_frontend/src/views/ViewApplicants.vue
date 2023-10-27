@@ -1,10 +1,10 @@
 <template>
-    <v-card class>
+    <v-card class height="100%">
       <!-- Title -->
-      <h1 class="page-title ml-8">Job Listings</h1>
+      <h1 class="page-title ml-8">Applicants</h1>
   
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="5">
           <!-- Filter by Department Dropdown -->
           <v-select
             v-model="selectedDepartment"
@@ -15,7 +15,7 @@
           ></v-select>
         </v-col>
 
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="5">
           <!-- Filter by Country Dropdown -->
           <v-select
             v-model="selectedCountry"
@@ -25,119 +25,162 @@
             class="ml-8"
           ></v-select>
         </v-col>
+
+        <v-col cols="12" md="1" class="d-flex justify-center">
+          <v-btn icon @click="sortApplicants()" :color="sort ? '#eae4dd' : 'white'">
+            <v-icon>mdi-filter-variant</v-icon>
+          </v-btn>
+        </v-col>
       </v-row>
   
-      <v-row class="ml-4">
-        <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAvailableRoles" :key="index">
-          <!-- Listing Card with Margin -->
+      <v-row v-if="applicants.length > 0" class="ml-4">
+        <v-col cols="12" sm="6" md="4" lg="3" v-for="(applicant, index) in filteredApplicants" :key="index">
+          <!-- Applicant Card with Margin -->
           <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
-            <!-- Badge to indicate open or closed listing (Top Left) -->
-            <span class="ml-5">
-              <v-badge v-if="!listing.is_open"
-                color="error"
-                content="Closed"
-              ></v-badge>
-              <v-badge v-else
-                color="success"
-                content="Open"
-              ></v-badge>
-            </span>
-            <!-- Edit Button (Top Right) -->
-            <v-btn icon class="edit-button" @click="editListing(listing.id)" v-show="[1,4].includes(currentRole.roleId)">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
             <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
             <div class="d-flex align-center justify-center department-icon-container">
               <!-- Department Icon -->
-              <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
+              <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(applicant.dept) }}</v-icon>
             </div>
-            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ listing.role_name }}</div>
-            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ listing.dept }} - {{ listing.country }}</div>
-            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 12px;">Skills Required</div>
-            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
-              <v-chip
-                v-for="skill in listing.skills.split(', ').slice(0,4)"
-                :key="skill"
-                :prepend-icon="getSkillIcon(skill)"
-                class="ma-1"
-                style="font-size: 12px;"
-              >
-                {{ skill || 'None' }}
-              </v-chip>
-              <div
-                v-if="listing.skills.split(', ').length > 4"
-                class="text-grey text-caption align-self-center"
-              >
-                (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
+            <div class="text-center mt-2" style="color: #664229; padding-top: 10px; font-size: 18px; font-weight: bold;">{{ applicant.staff_first_name }} {{ applicant.staff_last_name }}</div>
+            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ applicant.dept }} - {{ applicant.country }}</div>
+            <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">{{ applicant.email }}</div>
+            <v-card-text>
+              <div class="text-center mt-2">
+                <v-chip
+                  class="text-center"
+                  color=#664229
+                  style="font-size: 12px;"
+                  @click="showSkillsOverlay(applicant.skills)"
+                >
+                  Skills Matched: {{ calculateSkillPercentage(applicant.skills) }}
+                </v-chip>
               </div>
-            </div>
-            <div class="text-center mt-3 mb-6">
-              <!-- Number of Applicants -->
-              <v-btn @click="viewApplicants(listing.id)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
-                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
-              </v-btn>
-            </div>
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
+      <v-row v-else-if="loading" class="d-flex align-center justify-center h-75">
+        <v-col cols="auto">
+          <h2>Loading...</h2>
+        </v-col>
+      </v-row>
+      <v-row v-else class="d-flex align-center justify-center h-75">
+        <v-col cols="auto">
+          <h2>No Applicants</h2>
+        </v-col>
+      </v-row>
     </v-card>
-    <v-card-actions v-show="[1,4].includes(currentRole.roleId)">
-      <v-btn
-        class="add-button"
-        to="/createrolelisting"
-        icon
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-card-actions>
+    <skills-overlay v-model="skillsOverlay" :useAcquiredSkills="true" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
   </template>
   
   <script>
   import axios from'axios';
+  import SkillsOverlay from '../components/SkillsOverlay.vue';
   export default {
+    components: {SkillsOverlay},
     data: () => ({
       selectedDepartment: "All",
       selectedCountry: "All",
-      availableRoles: [],
-      currentRole: { 'roleTitle': 'None', 'roleId': 0 }
+      staffIds: [],
+      applicants: [],
+      roleListingId: null,
+      acquiredSkills: null,
+      listing: null,
+      skillsOverlay: false,
+      showSkills: false,
+      listingData: Object,
+      loading: true,
+      sort: false
     }),
     mounted()
     {
-      axios.get('http://localhost:5000/application/getapplications').then(
+      this.roleListingId = this.$route.params.id
+      axios.get(`http://localhost:5000/listing/${this.roleListingId}`)
+      .then(
         (response)=>{
-          this.availableRoles = response.data[0];
-          console.log(this.availableRoles)
+          this.listing = response.data;
+          if (this.listing) {
+            axios.get(`http://localhost:5000/roleskill/get_skills_by_role_name/${this.listing.role_name}`)
+            .then(
+              (res)=>{
+                this.listing['skills'] = res.data || [];
+                console.log(this.listing);
+              }
+            )
+          }
         }
-      ),
-      this.currentRole = { 'roleTitle': this.$cookies.get('roleTitle'), 'roleId': parseInt(this.$cookies.get('roleId')) }
+      )
+      axios.get(`http://localhost:5000/application/get_applicants/${this.roleListingId}`)
+      .then(
+        (response,)=>{
+          this.staffIds = response.data.applicants_list;
+          if (this.staffIds) {
+            const requests = this.staffIds.map((staffId) => {
+              return axios.get(`http://localhost:5000/staff/get_staff_by_id/${staffId}`)
+              .then(
+                (res)=>{
+                  if(res.data && res){
+                    const tempApplicant = res.data;
+                    tempApplicant['id'] = staffId
+                    return axios.get(`http://localhost:5000/staffskill/get_staff_skills/${staffId}`)
+                    .then(
+                      (r)=>{
+                        tempApplicant['skills'] = r.data;
+                        if(this.listing != null && this.listing.skills != null){
+                          const requiredSkillsArr = this.listing.skills;
+                          const totalSkills = requiredSkillsArr.length;
+                          const acquiredSkillsCount = requiredSkillsArr.filter(skill => tempApplicant['skills'].includes(skill)).length;
+                          const percentage = ((acquiredSkillsCount / totalSkills) * 100).toFixed(2);
+                          tempApplicant['skillsMatch'] = parseFloat(percentage)
+                        }
+                        this.applicants.push(tempApplicant);
+                      }
+                    )
+                  }
+                }
+              )
+            })
+            Promise.all(requests)
+              .then(() => {
+                this.loading = false;
+                console.log(this.applicants);
+              })
+              .catch(() => {
+                this.loading = false;
+              })
+          }
+        }
+      )
+      .catch(() => {
+        this.loading = false;
+      })
     },
     computed: {
       departmentOptions() {
-        const departments = [...new Set(this.availableRoles.map((role) => role.dept))];
+        const departments = [...new Set(this.applicants.map((applicant) => applicant.dept))];
         return ['All', ...departments];
       },
       countryOptions() {
-          const countries = [...new Set(this.availableRoles.map((role) => role.country))];
+          const countries = [...new Set(this.applicants.map((applicant) => applicant.country))];
           console.log(countries); 
           return ['All', ...countries];
       },
-      filteredAvailableRoles() {
-        return this.availableRoles.filter((role) => {
-          const departmentMatch = this.selectedDepartment === 'All' || role.dept === this.selectedDepartment;
-          const countryMatch = this.selectedCountry === 'All' || role.country === this.selectedCountry;
+      filteredApplicants() {
+        const filtered = this.applicants.filter((applicant) => {
+          const departmentMatch = this.selectedDepartment === 'All' || applicant.dept === this.selectedDepartment;
+          const countryMatch = this.selectedCountry === 'All' || applicant.country === this.selectedCountry;
           return departmentMatch && countryMatch;
         });
+        if(this.sort) {
+          return filtered.sort((a,b) => b.skillsMatch - a.skillsMatch);
+        }
+        return filtered
       },
     },
     methods: {
-      applyNow(index) {
-        console.log(`Applied for ${this.availableRoles[index].label}`);
-      },
-      viewApplicants(id) {
-        this.$router.push({ name: 'view-applicants', params: { id } });
-      },
-      editListing(index) {
-        this.$router.push({ name: 'edit-listing', params: { index } });
+      sortApplicants() {
+        this.sort = !this.sort
       },
       getDepartmentIcon(department) {
         const departmentIcons = {
@@ -153,6 +196,34 @@
           'IT': 'mdi-code-tags'
         };
         return departmentIcons[department] || 'mdi-help-circle';
+      },
+      calculateSkillPercentage(acquiredSkills) {
+        if(this.listing != null && this.listing.skills != null && acquiredSkills != undefined){
+          const requiredSkillsArr = this.listing.skills;
+          console.log('requiredSkillsArr',requiredSkillsArr)
+          const totalSkills = requiredSkillsArr.length;
+          const acquiredSkillsCount = requiredSkillsArr.filter(skill => acquiredSkills.includes(skill)).length;
+  
+          if (totalSkills === 0) {
+            return '0% (0 out of 0)';
+          }
+  
+          const percentage = ((acquiredSkillsCount / totalSkills) * 100).toFixed(2);
+  
+          return `${percentage}% (${acquiredSkillsCount} out of ${totalSkills})`;
+        }
+      },
+      showSkillsOverlay(acquiredSkills) {
+        const tempListingData = { ...this.listing };
+        if (Array.isArray(tempListingData.skills)) {
+          tempListingData.skills = tempListingData.skills.join(',');
+        }
+        this.listingData = tempListingData
+        this.acquiredSkills = acquiredSkills
+        this.skillsOverlay = true;
+      },
+      closeSkillsOverlay() {
+        this.skillsOverlay = false;
       },
       getSkillIcon(skill) {
         const skillIcons = {
@@ -239,9 +310,6 @@
         };
         return skillIcons[skill] || 'mdi-help-circle';
       },
-      getRandomApplicants() {
-        return Math.floor(Math.random() * 10) + 1;
-      },
     },
   };
   </script>
@@ -263,27 +331,4 @@
   .department-icon {
     font-size: 100px;
   }
-  
-  .edit-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1;
-    color: #664229;
-  }
-
-  .add-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1;
-    color: white;
-    background-color: #664229;
-  }
-
-  .numapp {
-    font-weight: bold;
-    /* font-size: 24px; */
-  }
-
   </style>

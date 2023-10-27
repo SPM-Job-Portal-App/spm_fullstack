@@ -44,3 +44,15 @@ class StaffSkillService():
             db.session.commit()
             
         return jsonify({'message': 'Roles Updated'}), 201
+    
+    def get_staff_skills(id):
+        try:
+            staff_skills_response = StaffSkill.query.filter(StaffSkill.staff_id == id)
+            if not staff_skills_response:
+                raise Exception("No skills found for staff with ID: " + str(id))
+            skills_list = [skill.skill_name for skill in staff_skills_response]
+            return skills_list
+            # for skill in staff_skills_response:
+            #     skills_list.append(skill.skill_name)
+        except Exception as e:
+            raise Exception("No skills found")
