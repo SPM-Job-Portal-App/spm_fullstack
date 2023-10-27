@@ -40,8 +40,7 @@
         items: [
           {name: "Home", icon: "mdi-home", routerLink: "/"},
           {name: "Open Roles", icon: "mdi-briefcase", routerLink: "/openroles/staff"},
-          {name: "Candidates", icon: "mdi-account-group", routerLink: "/candidates"},
-          {name: "Settings", icon: "mdi-cog", routerLink: "/settings"}
+          {name: "Applications", icon: "mdi-account-group", routerLink: "/roles/hr"},
         ],
         drawer: true,
         roles: [
@@ -54,21 +53,20 @@
       }
     },
     mounted() {
-      if(this.currentRole.roleTitle == 'None') {
-        this.$cookies.set('roleId', 1, 1)
-        this.$cookies.set('roleTitle', 'Admin', 1)
-        this.currentRole = { 'roleTitle': 'Admin', 'roleId': 1 }
-      } else {
-        this.currentRole = { 'roleTitle': this.$cookies.get('roleTitle'), 'roleId': this.$cookies.get('roleId') }
-      }
+      this.currentRole = { 'roleTitle': this.$cookies.get('roleTitle'), 'roleId': this.$cookies.get('roleId') }
       console.log(this.$cookies.get('roleId'),this.$cookies.get('roleTitle'))
     },
     methods: {
       setCookie(selectedRole) {
-        this.$cookies.set('roleId', selectedRole.id, 1);
-        this.$cookies.set('roleTitle', selectedRole.title, 1);
+        this.$cookies.set('roleId', selectedRole.id, { expires: '1D', path: '/' });
+        this.$cookies.set('roleTitle', selectedRole.title, { expires: '1D', path: '/' });
         this.currentRole.roleTitle = selectedRole.title
         this.currentRole.roleId = selectedRole.id
+        if([1,2].includes(selectedRole.id)){
+          this.$router.push('/');
+        } else if([1,3,4].includes(selectedRole.id)){
+          this.$router.push('/');
+        }
         console.log(this.$cookies.get('roleId'),this.$cookies.get('roleTitle'))
       },
     }

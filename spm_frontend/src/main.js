@@ -25,6 +25,11 @@ const app = createApp(App)
 app.use(setupCalendar, {})
 app.use(VueCookies)
 
+if(app.$cookies.get('roleId') == null) {
+    app.$cookies.set('roleId', 1, { expires: '1D', path: '/' }) 
+    app.$cookies.set('roleTitle', 'Admin', { expires: '1D', path: '/' })
+}
+
 // Use the components
 app.component('VCalendar', Calendar)
 app.component('VDatePicker', DatePicker)
