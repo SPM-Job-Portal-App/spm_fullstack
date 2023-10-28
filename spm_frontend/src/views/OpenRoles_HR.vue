@@ -77,6 +77,12 @@
                 View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
               </v-btn>
             </div>
+            <div class="text-center mt-3 mb-6">
+              <!-- Button to close role listing -->
+              <v-btn :disabled=!listing.is_open @click="closeRoleListing(listing.id)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
+                Close role listing
+              </v-btn>
+            </div>
           </v-card>
         </v-col>
       </v-row>
@@ -128,6 +134,12 @@
       },
     },
     methods: {
+      closeRoleListing(index) {
+        axios.put('http://localhost:5000/listing/close_role_listing/' + index)
+        .then(response => {
+          console.log(response)
+        })
+      },
       applyNow(index) {
         console.log(`Applied for ${this.availableRoles[index].label}`);
       },
