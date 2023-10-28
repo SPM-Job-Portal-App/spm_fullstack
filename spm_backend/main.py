@@ -11,9 +11,19 @@ from models.model import db
 from flask_cors import CORS
 import importlib
 import threading
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+from flask import Flask
+import os
 
 app = Flask(__name__)
 CORS(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+
 
 def drop_tables():
     with app.app_context():
@@ -40,7 +50,7 @@ def start_test_cronjob():
 def test():
     return "test"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
+
 
 
 db.init_app(app)
