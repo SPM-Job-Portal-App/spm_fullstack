@@ -6,13 +6,13 @@ on:
       - main
     paths:
       - "spm_backend/**"
-      - ".github/workflow/aws.yaml"
+      - ".github/workflow/docker.yaml"
   pull_request:
     branches:
       - main
     paths:
       - "spm_backend/**"
-      - ".github/workflow/aws.yaml"
+      - ".github/workflow/docker.yaml"
 
 jobs:
   docker:
