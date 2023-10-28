@@ -141,15 +141,15 @@
             listingData: [],
             feedbackMessage: ''
         }),
-        mounted() {
-            // const id = this.$route.params.id;
-            // axios.get(`http://localhost:5000/listing/${id}`).then(
-            //     (response)=>{
-            //         this.listingData = response.data;
-            //         console.log(this.listingData)
-            //     }
-            // )
-        },
+        // mounted() {
+        //     const id = this.$route.params.id;
+        //     axios.get(`http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/role/`).then(
+        //         (response)=>{
+        //             this.listingData = response.data;
+        //             console.log(this.listingData)
+        //         }
+        //     )
+        // },
         methods: {
             isValid() {
                 if(this.$refs.form){
@@ -164,7 +164,7 @@
                         "role_listing": id,
                         "staff_id": 1
                     }
-                    axios.post('http://localhost:5000/application', application_data)
+                    axios.post('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/application', application_data)
                     .then(
                         (response)=>{
                             this.successOverlay = true
