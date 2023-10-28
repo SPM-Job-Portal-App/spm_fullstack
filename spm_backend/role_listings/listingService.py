@@ -255,3 +255,27 @@ class Listing():
         except Exception as e:
             db.session.rollback()
             return {"message": "An error occurred while updating the Role Listing"}, 500
+        
+    # close role listing
+    def close_role_listing(id):
+        # get the role listing by id
+        # update the field is_open from true to false
+
+        listing = db.session.query(RoleListing).filter(RoleListing.id == id).first()
+        
+        # if listing is None
+        if not listing:
+            raise Exception(f"Listing with id {id} not found so cannot close it!")
+        
+        # check whether role listing is already closed. If already closed then raise Exception
+        if not listing.is_open:
+            raise Exception(f"Listing with id {id} already closed and so cannot be closed again!")
+        
+        # if not, can update to close
+        try:
+            db.session.query(RoleListing).filter(RoleListing.id == id).update({'is_open': False})
+            db.session.commit()
+            return {'message': f"Role listing with id {id} closed successfully"}, 200
+        except Exception as e:
+            return {'message': f"An error occurred while closing role listing with id {id}"}, 500
+            
