@@ -6,7 +6,7 @@
       rounded="lg"
       width="100%"
       class="pa-4 text-center mx-auto"
-      style="background-color: #eae4dd; color: #664229;"
+      style="background-color: #eae4dd; color: #664229; overflow-y: auto; max-height: 80vh;"
     >
       <h2 class="text-h5 mb-6 sheet-header">Required Skills</h2>
 
