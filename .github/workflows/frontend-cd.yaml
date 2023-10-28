@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "spm_frontend/**"
+      - ".github/workflow/frontend-cd.yaml"
   pull_request:
     branches:
       - main
+    paths:
+      - "spm_frontend/**"
+      - ".github/workflow/frontend-cd.yaml"
 
 jobs:
   build:
