@@ -96,15 +96,45 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-card-actions>
+
+    <!-- success message with overlay -->
+    <OverlayMessage
+    :show.sync="successOverlay"
+    title="Role Listing Closed Successfully"
+    buttonText="Done"
+    buttonColor="success"
+    icon="mdi-check-circle"
+    iconColor="success"
+    iconSize="112"
+    @close-overlay="toggleOverlay"
+    route="/roles/hr"
+    ></OverlayMessage>
+
+    <!-- failure message with overlay -->
+    <OverlayMessage
+    :show.sync="failureOverlay"
+    title="Error Closing Role Listing"
+    buttonText="Close"
+    buttonColor="red"
+    icon="mdi-close-circle"
+    iconColor="red"
+    iconSize="112"
+    @close-overlay="toggleOverlay"
+    route="/roles/hr"
+    ></OverlayMessage>
+
   </template>
   
   <script>
   import axios from'axios';
+  import OverlayMessage from "../components/OverlayMessage.vue";
   export default {
     data: () => ({
       selectedDepartment: "All",
       selectedCountry: "All",
       availableRoles: [],
+      successOverlay: false,
+      failureOverlay: false,
     }),
     mounted()
     {
@@ -134,10 +164,20 @@
       },
     },
     methods: {
+        toggleOverlay(){
+        this.loading = false
+        this.successOverlay = false
+        this.failureOverlay = false
+      },
       closeRoleListing(index) {
         axios.put('http://localhost:5000/listing/close_role_listing/' + index)
         .then(response => {
           console.log(response)
+          this.successOverlay = true;
+        })
+        .catch(error => {
+          this.failureOverlay = true;
+          console.log(error)
         })
       },
       applyNow(index) {
@@ -252,6 +292,9 @@
       getRandomApplicants() {
         return Math.floor(Math.random() * 10) + 1;
       },
+    },
+    components: {
+      OverlayMessage
     },
   };
   </script>
