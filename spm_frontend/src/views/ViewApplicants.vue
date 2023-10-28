@@ -140,7 +140,7 @@
       showSkills: false,
       listingData: Object,
       loading: true,
-      sort: false
+      sort: true
     }),
     mounted()
     {
@@ -223,8 +223,9 @@
         });
         if(this.sort) {
           return filtered.sort((a,b) => b.skillsMatch - a.skillsMatch);
+        } else {
+          return filtered.sort((a,b) => a.skillsMatch - b.skillsMatch);
         }
-        return filtered
       },
     },
     methods: {
