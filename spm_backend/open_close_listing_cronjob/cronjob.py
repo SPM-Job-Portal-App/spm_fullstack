@@ -41,9 +41,8 @@ class Cronjob():
 
                 # FOR OPENING ROLE LISTING
                 # check:
-                # 1. if today's date is the opening date for the role listing OR
-                # 2. if the app is not on every day, then for some days, this timer is not activated to open role listings
-                if opening_date == today_date or (opening_date < today_date and today_date < closing_date):
+                # if today's date is the opening date for the role listing
+                if opening_date == today_date:
                     # update role listing from closed to open
                     listing_id = listing['id']
                     db.session.query(RoleListing).filter(RoleListing.id == listing_id).update({'is_open': True})
