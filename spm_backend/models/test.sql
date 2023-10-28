@@ -28,6 +28,10 @@ INSERT INTO staff (staff_first_name, staff_last_name, dept, country, email, role
     ('Jane', 'Smith', 'HR', 'Canada', 'jane.smith@example.com', 2),
     ('Robert', 'Johnson', 'Sales', 'UK', 'robert.johnson@example.com', 3);
 
+INSERT INTO staff_skill (staff_id, skill_name )
+VALUES
+    (2, "Project Management");
+
 -- Insert dummy data into the RoleListing table
 INSERT INTO role_listing (role_name, country, dept, is_open, opening_date, closing_date, reporting_manager) VALUES
     ('Admin', 'USA', 'IT', true, '2023-10-01', '2023-11-01', 1),
