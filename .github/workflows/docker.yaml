@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "spm_backend/**"
+      - ".github/workflow/aws.yaml"
   pull_request:
     branches:
       - main
+    paths:
+      - "spm_backend/**"
+      - ".github/workflow/aws.yaml"
 
 jobs:
   docker:
