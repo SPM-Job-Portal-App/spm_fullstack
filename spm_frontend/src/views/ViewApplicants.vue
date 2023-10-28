@@ -51,6 +51,16 @@
                   class="text-center"
                   color=#664229
                   style="font-size: 12px;"
+                  @click="showApplicantSkillsOverlay(applicant.skills)"
+                >
+                  Show Applicant Skills
+                </v-chip>
+              </div>
+              <div class="text-center mt-2">
+                <v-chip
+                  class="text-center"
+                  color=#664229
+                  style="font-size: 12px;"
                   @click="showSkillsOverlay(applicant.skills)"
                 >
                   Skills Matched: {{ calculateSkillPercentage(applicant.skills) }}
@@ -72,6 +82,44 @@
       </v-row>
     </v-card>
     <skills-overlay v-model="skillsOverlay" :useAcquiredSkills="true" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
+    <v-overlay v-model="applicantSkillsOverlay" class="align-center justify-center">
+      <v-sheet
+        elevation="12"
+        max-width="800"
+        rounded="lg"
+        width="100%"
+        class="pa-4 text-center mx-auto"
+        style="background-color: #eae4dd; color: #664229; overflow-y: auto; max-height: 80vh;"
+      >
+        <h2 class="text-h5 mb-6 sheet-header">Applicant Skills</h2>
+        <div class="text-medium-emphasis text-body-2">
+          <ul v-if="acquiredSkills.length != 0" style="margin-top: 15px; list-style-type: none">
+            <li class="skill-row" v-for="skill in acquiredSkills" :key="skill">
+              <v-chip
+                :prepend-icon="getSkillIcon(skill)"
+                class="ma-1"
+                style="font-size: 12px; color: #664229;"
+              >
+              {{skill}}
+              </v-chip>
+            </li>
+          </ul>
+          <b v-else>No skills!</b>
+        </div>
+        <v-divider class="mb-4"></v-divider>
+        <div class="text-end">
+          <v-btn
+            class="text-none"
+            rounded
+            variant="flat"
+            width="90"
+            @click="closeApplicantSkillsOverlay"
+          >
+            Close
+          </v-btn>
+        </div>
+      </v-sheet>
+    </v-overlay>
   </template>
   
   <script>
@@ -88,6 +136,7 @@
       acquiredSkills: null,
       listing: null,
       skillsOverlay: false,
+      applicantSkillsOverlay: false,
       showSkills: false,
       listingData: Object,
       loading: true,
@@ -224,6 +273,13 @@
       },
       closeSkillsOverlay() {
         this.skillsOverlay = false;
+      },
+      closeApplicantSkillsOverlay() {
+        this.applicantSkillsOverlay = false;
+      },
+      showApplicantSkillsOverlay(acquiredSkills) {
+        this.applicantSkillsOverlay = true;
+        this.acquiredSkills = acquiredSkills;
       },
       getSkillIcon(skill) {
         const skillIcons = {
