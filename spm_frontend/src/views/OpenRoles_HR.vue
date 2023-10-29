@@ -168,6 +168,7 @@
         this.loading = false
         this.successOverlay = false
         this.failureOverlay = false
+        window.location.reload();
       },
       closeRoleListing(index) {
         axios.put('http://localhost:5000/listing/close_role_listing/' + index)
