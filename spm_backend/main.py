@@ -11,9 +11,19 @@ from models.model import db
 from flask_cors import CORS
 import importlib
 import threading
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+from flask import Flask
+import os
 
 app = Flask(__name__)
 CORS(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+
 
 def drop_tables():
     with app.app_context():
@@ -36,7 +46,13 @@ def start_test_cronjob():
     cronjob_class = getattr(cronjob_module, "TestCronjob")
     cronjob_class.open_close_role_listing_cronjob()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
+@app.route('/')
+def test():
+    return "test"
+
+
+
+
 db.init_app(app)
 initialize_databases()
 app.register_blueprint(listing_bp, url_prefix='/listing')
@@ -56,5 +72,5 @@ if __name__ == '__main__':
     # cronjob_thread.start()
 
     # debug = True does not work well with multithreading because once you save some code and the Flask server restarts, there will be some error. So I commented out the "cronjob_thread.start()" line. If you want to use it, set change debug to False and uncomment the line
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 

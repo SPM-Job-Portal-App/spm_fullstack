@@ -171,14 +171,14 @@ export default {
   },
   mounted()
   {
-    axios.get('http://localhost:5000/role').then(
+    axios.get('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/role').then(
         (response)=>{
           for(const idx in response.data.roles){
             this.roleOptions.push(response.data.roles[idx].Role)
           }
         }
       )
-    axios.get('http://localhost:5000/staff/get_staff').then(
+    axios.get('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/staff/get_staff').then(
       (response)=>{
         for(const staff of response.data.staff){
           if(staff.Role == 3){
@@ -235,7 +235,7 @@ export default {
           closing_date: `${this.closingDate.getFullYear()}-${this.closingDate.getMonth()+1}-${this.closingDate.getDate()}`
         }
         console.log(listing)
-        axios.post('http://localhost:5000/listing/create', listing)
+        axios.post('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/listing/create', listing)
           .then(
             (response)=>{
                 this.successOverlay = true

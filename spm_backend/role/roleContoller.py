@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint
-from models.model import db;
+
 from models.role_model import Role;
 from role.roleService import RoleService;
 role_bp = Blueprint('role', __name__)
@@ -21,7 +21,7 @@ def get_roles():
     return jsonify(
         {
             "code": 404,
-            "message": "There are no crops."
+            "message": "There are no roles."
         }
     ), 404
 
