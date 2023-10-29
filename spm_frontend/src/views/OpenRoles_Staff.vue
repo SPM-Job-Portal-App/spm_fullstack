@@ -122,7 +122,7 @@
             <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAppliedRoles" :key="index">
               <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd; position: relative;">
                 <!-- Close Button -->
-                <v-btn icon class="cancel-button" style="margin-left: 4px; margin-top: 6px" @click="cancelApplication(listing)">
+                <v-btn icon class="cancel-button" style="margin-left: 4px; margin-top: 6px" @click="deleteApplication(listing)">
                   <v-icon color="#664229">mdi-close</v-icon>
                 </v-btn>
                 <div class="d-flex align-center justify-center department-icon-container">
@@ -157,6 +157,7 @@
           </v-row>
         </v-window-item>
         <skills-overlay v-model="skillsOverlay" :useAcquiredSkills="false" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
+        <cancel-application v-model="deleteApplicationOverlay" :role_name=deleteApplicationRoleName :close_overlay=closeDeleteApplicationOverlay></cancel-application>
       </v-window>
     </v-card-text>
   </v-card>
@@ -166,8 +167,9 @@
 <script>
 import axios from'axios';
 import SkillsOverlay from '../components/SkillsOverlay.vue';
+import CancelApplication from '../components/CancelApplication.vue';
 export default {
-  components: { SkillsOverlay },
+  components: { SkillsOverlay, CancelApplication },
  
   data: () => ({
     tab: 'availableRoles',
@@ -176,6 +178,8 @@ export default {
     availableRoles: [],
     appliedRoles: [],
     skillsOverlay: false,
+    deleteApplicationOverlay: false,
+    deleteApplicationRoleName: null,
     id: 130001,
     showSkills: false,
     acquiredSkills: [
@@ -285,6 +289,25 @@ export default {
   },
   },
   methods: {
+    deleteApplication(listing){
+      let application_data = {
+        "role_listing": listing.id,
+        "staff_id": this.id
+      }
+      axios.delete('http://localhost:5000/application', {
+        data: application_data
+      }).then(
+        (response) => {
+          console.log(response)
+        }
+      )
+      this.deleteApplicationRoleName = listing.role_name;
+      this.deleteApplicationOverlay = true;
+    },
+    closeDeleteApplicationOverlay(){
+      this.deleteApplicationOverlay = false;
+      location.reload();
+    },
     getAppliedMatch(role) {
       for(const[key,value] of Object.entries(this.appliedRoles)){
         if(value.id == role.id){
