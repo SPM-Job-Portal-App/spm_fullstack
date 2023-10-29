@@ -48,7 +48,7 @@ def start_test_cronjob():
 
 @app.route('/')
 def test():
-    return "test"
+    return "test to validate"
 
 
 
