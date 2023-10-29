@@ -138,7 +138,7 @@
     }),
     mounted()
     {
-      axios.get('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/application').then(
+      axios.get('http://localhost:5000/application/getapplications').then(
         (response)=>{
           this.availableRoles = response.data[0];
           console.log(this.availableRoles)

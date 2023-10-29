@@ -316,7 +316,7 @@ export default {
   mounted()
     {
     this.halfSkillsCount = Math.ceil(this.acquiredSkills.length / 2);
-      axios.get(`http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/application/${this.id}`).then(
+    axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
           console.log(response.data.applied_role_listings)
           let temp_appliedRoles = []
@@ -329,13 +329,13 @@ export default {
           console.log(this.appliedRoles)
         }
       )
-      axios.get('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/listing/get_open_listings')
+      axios.get('http://localhost:5000/listing/get_open_listings')
       .then(
         (response)=>{
           this.availableRoles = response.data;
           if (response) {
             const roleRequests = response.data.map((role) => {
-              return axios.get(`http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/role/get_role_by_role_name/${role.role_name}`);
+              return axios.get(`http://localhost:5000/role/get_role_by_role_name/${role.role_name}`);
             });
             return Promise.all(roleRequests);
           }

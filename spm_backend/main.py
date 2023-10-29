@@ -22,7 +22,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
 
 
 def drop_tables():
@@ -72,5 +72,5 @@ if __name__ == '__main__':
     # cronjob_thread.start()
 
     # debug = True does not work well with multithreading because once you save some code and the Flask server restarts, there will be some error. So I commented out the "cronjob_thread.start()" line. If you want to use it, set change debug to False and uncomment the line
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='localhost', port=5000, debug=True)
 

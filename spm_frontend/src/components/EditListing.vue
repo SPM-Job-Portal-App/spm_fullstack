@@ -99,7 +99,7 @@
     },
     mounted()
     {
-      axios.get('http://spm-lb-572693943.ap-southeast-2.elb.amazonaws.com/listing/get_open_listings').then(
+      axios.get('http://localhost:5000/listing/get_all_listings').then(
         (response)=>{
           const listings = response.data;
           for (let item of listings){
