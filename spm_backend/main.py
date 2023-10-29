@@ -11,13 +11,6 @@ from models.model import db
 from flask_cors import CORS
 import importlib
 import threading
-import os
-
-from dotenv import load_dotenv
-load_dotenv()
-
-from flask import Flask
-import os
 
 app = Flask(__name__)
 CORS(app)
@@ -45,13 +38,6 @@ def start_test_cronjob():
     cronjob_module = importlib.import_module("open_close_listing_cronjob.test_cronjob")
     cronjob_class = getattr(cronjob_module, "TestCronjob")
     cronjob_class.open_close_role_listing_cronjob()
-
-@app.route('/')
-def test():
-    return "test"
-
-
-
 
 db.init_app(app)
 initialize_databases()
