@@ -7,6 +7,12 @@ on:
     paths:
       - "spm_backend/**"
       - ".github/workflow/aws.yaml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "spm_backend/**"
+      - ".github/workflow/aws.yaml"
 
 env:
   AWS_REGION: ap-southeast-2 # set this to your preferred AWS region, e.g. us-west-1
