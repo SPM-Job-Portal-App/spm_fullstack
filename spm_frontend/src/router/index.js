@@ -33,6 +33,11 @@ const routes = [
         name: 'Apply Open Roles',
         component: () => import('@/views/ApplyOpenRoles.vue'),
       },
+      {
+        path: '/cancel-application/:index',
+        name: 'cancel-application',
+        component: () => import('@/components/CancelApplication.vue'),
+      },
     ],
   },
   {
