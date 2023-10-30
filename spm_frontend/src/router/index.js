@@ -90,12 +90,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const userId = parseInt(VueCookies.get('roleId'))
+  const roleId = parseInt(VueCookies.get('roleId'))
+  const staffRole = parseInt(VueCookies.get('staffRole'))
   const routeMeta = to.meta;
   
-  if (routeMeta.requiresAuth && userId == undefined) {
+  if (routeMeta.requiresAuth && roleId == undefined) {
     next({ name: 'Unauthorised' });
-  } else if (routeMeta.requiresAuth && !routeMeta.allowedRoles.includes(userId)) {
+  } else if (routeMeta.requiresAuth && (!routeMeta.allowedRoles.includes(roleId) || !routeMeta.allowedRoles.includes(staffRole) || roleId != staffRole)) {
     next({ name: 'Unauthorised' }); 
   } else {
     next();

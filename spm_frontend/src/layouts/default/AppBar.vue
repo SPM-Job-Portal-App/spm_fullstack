@@ -54,7 +54,6 @@
     },
     mounted() {
       this.currentRole = { 'roleTitle': this.$cookies.get('roleTitle'), 'roleId': this.$cookies.get('roleId') }
-      console.log(this.$cookies.get('roleId'),this.$cookies.get('roleTitle'))
     },
     methods: {
       setCookie(selectedRole) {

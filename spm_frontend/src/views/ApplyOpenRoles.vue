@@ -130,7 +130,7 @@
             email: '',
             country: '',
             deparment: '',
-            id: 140001,
+            id: '',
             acquiredSkills: [],
             loading: false,
             successOverlay: false,
@@ -139,6 +139,7 @@
             feedbackMessage: ''
         }),
         mounted() {
+            this.id = this.$cookies.get('staffId')
             axios.get(`http://localhost:5000/staff/get_staff_by_id/${this.id}`).then(
                 (response)=>{
                     this.firstName = response.data.staff_first_name;
@@ -162,7 +163,7 @@
                 const id = this.$route.params.id;
                 let application_data = {
                     "role_listing": id,
-                    "staff_id": 130001
+                    "staff_id": this.id
                 }
                 axios.post('http://localhost:5000/application', application_data)
                 .then(

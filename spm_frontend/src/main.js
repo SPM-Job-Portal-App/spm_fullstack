@@ -28,6 +28,8 @@ app.use(VueCookies)
 if(app.$cookies.get('roleId') == null) {
     app.$cookies.set('roleId', 1, { expires: '1D', path: '/' }) 
     app.$cookies.set('roleTitle', 'Admin', { expires: '1D', path: '/' })
+    app.$cookies.set('staffId', 130001, { expires: '1D', path: '/' })
+    app.$cookies.set('staffRole', 1, { expires: '1D', path: '/' })
 }
 
 // Use the components

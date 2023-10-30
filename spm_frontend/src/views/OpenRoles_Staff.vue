@@ -293,7 +293,7 @@ export default {
     availableRoles: [],
     appliedRoles: [],
     skillsOverlay: false,
-    id: 130001,
+    id: '',
     showSkills: false,
     acquiredSkills: [
       'Account Management',
@@ -315,6 +315,7 @@ export default {
   }),
   mounted()
     {
+    this.id = this.$cookies.get('staffId')
     this.halfSkillsCount = Math.ceil(this.acquiredSkills.length / 2);
       axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
