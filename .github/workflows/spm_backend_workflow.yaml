@@ -41,6 +41,10 @@ jobs:
         run: |
           python -c "import mysql.connector; conn = mysql.connector.connect(host='localhost', user='user', password='password', database='db'); conn.close();"
 
+      - name: Test Connection To Database
+        working-directory: spm_backend
+        run: pytest test_database_connection.py
+
       - name: Run Tests
         working-directory: spm_backend
         run: pytest --exitfirst
