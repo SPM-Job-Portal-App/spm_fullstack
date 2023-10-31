@@ -45,6 +45,10 @@ jobs:
         working-directory: spm_backend
         run: pytest test_database_connection.py
 
+      - name: Lint Python Code
+        working-directory: spm_backend
+        run: flake8 test_backend.py
+
       - name: Run Tests
         working-directory: spm_backend
         run: pytest --exitfirst
