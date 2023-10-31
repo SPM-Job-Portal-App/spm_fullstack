@@ -14,10 +14,10 @@
           size="112"
       ></v-icon>
 
-      <h2 class="text-h5 mb-6 sheet-header">Application Deleted Successfully</h2>
+      <h2 class="text-h5 mb-6 sheet-header">Application Cancelled Successfully</h2>
 
       <div class="text-medium-emphasis text-body-2">
-        <h3 style="margin-bottom: 15px">Application for role {{ role_name }} has been deleted suceessfully</h3>
+        <h3 style="margin-bottom: 15px">Application for role {{ role_name }} has been cancelled suceessfully</h3>
       </div>
 
       <v-divider class="mb-4"></v-divider>

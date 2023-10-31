@@ -158,6 +158,7 @@
         </v-window-item>
         <skills-overlay v-model="skillsOverlay" :useAcquiredSkills="false" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
         <cancel-application v-model="deleteApplicationOverlay" :role_name=deleteApplicationRoleName :close_overlay=closeDeleteApplicationOverlay></cancel-application>
+        <error v-model="hasError" :close_overlay=closeErrorOverlay></error>
       </v-window>
     </v-card-text>
   </v-card>
@@ -168,8 +169,9 @@
 import axios from'axios';
 import SkillsOverlay from '../components/SkillsOverlay.vue';
 import CancelApplication from '../components/CancelApplication.vue';
+import Error from '../components/error.vue';
 export default {
-  components: { SkillsOverlay, CancelApplication },
+  components: { SkillsOverlay, CancelApplication, Error },
  
   data: () => ({
     tab: 'availableRoles',
@@ -198,7 +200,8 @@ export default {
       'Data Analysis'],
     halfSkillsCount: 0,
     revealDesc: false,
-    listingData: Object
+    listingData: Object,
+    hasError: false,
   }),
   mounted()
     {
@@ -299,14 +302,23 @@ export default {
       }).then(
         (response) => {
           console.log(response)
+          if (response.status === 201){
+            this.deleteApplicationRoleName = listing.role_name;
+            this.deleteApplicationOverlay = true;
+          }
         }
       )
-      this.deleteApplicationRoleName = listing.role_name;
-      this.deleteApplicationOverlay = true;
+      .catch((err) => {
+        console.log(err);
+        this.hasError = true;
+      })
     },
     closeDeleteApplicationOverlay(){
       this.deleteApplicationOverlay = false;
       location.reload();
+    },
+    closeErrorOverlay(){
+      this.hasError = false;
     },
     getAppliedMatch(role) {
       for(const[key,value] of Object.entries(this.appliedRoles)){
