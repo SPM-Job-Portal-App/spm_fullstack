@@ -120,10 +120,11 @@
         <v-window-item value="appliedRoles">
           <v-row>
             <v-col cols="12" sm="6" md="4" lg="3" v-for="(listing, index) in filteredAppliedRoles" :key="index">
-              <!-- Listing Card with Margin for Applied Roles -->
-            
-              <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd;">
-                <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
+              <v-card class="mt-6 mb-2 ml-1 mr-8" style="background-color: #eae4dd; position: relative;">
+                <!-- Close Button -->
+                <v-btn icon class="cancel-button" style="margin-left: 4px; margin-top: 6px" @click="deleteApplication(listing)">
+                  <v-icon color="#664229">mdi-close</v-icon>
+                </v-btn>
                 <div class="d-flex align-center justify-center department-icon-container">
                   <!-- Department Icon -->
                   <v-icon class="department-icon" color="#664229">{{ getDepartmentIcon(listing.dept) }}</v-icon>
@@ -133,7 +134,7 @@
                 <div class="text-center mt-2" style="color: #664229; padding-bottom: 5px; font-size: 12px;">Reporting Manager: {{ listing.reporting_manager }}</div>
                 <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
                   Application Period: {{ new Date(listing.opening_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }} - {{ new Date(listing.closing_date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) }}
-                </div> 
+                </div>
                 <v-card-text>
                   <div class="text-center mt-2">
                     <v-chip
@@ -146,124 +147,6 @@
                     </v-chip>
                   </div>
                 </v-card-text>
-                
-                <!-- <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
-                  <v-chip
-                    v-for="skill in listing.skills.split(', ').slice(0,4)"
-                    :key="skill"
-                    :color="acquiredSkills.includes(skill) || skill=='Nil' ? 'green' : 'red'"
-                    :prepend-icon="getSkillIcon(skill)"
-                    class="ma-1"
-                    style="font-size: 12px;"
-                  >
-                    {{ skill || 'Nil' }}
-                  </v-chip>
-                  <div
-                    v-if="listing.skills.split(', ').length > 4"
-                    class="text-grey text-caption align-self-center"
-                  >
-                    (+{{ listing.skills.split(', ').length - 4 }} {{ listing.skills.split(', ').length - 4 == 1 ? "other": "others" }})
-                  </div>
-                </div> -->
-                <!-- <div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
-                  <span @mouseenter="showSkills = true" @mouseleave="showSkills = false">
-                    Skills: {{ calculateSkillPercentage(listing.skills) }}
-                  </span>
-                  <div v-if="showSkills" class="skills-tooltip">
-                    <div class="skills-column">
-                      <div v-for="skill in allSkills.slice(0, halfSkillsCount)" :key="skill">
-                        <v-chip
-                          :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
-                          :prepend-icon="getSkillIcon(skill)"
-                          class="ma-1"
-                          style="font-size: 12px;"
-                        >
-                          {{ skill }}
-                        </v-chip>
-                      </div>
-                    </div>
-                    <div class="skills-column">
-                      <div v-for="skill in allSkills.slice(halfSkillsCount)" :key="skill">
-                        <v-chip
-                          :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
-                          :prepend-icon="getSkillIcon(skill)"
-                          class="ma-1"
-                          style="font-size: 12px;"
-                        >
-                          {{ skill }}
-                        </v-chip>
-                      </div>
-                    </div>
-                  </div>
-                </div><div class="text-center mt-2" style="color: #664229; padding-bottom: 10px; font-size: 12px;">
-                  <span @mouseenter="showSkills = true" @mouseleave="showSkills = false">
-                    Skills: {{ calculateSkillPercentage(listing.skills) }}
-                  </span>
-                  <div v-if="showSkills" class="skills-tooltip">
-                    <div class="skills-column">
-                      <div v-for="skill in allSkills.slice(0, halfSkillsCount)" :key="skill">
-                        <v-chip
-                          :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
-                          :prepend-icon="getSkillIcon(skill)"
-                          class="ma-1"
-                          style="font-size: 12px;"
-                        >
-                          {{ skill }}
-                        </v-chip>
-                      </div>
-                    </div>
-                    <div class="skills-column">
-                      <div v-for="skill in allSkills.slice(halfSkillsCount)" :key="skill">
-                        <v-chip
-                          :color="acquiredSkills.includes(skill) ? 'green' : 'red'"
-                          :prepend-icon="getSkillIcon(skill)"
-                          class="ma-1"
-                          style="font-size: 12px;"
-                        >
-                          {{ skill }}
-                        </v-chip>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-                <!-- <v-overlay v-model="showOverlay" @click="closeOverlay" class="align-center justify-center">
-                  <v-sheet
-                    elevation="12"
-                    max-width="600"
-                    rounded="lg"
-                    width="100%"
-                    class="pa-4 text-center mx-auto"
-                  >
-                    <v-icon
-                      class="mb-5"
-                      :color="iconColor"
-                      :icon="icon"
-                      :size="iconSize"
-                    ></v-icon>
-              
-                    <h2 class="text-h5 mb-6">{{ title }}</h2>
-              
-                    <p class="mb-4 text-medium-emphasis text-body-2">
-                      {{ message }}
-                    </p>
-              
-                    <v-divider class="mb-4"></v-divider>
-              
-                    <div class="text-end">
-                      <v-btn
-                        class="text-none"
-                        :color="buttonColor"
-                        rounded
-                        variant="flat"
-                        width="90"
-                        @click="closeOverlay"
-                        :to="route"
-                      >
-                        {{ buttonText }}
-                      </v-btn>
-                    </div>
-                  </v-sheet>
-                </v-overlay> -->
                 <div class="text-center mt-3 mb-6">
                   <v-btn class="mx-auto px-4" color="#ccbbaa" style="padding: 10px 0; font-size: 18px;">
                     View Status
@@ -274,6 +157,7 @@
           </v-row>
         </v-window-item>
         <skills-overlay v-model="skillsOverlay" :useAcquiredSkills="false" :calculateSkillPercentage=calculateSkillPercentage :acquiredSkills=acquiredSkills :getSkillIcon=getSkillIcon :listingData=listingData :closeSkillsOverlay=closeSkillsOverlay></skills-overlay>
+        <cancel-application v-model="deleteApplicationOverlay" :role_name=deleteApplicationRoleName :close_overlay=closeDeleteApplicationOverlay></cancel-application>
       </v-window>
     </v-card-text>
   </v-card>
@@ -283,8 +167,9 @@
 <script>
 import axios from'axios';
 import SkillsOverlay from '../components/SkillsOverlay.vue';
+import CancelApplication from '../components/CancelApplication.vue';
 export default {
-  components: { SkillsOverlay },
+  components: { SkillsOverlay, CancelApplication },
  
   data: () => ({
     tab: 'availableRoles',
@@ -293,6 +178,8 @@ export default {
     availableRoles: [],
     appliedRoles: [],
     skillsOverlay: false,
+    deleteApplicationOverlay: false,
+    deleteApplicationRoleName: null,
     id: 130001,
     showSkills: false,
     acquiredSkills: [
@@ -316,7 +203,7 @@ export default {
   mounted()
     {
     this.halfSkillsCount = Math.ceil(this.acquiredSkills.length / 2);
-    axios.get(`http://localhost:5000/application/${this.id}`).then(
+      axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
           console.log(response.data.applied_role_listings)
           let temp_appliedRoles = []
@@ -402,6 +289,25 @@ export default {
   },
   },
   methods: {
+    deleteApplication(listing){
+      let application_data = {
+        "role_listing": listing.id,
+        "staff_id": this.id
+      }
+      axios.delete('http://localhost:5000/application', {
+        data: application_data
+      }).then(
+        (response) => {
+          console.log(response)
+        }
+      )
+      this.deleteApplicationRoleName = listing.role_name;
+      this.deleteApplicationOverlay = true;
+    },
+    closeDeleteApplicationOverlay(){
+      this.deleteApplicationOverlay = false;
+      location.reload();
+    },
     getAppliedMatch(role) {
       for(const[key,value] of Object.entries(this.appliedRoles)){
         if(value.id == role.id){
