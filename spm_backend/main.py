@@ -15,6 +15,9 @@ import threading
 app = Flask(__name__)
 CORS(app)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
+
+
 def drop_tables():
     with app.app_context():
         db.drop_all()
@@ -36,7 +39,6 @@ def start_test_cronjob():
     cronjob_class = getattr(cronjob_module, "TestCronjob")
     cronjob_class.open_close_role_listing_cronjob()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
 db.init_app(app)
 initialize_databases()
 app.register_blueprint(listing_bp, url_prefix='/listing')

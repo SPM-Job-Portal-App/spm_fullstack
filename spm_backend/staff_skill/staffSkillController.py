@@ -11,3 +11,12 @@ def get_all_skills():
         return response, 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+# Get all staff_skills of a staff with staff_id
+@staff_skill_bp.route('/get_staff_skills/<int:id>')
+def get_staff_skills(id):
+    try:
+        response = StaffSkillService.get_staff_skills(id)
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

@@ -73,8 +73,14 @@
             </div>
             <div class="text-center mt-3 mb-6">
               <!-- Number of Applicants -->
-              <v-btn @click="viewApplicants(index)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
-                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length <= 1 ? "applicant": "applicants" }}
+              <v-btn @click="viewApplicants(listing.id)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
+                View&nbsp; <span class="numapp">{{ listing.applicants.length }}</span> &nbsp;{{ listing.applicants.length == 1 ? "applicant": "applicants" }}
+              </v-btn>
+            </div>
+            <div class="text-center mt-3 mb-6">
+              <!-- Button to close role listing -->
+              <v-btn :disabled=!listing.is_open @click="closeRoleListing(listing.id)" color="#ccbbaa" style="padding: 12px 20px; font-size: 18px;">
+                Close role listing
               </v-btn>
             </div>
           </v-card>
@@ -90,15 +96,45 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-card-actions>
+
+    <!-- success message with overlay -->
+    <OverlayMessage
+    :show.sync="successOverlay"
+    title="Role Listing Closed Successfully"
+    buttonText="Done"
+    buttonColor="success"
+    icon="mdi-check-circle"
+    iconColor="success"
+    iconSize="112"
+    @close-overlay="toggleOverlay"
+    route="/roles/hr"
+    ></OverlayMessage>
+
+    <!-- failure message with overlay -->
+    <OverlayMessage
+    :show.sync="failureOverlay"
+    title="Error Closing Role Listing"
+    buttonText="Close"
+    buttonColor="red"
+    icon="mdi-close-circle"
+    iconColor="red"
+    iconSize="112"
+    @close-overlay="toggleOverlay"
+    route="/roles/hr"
+    ></OverlayMessage>
+
   </template>
   
   <script>
   import axios from'axios';
+  import OverlayMessage from "../components/OverlayMessage.vue";
   export default {
     data: () => ({
       selectedDepartment: "All",
       selectedCountry: "All",
       availableRoles: [],
+      successOverlay: false,
+      failureOverlay: false,
     }),
     mounted()
     {
@@ -128,8 +164,28 @@
       },
     },
     methods: {
+        toggleOverlay(){
+        this.loading = false
+        this.successOverlay = false
+        this.failureOverlay = false
+        window.location.reload();
+      },
+      closeRoleListing(index) {
+        axios.put('http://localhost:5000/listing/close_role_listing/' + index)
+        .then(response => {
+          console.log(response)
+          this.successOverlay = true;
+        })
+        .catch(error => {
+          this.failureOverlay = true;
+          console.log(error)
+        })
+      },
       applyNow(index) {
         console.log(`Applied for ${this.availableRoles[index].label}`);
+      },
+      viewApplicants(id) {
+        this.$router.push({ name: 'view-applicants', params: { id } });
       },
       editListing(index) {
         this.$router.push({ name: 'edit-listing', params: { index } });
@@ -237,6 +293,9 @@
       getRandomApplicants() {
         return Math.floor(Math.random() * 10) + 1;
       },
+    },
+    components: {
+      OverlayMessage
     },
   };
   </script>

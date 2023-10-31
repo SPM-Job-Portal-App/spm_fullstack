@@ -29,6 +29,14 @@ def get_role_applications():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+# get applicants for a role_listing
+@application_bp.route('/get_applicants/<int:role_listing_id>', methods=['GET'])
+def get_applicants(role_listing_id):
+    try:
+        response, status_code = Application.get_role_application_by_listing_id(role_listing_id)
+        return response, status_code
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 # read role applications for all role listings, open and closed
 @application_bp.route('/getapplications', methods=['GET'])
 def get_role_applications_for_all_listings():
