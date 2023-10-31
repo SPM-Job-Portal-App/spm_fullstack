@@ -25,7 +25,7 @@
           width="90"
           @click="close_overlay"
         >
-        Done Ready
+        Done
         </v-btn>
       </div>
     </v-sheet>
