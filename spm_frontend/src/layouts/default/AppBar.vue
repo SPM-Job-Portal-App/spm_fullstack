@@ -2,7 +2,7 @@
   <v-app-bar class="app-bar" flat app>
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     <v-icon class="ml-5" icon="mdi-circle-slice-4" />
-    <v-toolbar-title>{{ currentRole.roleTitle }}</v-toolbar-title>
+    <v-toolbar-title>{{ currentRole.roleTitle }} Interface</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn icon="mdi-help-circle"></v-btn>
     <v-btn icon="mdi-bell"></v-btn>

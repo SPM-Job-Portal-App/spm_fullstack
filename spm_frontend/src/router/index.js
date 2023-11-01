@@ -2,7 +2,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from '@/layouts/default/Default.vue'
 import Home from '@/views/Home.vue'
+import OpenRolesStaff from '@/views/OpenRoles_Staff.vue'
+import OpenRolesHR from '@/views/OpenRoles_HR.vue'
+import ApplyOpenRoles from '@/views/ApplyOpenRoles.vue'
 import Unauthorised from '@/views/Unauthorised.vue'
+import ViewApplicants from '@/views/ViewApplicants.vue'
+import CreateRoleListing from '@/views/CreateRoleListing.vue'
+import CancelApplication from '@/components/CancelApplication.vue'
+import EditListing from '@/components/EditListing.vue'
 import VueCookies from 'vue-cookies'
 
 const routes = [
@@ -30,60 +37,60 @@ const routes = [
   },
   {
     path: '/openroles/staff',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     meta: { requiresAuth: true, allowedRoles: [1,2] },
     children: [
       {
         path: '',
         name: 'Open Roles Staff',
-        component: () => import('@/views/OpenRoles_Staff.vue'),
+        component: OpenRolesStaff,
       },
       {
         path: 'apply/:id',
         name: 'Apply Open Roles',
-        component: () => import('@/views/ApplyOpenRoles.vue'),
+        component: ApplyOpenRoles,
       },
       {
         path: '/cancel-application/:index',
         name: 'cancel-application',
-        component: () => import('@/components/CancelApplication.vue'),
+        component: CancelApplication,
       },
     ],
   },
   {
     path: '/roles/hr',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     meta: { requiresAuth: true, allowedRoles: [1,3,4] },
     children: [
       {
         path: '',
         name: 'Roles HR',
-        component: () => import('@/views/OpenRoles_HR.vue'),
+        component: OpenRolesHR,
         meta: { requiresAuth: true, allowedRoles: [1,3,4] },
       },
       {
         path: '/edit-listing/:index',
         name: 'edit-listing',
-        component: () => import('@/components/EditListing.vue'),
+        component: EditListing,
         meta: { requiresAuth: true, allowedRoles: [1,4] },
       },
       {
         path: '/view-applicants/:id',
         name: 'view-applicants',
-        component: () => import('@/views/ViewApplicants.vue'),
+        component: ViewApplicants,
         meta: { requiresAuth: true, allowedRoles: [1,3,4] },
       },
     ],
   },
   {
     path: '/createrolelisting',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     meta: { requiresAuth: true, allowedRoles: [1,4] },
     children: [
       {
         path: '',
         name: 'Create Role Listing',
-        component: () => import('@/views/CreateRoleListing.vue'),
+        component: CreateRoleListing,
       },
     ],
   },
