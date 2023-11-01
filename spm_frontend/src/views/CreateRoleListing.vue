@@ -178,7 +178,7 @@ export default {
           }
         }
       )
-    axios.get('http://localhost:5000/staff/get_staff').then(
+      axios.get('http://localhost:5000/staff/get_staff').then(
       (response)=>{
         for(const staff of response.data.staff){
           if(staff.Role == 3){

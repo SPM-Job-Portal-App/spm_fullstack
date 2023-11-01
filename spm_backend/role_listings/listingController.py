@@ -49,3 +49,12 @@ def get_all_role_listings():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Close a role listing
+@listing_bp.route('/close_role_listing/<int:id>', methods=['PUT'])
+def close_role_listing(id):
+    try:
+        response = Listing.close_role_listing(id)
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
