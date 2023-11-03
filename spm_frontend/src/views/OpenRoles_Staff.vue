@@ -182,22 +182,9 @@ export default {
     skillsOverlay: false,
     deleteApplicationOverlay: false,
     deleteApplicationRoleName: null,
-    id: 130001,
+    id: '',
     showSkills: false,
-    acquiredSkills: [
-      'Account Management',
-      'Accounting and Tax Systems',
-      'Accounting Standards',
-      'Applications Development',
-      'Budgeting',
-      'Business Presentation Delivery',
-      'Business Requirements Mapping',
-      'Business Risk Management',
-      'Call Centre Management',
-      'Configuration Tracking',
-      'Customer Acquisition Management',
-      'Customer Relationship Management',
-      'Data Analysis'],
+    acquiredSkills: [],
     halfSkillsCount: 0,
     revealDesc: false,
     listingData: Object,
@@ -205,7 +192,7 @@ export default {
   }),
   mounted()
     {
-    this.halfSkillsCount = Math.ceil(this.acquiredSkills.length / 2);
+    this.id = this.$cookies.get('staffId')
       axios.get(`http://localhost:5000/application/${this.id}`).then(
         (response)=>{
           console.log(response.data.applied_role_listings)
@@ -236,6 +223,12 @@ export default {
             this.availableRoles[index]['revealDesc'] = false;
           });
           console.log(this.availableRoles);
+        }
+      )
+      axios.get(`http://localhost:5000/staffskill/get_staff_skills/${this.id}`)
+        .then((response) => {
+          this.acquiredSkills = response.data
+          this.halfSkillsCount = Math.ceil(this.acquiredSkills.length / 2);
         }
       )
     },

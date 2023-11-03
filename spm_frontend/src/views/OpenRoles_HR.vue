@@ -43,7 +43,7 @@
               ></v-badge>
             </span>
             <!-- Edit Button (Top Right) -->
-            <v-btn icon class="edit-button" @click="editListing(listing.id)">
+            <v-btn icon class="edit-button" @click="editListing(listing.id)" v-show="[1,4].includes(currentRole.roleId)">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <!-- Department Icon Container (Centered Both Vertically and Horizontally) -->
@@ -87,7 +87,7 @@
         </v-col>
       </v-row>
     </v-card>
-    <v-card-actions>
+    <v-card-actions v-show="[1,4].includes(currentRole.roleId)">
       <v-btn
         class="add-button"
         to="/createrolelisting"
@@ -135,6 +135,7 @@
       availableRoles: [],
       successOverlay: false,
       failureOverlay: false,
+      currentRole: { 'roleTitle': 'None', 'roleId': 0 }
     }),
     mounted()
     {
@@ -143,7 +144,8 @@
           this.availableRoles = response.data[0];
           console.log(this.availableRoles)
         }
-      )
+      ),
+      this.currentRole = { 'roleTitle': this.$cookies.get('roleTitle'), 'roleId': parseInt(this.$cookies.get('roleId')) }
     },
     computed: {
       departmentOptions() {
