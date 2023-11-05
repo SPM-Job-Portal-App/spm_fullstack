@@ -5,7 +5,7 @@ from models.role_listing_model import RoleListing
 from models.role_application_model import RoleApplication
 from models.staff_model import Staff
 from models.role_model import Role
-from models.role_application_model import RoleApplication
+
 
 # Set up the Flask app for testing
 @pytest.fixture
@@ -14,13 +14,14 @@ def client():
     with app.test_client() as client:
         yield client
 
+
 # role listing id exist and get applicants
 def test_retrieve_applications_using_listing_id(client):
     initialize_databases()
     client.get('/access/get_access')
-    
+
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -42,9 +43,9 @@ def test_retrieve_applications_using_listing_id(client):
         reporting_manager=None
     )
     new_role_application = RoleApplication(
-        application_date = "2023-10-12",
-        role_listing_id = 1,
-        staff_id = 130001
+        application_date="2023-10-12",
+        role_listing_id=1,
+        staff_id=130001
     )
     with app.app_context():
         db.session.add(new_staff)
@@ -57,12 +58,12 @@ def test_retrieve_applications_using_listing_id(client):
     # expected_message = "Applicants retrieved successfully"
     # assert retrieved_message == expected_message
     # drop_tables()
-    
+
     # Make a test request using the client
     response = client.get('/application/get_applicants/1')
-    
+
     # Check the HTTP status code
-    assert response.status_code == 200 
+    assert response.status_code == 200
 
     # Parse the response content using response.json()
     response_data = response.json
@@ -77,12 +78,13 @@ def test_retrieve_applications_using_listing_id(client):
     assert retrieved_message == expected_message
     drop_tables()
 
+
 def test_apply_for_open_role_listing_success(client):
     initialize_databases()
     client.get('/access/get_access')
 
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -112,17 +114,18 @@ def test_apply_for_open_role_listing_success(client):
         db.session.add(new_role)
         db.session.add(new_listing)
         db.session.commit()
-        
+
     response = client.post('/application', json=application_data)
     expected_message = {'message': 'Role application created successfully'}
     assert response.json == expected_message
     assert response.status_code == 201
     drop_tables()
 
+
 def test_apply_for_closed_role_listing_failure(client):
     initialize_databases()
     client.get('/access/get_access')
-    
+
     new_listing = RoleListing(
         role_name="Software Engineer",
         country="USA",
@@ -137,7 +140,7 @@ def test_apply_for_closed_role_listing_failure(client):
         role_description="I call the manager's assistance"
     )
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -160,12 +163,13 @@ def test_apply_for_closed_role_listing_failure(client):
     assert response.status_code == 400
     drop_tables()
 
+
 def test_apply_for_nonexistent_role_listing_failure(client):
     initialize_databases()
     client.get('/access/get_access')
 
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -186,12 +190,13 @@ def test_apply_for_nonexistent_role_listing_failure(client):
     assert response.status_code == 404
     drop_tables()
 
+
 def test_apply_for_role_listing_with_active_application_failure(client):
     initialize_databases()
     client.get('/access/get_access')
 
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -223,17 +228,20 @@ def test_apply_for_role_listing_with_active_application_failure(client):
         db.session.commit()
     client.post('/application', json=application_data)
     response = client.post('/application', json=application_data)
-    expected_message = {'message': 'You have already applied for this role listing'}
+    expected_message = {'message': (
+        'You have already applied for this role listing'
+    )}
     assert response.json == expected_message
     assert response.status_code == 400
     drop_tables()
+
 
 def test_delete_existing_role_application_success(client):
     initialize_databases()
     client.get('/access/get_access')
 
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -269,19 +277,20 @@ def test_delete_existing_role_application_success(client):
         db.session.add(new_listing)
         db.session.add(new_application)
         db.session.commit()
-        
+
     response = client.delete('/application', json=application_data)
     expected_message = {'message': 'Role application deleted successfully'}
     assert response.json == expected_message
     assert response.status_code == 201
     drop_tables()
 
+
 def test_delete_nonexistent_role_application_failure(client):
     initialize_databases()
     client.get('/access/get_access')
 
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="John",
         staff_last_name="Doe",
         dept="Engineering",
@@ -317,7 +326,7 @@ def test_delete_nonexistent_role_application_failure(client):
         db.session.add(new_listing)
         db.session.add(new_application)
         db.session.commit()
-        
+
     response = client.delete('/application', json=application_data)
     expected_message = {'message': 'Role application at index does not exist'}
     assert response.json == expected_message

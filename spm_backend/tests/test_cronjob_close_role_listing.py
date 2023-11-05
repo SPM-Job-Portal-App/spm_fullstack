@@ -8,12 +8,14 @@ from models.role_model import Role
 from models.role_skill_model import RoleSkill
 from models.skill_model import Skill
 
+
 # Set up the Flask app for testing
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
+
 
 # test whether the timer opens the role listing on opening date
 def test_cronjob_close_role_listing_after_closing_date(client):
@@ -23,7 +25,7 @@ def test_cronjob_close_role_listing_after_closing_date(client):
     with app.app_context():
 
         new_staff = Staff(
-            id = 130001,
+            id=130001,
             staff_first_name="Alice",
             staff_last_name="Smith",
             dept="Engineering",
@@ -36,14 +38,16 @@ def test_cronjob_close_role_listing_after_closing_date(client):
 
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_desc="Develop applications based on the design specifications"
+                skill_desc=(
+                    "Develop applications based on the design specifications"
+                )
             )
         db.session.add(new_skill)
         db.session.commit()
 
         new_role = Role(
                 role_name="Developer",
-                role_description="Write code all day everyday. Write code all day everyday. Write code all day everyday."
+                role_description="Write code all day everyday."
             )
         db.session.add(new_role)
         db.session.commit()
@@ -70,16 +74,17 @@ def test_cronjob_close_role_listing_after_closing_date(client):
         db.session.add(new_listing)
         db.session.commit()
 
-    # test is using the test cron job that runs once only, not the real cron job repeatedly
+    # test is using the test cron job that runs once only
     start_test_cronjob()
 
     response = client.get('/listing/get_open_listings')
     response_data = response.get_json()
 
     assert response.status_code == 500
-    assert response_data == { "error": "No open role listings" }
+    assert response_data == {"error": "No open role listings"}
 
     drop_tables()
+
 
 # tests whether the timer opens a role listing not on its opening date
 def test_cronjob_close_role_listing_before_closing_date(client):
@@ -89,7 +94,7 @@ def test_cronjob_close_role_listing_before_closing_date(client):
     with app.app_context():
 
         new_staff = Staff(
-            id = 130001,
+            id=130001,
             staff_first_name="Alice",
             staff_last_name="Smith",
             dept="Engineering",
@@ -102,14 +107,16 @@ def test_cronjob_close_role_listing_before_closing_date(client):
 
         new_skill = Skill(
                 skill_name="Applications Development",
-                skill_desc="Develop applications based on the design specifications"
+                skill_desc=(
+                    "Develop applications based on the design specifications"
+                )
             )
         db.session.add(new_skill)
         db.session.commit()
 
         new_role = Role(
                 role_name="Developer",
-                role_description="Write code all day everyday. Write code all day everyday. Write code all day everyday."
+                role_description="Write code all day everyday."
             )
         db.session.add(new_role)
         db.session.commit()
@@ -137,9 +144,9 @@ def test_cronjob_close_role_listing_before_closing_date(client):
         db.session.add(new_listing)
         db.session.commit()
 
-    # test is using the test cron job that runs once only, not the real cron job repeatedly
+    # test is using the test cron job that runs once only
     start_test_cronjob()
-    
+
     response = client.get('/listing/get_open_listings')
     expected_result = [
         {
@@ -157,7 +164,9 @@ def test_cronjob_close_role_listing_before_closing_date(client):
     assert response_data[0]['country'] == expected_result[0]['country']
     assert response_data[0]['dept'] == expected_result[0]['dept']
     assert response_data[0]['is_open'] == expected_result[0]['is_open']
-    assert response_data[0]['reporting_manager'] == expected_result[0]['reporting_manager']
+    assert response_data[0]['reporting_manager'] == (
+        expected_result[0]['reporting_manager']
+    )
     assert response_data[0]['role_name'] == expected_result[0]['role_name']
 
     drop_tables()
