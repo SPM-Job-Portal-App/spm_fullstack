@@ -13,7 +13,9 @@ Before getting started, ensure you have the following prerequisites installed on
 ## Getting Started
 
 1. Clone this repository to your local machine:
-
    ```bash
    git clone https://github.com/SPM-Job-Portal-App/spm_fullstack.git
    ```
+
+2. Change your working directory to the backend directory:
+   ```cd spm_backend```
