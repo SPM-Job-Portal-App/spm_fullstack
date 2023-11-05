@@ -48,13 +48,37 @@ jobs:
       - name: Lint Python Code
         working-directory: spm_backend
         run: flake8 test_backend.py
+
+      - name: Lint test_close_role_listing file
+        working-directory: spm_backend
         run: flake8 tests/test_close_role_listing.py
+      
+      - name: Lint test_create_role_listing.py
+        working-directory: spm_backend
         run: flake8 tests/test_create_role_listing.py
+      
+      - name: Lint test_cronjob_close_role_listing.py
+        working-directory: spm_backend
         run: flake8 tests/test_cronjob_close_role_listing.py
+
+      - name: Lint test_cronjob_open_role_listing.py
+        working-directory: spm_backend
         run: flake8 tests/test_cronjob_open_role_listing.py
+
+      - name: Lint test_edit_role_listing.py
+        working-directory: spm_backend
         run: flake8 tests/test_edit_role_listing.py
+
+      - name: Lint test_get_open_role_listings.py
+        working-directory: spm_backend
         run: flake8 tests/test_get_open_role_listings.py
+
+      - name: Lint test_hr_get_all_role_listings.py
+        working-directory: spm_backend
         run: flake8 tests/test_hr_get_all_role_listings.py
+
+      - name: Lint test_role_application.py
+        working-directory: spm_backend
         run: flake8 tests/test_role_application.py
 
       - name: Run Tests
