@@ -15,4 +15,5 @@ Before getting started, ensure you have the following prerequisites installed on
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/SPM-Job-Portal-App/spm_fullstack.git```
+   git clone https://github.com/SPM-Job-Portal-App/spm_fullstack.git
+   ```
