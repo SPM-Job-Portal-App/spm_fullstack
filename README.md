@@ -1,29 +1,18 @@
-# README #
+# Backend Application README
 
-Example Change
+This README provides instructions for setting up and running the backend for the "SPM Backend" project.
 
-### What is this repository for? ###
+## Prerequisites
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Before getting started, ensure you have the following prerequisites installed on your system:
 
-### How do I get set up? ###
+- Docker
+- Python (3.6 or higher)
+- Virtualenv (for creating a virtual environment)
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+## Getting Started
 
-### Contribution guidelines ###
+1. Clone this repository to your local machine:
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+   ```bash
+   git clone https://github.com/SPM-Job-Portal-App/spm_fullstack.git```
