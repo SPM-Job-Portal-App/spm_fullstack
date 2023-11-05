@@ -4,19 +4,21 @@ from models.model import db
 from models.staff_model import Staff
 from models.role_model import Role
 
+
 # Set up the Flask app for testing
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
-        
-# Test for successful creation of role listing 
+
+
+# Test for successful creation of role listing
 def test_create_success(client):
     initialize_databases()
     client.get('/access/get_access')
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
@@ -47,12 +49,13 @@ def test_create_success(client):
     assert response.status_code == 201
     drop_tables()
 
+
 # Test for creating a listing role with missing required fields
 def test_create_role_listing_with_missing_fields_failure(client):
     initialize_databases()
     client.get('/access/get_access')
     new_staff = Staff(
-        id = 130001,
+        id=130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
@@ -78,12 +81,13 @@ def test_create_role_listing_with_missing_fields_failure(client):
     assert response.status_code == 400
     drop_tables()
 
-# Test for creating a duplicate role listing which already exists in the database
+
+# Test for creating a duplicate role listing
 def test_create_duplicate_role_listing_failure(client):
     initialize_databases()
     client.get('/access/get_access')
     new_staff = Staff(
-        id =130001,
+        id=130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
@@ -130,12 +134,13 @@ def test_create_duplicate_role_listing_failure(client):
     assert response2.status_code == 409
     drop_tables()
 
-# Test for creating a role listing with a non-null reporting_manager value for a nonexistent reporting manager
+
+# Test for creating a role listing with non-existent manager
 def test_create_role_listing_with_nonexistent_reporting_manager(client):
     initialize_databases()
     client.get('/access/get_access')
     new_staff = Staff(
-        id =130001,
+        id=130001,
         staff_first_name="James",
         staff_last_name="Re",
         dept="Sales",
