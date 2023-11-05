@@ -45,3 +45,19 @@ This command will start the necessary containers for the backend.
    ```
    python main.py
    ```
+
+### Run the frontend
+1. Change your working directory to the frontend directory:
+   ```
+   cd spm_frontend
+   ```
+
+2. Install package dependencies:
+   ```
+   npm i
+   ```
+
+3. Run the main frontend application:
+   ```
+   npm run dev
+   ```
