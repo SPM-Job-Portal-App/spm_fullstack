@@ -21,3 +21,27 @@ Before getting started, ensure you have the following prerequisites installed on
    ```
    cd spm_backend
    ```
+
+3. Start the MySQL database using Docker Compose:
+   ```
+   docker-compose up
+   ```
+
+This command will start the necessary containers for the backend.
+
+3. Create and activate a virtual environment (Mac):
+   ```
+   python -m venv myenv
+   source myenv/bin/activate
+   ```
+
+3. Create and activate a virtual environment (Windows):
+   ```
+   python -m venv myenv
+   myenv\Scripts\activate
+   ```
+
+4. Run the main backend application:
+   ```
+   python main.py
+   ```
