@@ -1,6 +1,6 @@
-# Backend Application README
+# Full stack application README
 
-This README provides instructions for setting up and running the backend for the "SPM Backend" project.
+This README provides instructions for setting up and running the backend for the "SPM Role Application" project.
 
 ## Prerequisites
 
