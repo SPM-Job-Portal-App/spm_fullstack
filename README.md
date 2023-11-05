@@ -18,4 +18,6 @@ Before getting started, ensure you have the following prerequisites installed on
    ```
 
 2. Change your working directory to the backend directory:
-   ```cd spm_backend```
+   ```
+   cd spm_backend
+   ```
