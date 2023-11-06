@@ -1,3 +1,10 @@
+-- Insert dummy data into the Access_control table
+INSERT INTO access_control (access_id, access_control_name) VALUES
+    (1, 'Admin'),
+    (2, 'User'),
+    (3, 'Manager'),
+    (4, 'HR');
+
 -- Insert dummy data into the Role table
 INSERT INTO role (role_name, role_description) VALUES
     ('Admin', 'Administrator role'),
