@@ -19,5 +19,5 @@ def get_skill_by_skill_name(skill_name):
         response = SkillService.get_skill_by_skill_name(skill_name)
         return jsonify(response), 200
     except Exception as e:
-        return jsonify({'error with skills': str(e)}), 500
+        return jsonify({'error': str(e)}), 500
 
