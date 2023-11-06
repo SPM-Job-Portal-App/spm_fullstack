@@ -134,6 +134,7 @@
 <script>
 import axios from'axios';
 import OverlayMessage from '../components/OverlayMessage.vue';
+const isProduction = import.meta.env.PROD;
 if(isProduction){
     var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
   }

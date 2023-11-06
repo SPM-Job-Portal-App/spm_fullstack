@@ -1,4 +1,4 @@
-const baseApiUrl = import.meta.env.VITE_API_BASE_URL;
+
 
 <template>
     <v-container class="fill-height">
@@ -122,6 +122,7 @@ const baseApiUrl = import.meta.env.VITE_API_BASE_URL;
 </template>
 
 <script>
+const isProduction = import.meta.env.PROD;
    if(isProduction){
     var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
   }

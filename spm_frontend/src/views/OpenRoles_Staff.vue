@@ -171,6 +171,7 @@ import axios from'axios';
 import SkillsOverlay from '../components/SkillsOverlay.vue';
 import CancelApplication from '../components/CancelApplication.vue';
 import Error from '../components/error.vue';
+const isProduction = import.meta.env.PROD;
 if(isProduction){
     var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
   }
