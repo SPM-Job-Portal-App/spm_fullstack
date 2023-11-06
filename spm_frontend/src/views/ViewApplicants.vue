@@ -125,6 +125,14 @@
   <script>
   import axios from'axios';
   import SkillsOverlay from '../components/SkillsOverlay.vue';
+  const isProduction = import.meta.env.PROD;
+  let apiUrl; // Declare apiUrl outside the conditional block
+
+if (isProduction) {
+  apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com";
+} else {
+  apiUrl = "http://localhost:5000";
+}
   export default {
     components: {SkillsOverlay},
     data: () => ({
@@ -145,12 +153,12 @@
     mounted()
     {
       this.roleListingId = this.$route.params.id
-      axios.get(`http://localhost:5000/listing/${this.roleListingId}`)
+      axios.get(`${apiUrl}/listing/${this.roleListingId}`)
       .then(
         (response)=>{
           this.listing = response.data;
           if (this.listing) {
-            axios.get(`http://localhost:5000/roleskill/get_skills_by_role_name/${this.listing.role_name}`)
+            axios.get(`${apiUrl}/roleskill/get_skills_by_role_name/${this.listing.role_name}`)
             .then(
               (res)=>{
                 this.listing['skills'] = res.data || [];
@@ -160,19 +168,19 @@
           }
         }
       )
-      axios.get(`http://localhost:5000/application/get_applicants/${this.roleListingId}`)
+      axios.get(`${apiUrl}/application/get_applicants/${this.roleListingId}`)
       .then(
         (response,)=>{
           this.staffIds = response.data.applicants_list;
           if (this.staffIds) {
             const requests = this.staffIds.map((staffId) => {
-              return axios.get(`http://localhost:5000/staff/get_staff_by_id/${staffId}`)
+              return axios.get(`${apiUrl}/staff/get_staff_by_id/${staffId}`)
               .then(
                 (res)=>{
                   if(res.data && res){
                     const tempApplicant = res.data;
                     tempApplicant['id'] = staffId
-                    return axios.get(`http://localhost:5000/staffskill/get_staff_skills/${staffId}`)
+                    return axios.get(`${apiUrl}/staffskill/get_staff_skills/${staffId}`)
                     .then(
                       (r)=>{
                         tempApplicant['skills'] = r.data;

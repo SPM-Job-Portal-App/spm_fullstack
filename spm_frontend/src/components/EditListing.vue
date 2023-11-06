@@ -59,6 +59,14 @@
 //   import { EventBus } from '@/main';
   import axios from'axios';
   import OverlayMessage from './OverlayMessage.vue';
+  const isProduction = import.meta.env.PROD;
+  let apiUrl; // Declare apiUrl outside the conditional block
+
+if (isProduction) {
+  apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com";
+} else {
+  apiUrl = "http://localhost:5000";
+}
   export default {
     data() {
       return {
@@ -100,7 +108,7 @@
     },
     mounted()
     {
-      axios.get('http://localhost:5000/listing/get_all_listings').then(
+      axios.get(`${apiUrl}/listing/get_all_listings`).then(
         (response)=>{
           const listings = response.data;
           for (let item of listings){
@@ -113,21 +121,21 @@
           console.log(this.listing)
         }
       ),
-      axios.get(`http://localhost:5000/listing/${this.index}`).then(
+      axios.get(`${apiUrl}/listing/${this.index}`).then(
         (response)=>{
           console.log(response)
           this.openingDate = response.data.opening_date
           this.closingDate = response.data.closing_date
         }
       ),
-      axios.get('http://localhost:5000/role').then(
+      axios.get(`${apiUrl}/role`).then(
         (response)=>{
           for(const idx in response.data.roles){
             this.availableRoles.push(response.data.roles[idx].Role)
           }
         }
       )
-      axios.get('http://localhost:5000/staff/get_staff').then(
+      axios.get(`${apiUrl}/staff/get_staff`).then(
         (response)=>{
           for(const staff of response.data.staff){
             if(staff.Role == 3){
@@ -150,7 +158,7 @@
         
         console.log('Saving changes:', this.listing);
         this.loading = true
-        axios.put(`http://localhost:5000/listing/${this.index}`, this.listing)
+        axios.put(`${apiUrl}/listing/${this.index}`, this.listing)
         .then(
             (response)=>{
               this.successOverlay = true

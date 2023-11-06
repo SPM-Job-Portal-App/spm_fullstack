@@ -1,3 +1,5 @@
+
+
 <template>
     <v-container class="fill-height">
         <v-responsive class="align-center text-center fill-height">
@@ -120,6 +122,15 @@
 </template>
 
 <script>
+const isProduction = import.meta.env.PROD;
+let apiUrl; // Declare apiUrl outside the conditional block
+
+if (isProduction) {
+  apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com";
+} else {
+  apiUrl = "http://localhost:5000";
+}
+
     import OverlayMessage from '../components/OverlayMessage.vue';
     import axios from 'axios'
 
@@ -140,7 +151,7 @@
         }),
         mounted() {
             this.id = this.$cookies.get('staffId')
-            axios.get(`http://localhost:5000/staff/get_staff_by_id/${this.id}`).then(
+            axios.get(`${apiUrl}/staff/get_staff_by_id/${this.id}`).then(
                 (response)=>{
                     this.firstName = response.data.staff_first_name;
                     this.lastName = response.data.staff_last_name;
@@ -150,7 +161,7 @@
                 }
             )
             if(this.id) {
-                axios.get(`http://localhost:5000/staffskill/get_staff_skills/${this.id}`).then(
+                axios.get(`${apiUrl}/staffskill/get_staff_skills/${this.id}`).then(
                     (response)=>{
                         this.acquiredSkills = response.data;
                     }
@@ -165,7 +176,7 @@
                     "role_listing": id,
                     "staff_id": this.id
                 }
-                axios.post('http://localhost:5000/application', application_data)
+                axios.post(`${apiUrl}/application`, application_data)
                 .then(
                     (response)=>{
                         this.successOverlay = true

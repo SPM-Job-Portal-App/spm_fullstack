@@ -38,7 +38,7 @@ class SkillService():
             ), 404
       
         except Exception as e:
-            raise Exception("No skills found")
+            raise Exception("No skills are found")
         
         
     def import_skills():

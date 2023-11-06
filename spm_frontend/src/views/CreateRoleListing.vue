@@ -134,6 +134,14 @@
 <script>
 import axios from'axios';
 import OverlayMessage from '../components/OverlayMessage.vue';
+const isProduction = import.meta.env.PROD;
+let apiUrl; // Declare apiUrl outside the conditional block
+
+if (isProduction) {
+  apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com";
+} else {
+  apiUrl = "http://localhost:5000";
+}
 export default {
   data() {
     return {
@@ -171,14 +179,14 @@ export default {
   },
   mounted()
   {
-    axios.get('http://localhost:5000/role').then(
+    axios.get(`${apiUrl}/role`).then(
         (response)=>{
           for(const idx in response.data.roles){
             this.roleOptions.push(response.data.roles[idx].Role)
           }
         }
       )
-      axios.get('http://localhost:5000/staff/get_staff').then(
+      axios.get(`${apiUrl}/staff/get_staff`).then(
       (response)=>{
         for(const staff of response.data.staff){
           if(staff.Role == 3){
@@ -235,7 +243,7 @@ export default {
           closing_date: `${this.closingDate.getFullYear()}-${this.closingDate.getMonth()+1}-${this.closingDate.getDate()}`
         }
         console.log(listing)
-        axios.post('http://localhost:5000/listing/create', listing)
+        axios.post(`${apiUrl}/listing/create`, listing)
           .then(
             (response)=>{
                 this.successOverlay = true

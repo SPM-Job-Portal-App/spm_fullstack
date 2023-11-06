@@ -11,11 +11,19 @@ from models.model import db
 from flask_cors import CORS
 import importlib
 import threading
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
+
+if 'DATABASE_URI' in os.environ:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+else:
+    # Set a default database URI here if the DATABASE_URI environment variable is not defined.
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
+
+
 
 
 def drop_tables():
@@ -52,11 +60,14 @@ app.register_blueprint(access_bp, url_prefix='/access')
 
 # Create a thread for the timer
 cronjob_thread = threading.Thread(target=start_cronjob)
+@app.route('/')
+def health_check():
+    return "Service is up and running"
 
 if __name__ == '__main__':
     # Uncomment to run cronjob to open or close role listings
     # cronjob_thread.start()
 
     # debug = True does not work well with multithreading because once you save some code and the Flask server restarts, there will be some error. So I commented out the "cronjob_thread.start()" line. If you want to use it, set change debug to False and uncomment the line
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 

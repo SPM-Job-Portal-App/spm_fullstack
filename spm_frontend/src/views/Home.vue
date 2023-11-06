@@ -73,6 +73,16 @@
 <script>
   import OverlayMessage from '../components/OverlayMessage.vue';
   import axios from 'axios'
+  const isProduction = import.meta.env.PROD;
+  
+  let apiUrl; // Declare apiUrl outside the conditional block
+
+if (isProduction) {
+  apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com";
+} else {
+  apiUrl = "http://localhost:5000";
+}
+
 
   export default {
     data: () => ({
@@ -88,14 +98,12 @@
       object: '',
       roles: {1: "Admin", 2: "User", 3: "Manager", 4: "HR"},
       staffRole: ''
-      // staffIdRules: [
-      //   v => (v || '').length > 0 || 'Staff ID is required',
-      // ],
-      // passwordRules: [
-      //   v => (v || '').length > 0 || 'Password is required',
-      // ],
+   
     }),
     mounted() {
+      console.log(apiUrl);
+      console.log('isProduction:', isProduction)
+      console.log('NODE_ENV:', process.env.NODE_ENV);
       if(this.$cookies.get('staffId')){
         this.staffId = this.$cookies.get('staffId')
         this.initialStaffId = this.staffId
@@ -111,7 +119,7 @@
     methods: {
       submitForm () {
         this.loading = true
-        axios.get(`http://localhost:5000/staff/get_staff_by_id/${this.staffId}`)
+        axios.get(`${apiUrl}/staff/get_staff_by_id/${this.staffId}`)
         .then(
           (response)=>{
             console.log(response.data)
@@ -134,11 +142,7 @@
           }
         )
       },
-      // isValid() {
-      //   if(this.$refs.form){
-      //       return this.$refs.form.validate()
-      //   }
-      // },
+      
       toggleOverlay() {
         this.loading = false
         this.successOverlay = false
