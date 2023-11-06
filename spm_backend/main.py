@@ -24,7 +24,9 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/default_db'
 
 
-
+@app.route('/')
+def health_check():
+    return "Service is up and running"
 
 def drop_tables():
     with app.app_context():
