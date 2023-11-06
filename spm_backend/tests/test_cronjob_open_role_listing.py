@@ -17,7 +17,7 @@ def client():
         yield client
 
 
-# test whether the timer opens the role listing on opening date
+# test whether the cronjob opens the role listing on opening date
 def test_cronjob_open_role_listing_on_opening_date(client):
     initialize_databases()
     client.get('/access/get_access')

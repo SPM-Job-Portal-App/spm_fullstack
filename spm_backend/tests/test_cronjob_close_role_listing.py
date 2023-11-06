@@ -17,7 +17,7 @@ def client():
         yield client
 
 
-# test whether the timer opens the role listing on opening date
+# test whether the cronjob closes the role listing on closing date
 def test_cronjob_close_role_listing_after_closing_date(client):
     initialize_databases()
     client.get('/access/get_access')
@@ -86,7 +86,7 @@ def test_cronjob_close_role_listing_after_closing_date(client):
     drop_tables()
 
 
-# tests whether the timer opens a role listing not on its opening date
+# tests whether the cronjob closes the role listing before its closing date
 def test_cronjob_close_role_listing_before_closing_date(client):
     initialize_databases()
     client.get('/access/get_access')
