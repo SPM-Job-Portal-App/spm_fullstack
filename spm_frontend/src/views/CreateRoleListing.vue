@@ -230,7 +230,7 @@ export default {
           country: this.selectedCountry,
           dept: this.SelectedDept,
           reporting_manager: this.selectedReportingManager == 'None' ? null : this.reportingManagersIds[this.selectedReportingManager],
-          is_open: true,
+          is_open: new Date() < this.openingDate ? false : true,
           opening_date: `${this.openingDate.getFullYear()}-${this.openingDate.getMonth()+1}-${this.openingDate.getDate()}`,
           closing_date: `${this.closingDate.getFullYear()}-${this.closingDate.getMonth()+1}-${this.closingDate.getDate()}`
         }
