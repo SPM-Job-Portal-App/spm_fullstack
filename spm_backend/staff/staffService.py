@@ -27,7 +27,7 @@ class StaffService():
             return staff
         
         except Exception as e:
-            raise Exception("No staff with this id found")
+            raise Exception("No staff with this id  is found")
         
     # get all staff
     def get_all_staff():
