@@ -88,12 +88,7 @@
       object: '',
       roles: {1: "Admin", 2: "User", 3: "Manager", 4: "HR"},
       staffRole: ''
-      // staffIdRules: [
-      //   v => (v || '').length > 0 || 'Staff ID is required',
-      // ],
-      // passwordRules: [
-      //   v => (v || '').length > 0 || 'Password is required',
-      // ],
+   
     }),
     mounted() {
       if(this.$cookies.get('staffId')){
