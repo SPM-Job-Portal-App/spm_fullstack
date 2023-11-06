@@ -24,9 +24,7 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/default_db'
 
 
-@app.route('/')
-def health_check():
-    return "Service is up and running"
+
 
 def drop_tables():
     with app.app_context():
@@ -62,6 +60,9 @@ app.register_blueprint(access_bp, url_prefix='/access')
 
 # Create a thread for the timer
 cronjob_thread = threading.Thread(target=start_cronjob)
+@app.route('/')
+def health_check():
+    return "Service is up and running"
 
 if __name__ == '__main__':
     # Uncomment to run cronjob to open or close role listings
