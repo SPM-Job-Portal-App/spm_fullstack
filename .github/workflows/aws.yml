@@ -15,9 +15,9 @@ on:
       - ".github/workflow/aws.yaml"
 
 env:
-  AWS_REGION: ap-southeast-2 # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: ap-southeast-1 # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: public.ecr.aws/o9x6w5p2/spm-backend-final
-  ECS_SERVICE: spm-backend # set this to your Amazon ECS service name
+  ECS_SERVICE: spm-backend-service-final # set this to your Amazon ECS service name
   ECS_CLUSTER:
     spm-cluster-final # set this to your Amazon ECS cluster name
     # file, e.g. .aws/task-definition.json
