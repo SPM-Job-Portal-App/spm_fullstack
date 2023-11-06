@@ -73,6 +73,16 @@
 <script>
   import OverlayMessage from '../components/OverlayMessage.vue';
   import axios from 'axios'
+  
+  const isProduction = import.meta.env.PROD;
+  
+  
+  if(isProduction){
+    var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
+  }
+  else{
+    var apiUrl = "http://localhost:5000"
+  }
 
   export default {
     data: () => ({
@@ -91,6 +101,9 @@
    
     }),
     mounted() {
+      console.log(apiUrl);
+      console.log('isProduction:', isProduction)
+      console.log('NODE_ENV:', process.env.NODE_ENV);
       if(this.$cookies.get('staffId')){
         this.staffId = this.$cookies.get('staffId')
         this.initialStaffId = this.staffId
@@ -106,7 +119,7 @@
     methods: {
       submitForm () {
         this.loading = true
-        axios.get(`http://localhost:5000/staff/get_staff_by_id/${this.staffId}`)
+        axios.get(`${apiUrl}/staff/get_staff_by_id/${this.staffId}`)
         .then(
           (response)=>{
             console.log(response.data)

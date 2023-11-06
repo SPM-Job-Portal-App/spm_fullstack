@@ -166,10 +166,17 @@
 
 
 <script>
+
 import axios from'axios';
 import SkillsOverlay from '../components/SkillsOverlay.vue';
 import CancelApplication from '../components/CancelApplication.vue';
 import Error from '../components/error.vue';
+if(isProduction){
+    var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
+  }
+  else{
+    var apiUrl = "http://localhost:5000"
+  }
 export default {
   components: { SkillsOverlay, CancelApplication, Error },
  
@@ -192,8 +199,9 @@ export default {
   }),
   mounted()
     {
+      
     this.id = this.$cookies.get('staffId')
-      axios.get(`http://localhost:5000/application/${this.id}`).then(
+      axios.get(`${apiUrl}/application/${this.id}`).then(
         (response)=>{
           console.log(response.data.applied_role_listings)
           let temp_appliedRoles = []
@@ -206,13 +214,13 @@ export default {
           console.log(this.appliedRoles)
         }
       )
-      axios.get('http://localhost:5000/listing/get_open_listings')
+      axios.get(`${apiUrl}/listing/get_open_listings`)
       .then(
         (response)=>{
           this.availableRoles = response.data;
           if (response) {
             const roleRequests = response.data.map((role) => {
-              return axios.get(`http://localhost:5000/role/get_role_by_role_name/${role.role_name}`);
+              return axios.get(`${apiUrl}/role/get_role_by_role_name/${role.role_name}`);
             });
             return Promise.all(roleRequests);
           }
@@ -225,7 +233,7 @@ export default {
           console.log(this.availableRoles);
         }
       )
-      axios.get(`http://localhost:5000/staffskill/get_staff_skills/${this.id}`)
+      axios.get(`${apiUrl}/staffskill/get_staff_skills/${this.id}`)
         .then((response) => {
           this.acquiredSkills = response.data
           this.halfSkillsCount = Math.ceil(this.acquiredSkills.length / 2);
@@ -290,7 +298,7 @@ export default {
         "role_listing": listing.id,
         "staff_id": this.id
       }
-      axios.delete('http://localhost:5000/application', {
+      axios.delete(`${apiUrl}/application`, {
         data: application_data
       }).then(
         (response) => {

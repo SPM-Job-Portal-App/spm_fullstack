@@ -128,6 +128,12 @@
   <script>
   import axios from'axios';
   import OverlayMessage from "../components/OverlayMessage.vue";
+  if(isProduction){
+    var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
+  }
+  else{
+    var apiUrl = "http://localhost:5000"
+  }
   export default {
     data: () => ({
       selectedDepartment: "All",
@@ -139,7 +145,7 @@
     }),
     mounted()
     {
-      axios.get('http://localhost:5000/application/getapplications').then(
+      axios.get(`${apiUrl}/application/getapplications`).then(
         (response)=>{
           this.availableRoles = response.data[0];
           console.log(this.availableRoles)
@@ -173,7 +179,7 @@
         window.location.reload();
       },
       closeRoleListing(index) {
-        axios.put('http://localhost:5000/listing/close_role_listing/' + index)
+        axios.put(`${apiUrl}/listing/close_role_listing/` + index)
         .then(response => {
           console.log(response)
           this.successOverlay = true;
