@@ -3,13 +3,13 @@ name: Run Frontend CD
 on:
   push:
     branches:
-      - hotfix/ransom
+      - main
     paths:
       - "spm_frontend/**"
       - ".github/workflow/frontend-cd.yaml"
   pull_request:
     branches:
-      - hotfix/ransom
+      - main
     paths:
       - "spm_frontend/**"
       - ".github/workflow/frontend-cd.yaml"
