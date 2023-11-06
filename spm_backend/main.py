@@ -11,11 +11,19 @@ from models.model import db
 from flask_cors import CORS
 import importlib
 import threading
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/db'
+
+if 'DATABASE_URI' in os.environ:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+else:
+    # Set a default database URI here if the DATABASE_URI environment variable is not defined.
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://user:password@localhost:3306/default_db'
+
+
 
 
 def drop_tables():
