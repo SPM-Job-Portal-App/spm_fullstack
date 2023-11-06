@@ -126,12 +126,13 @@
   import axios from'axios';
   import SkillsOverlay from '../components/SkillsOverlay.vue';
   const isProduction = import.meta.env.PROD;
-  if(isProduction){
-    var apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com"
-  }
-  else{
-    var apiUrl = "http://localhost:5000"
-  }
+  let apiUrl; // Declare apiUrl outside the conditional block
+
+if (isProduction) {
+  apiUrl = "http://spm-backend-lb-780988294.ap-southeast-1.elb.amazonaws.com";
+} else {
+  apiUrl = "http://localhost:5000";
+}
   export default {
     components: {SkillsOverlay},
     data: () => ({
