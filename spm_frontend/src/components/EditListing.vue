@@ -10,11 +10,11 @@
       <v-row class="text-center">
         <v-col>
           <p class="text-grey">Opening Date</p>
-          <VDatePicker v-model="openingDate" mode="date" expanded />
+          <VDatePicker v-model="openingDate" :disabled-dates="disabledDates" mode="date" expanded />
         </v-col>
         <v-col>
           <p class="text-grey">Closing Date</p>
-          <VDatePicker v-model="closingDate" mode="date" expanded />
+          <VDatePicker v-model="closingDate" :disabled-dates="disabledDates" mode="date" expanded />
         </v-col>
       </v-row>
       <v-row class="text-center">
@@ -87,6 +87,7 @@
         availableIsOpen: ['True', 'False'],
         reportingManagers: ['Nil'],
         reportingManagersIds: [],
+        disabledDates: this.getDisabledDates(),
       };
     },
     computed: {
@@ -172,6 +173,11 @@
             }
             console.error(error);
         })
+      },
+      getDisabledDates(){
+        const currentDate = new Date()
+        currentDate.setDate(currentDate.getDate() - 1)
+        return [{ start: null, end: currentDate }]
       },
       toggleOverlay() {
         this.loading = false
