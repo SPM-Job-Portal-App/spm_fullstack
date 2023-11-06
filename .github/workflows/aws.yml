@@ -3,13 +3,13 @@ name: Production ECS Deployment
 on:
   push:
     branches:
-      - "main"
+      - "hotfix/ransom"
     paths:
       - "spm_backend/**"
       - ".github/workflow/aws.yaml"
   pull_request:
     branches:
-      - main
+      - hotfix/ransom
     paths:
       - "spm_backend/**"
       - ".github/workflow/aws.yaml"

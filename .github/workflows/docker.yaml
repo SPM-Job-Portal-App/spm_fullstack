@@ -3,13 +3,13 @@ name: Production Build Push to Dockerhub image
 on:
   push:
     branches:
-      - main
+      - hotfix/ransom
     paths:
       - "spm_backend/**"
       - ".github/workflow/docker.yaml"
   pull_request:
     branches:
-      - main
+      - hotfix/ransom
     paths:
       - "spm_backend/**"
       - ".github/workflow/docker.yaml"
