@@ -186,7 +186,7 @@ export default {
           }
         }
       )
-      axios.get(`${apiUrl}staff/get_staff`).then(
+      axios.get(`${apiUrl}/staff/get_staff`).then(
       (response)=>{
         for(const staff of response.data.staff){
           if(staff.Role == 3){
