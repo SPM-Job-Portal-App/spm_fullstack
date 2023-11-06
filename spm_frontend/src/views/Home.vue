@@ -129,11 +129,7 @@
           }
         )
       },
-      // isValid() {
-      //   if(this.$refs.form){
-      //       return this.$refs.form.validate()
-      //   }
-      // },
+      
       toggleOverlay() {
         this.loading = false
         this.successOverlay = false
