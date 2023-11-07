@@ -1,6 +1,6 @@
-# Full stack application README
+# Skill-Based Role Portfal (SBRP) Application README
 
-This README provides instructions for setting up and running the backend for the "SPM Role Application" project.
+This README provides instructions for setting up and running the backend for the "Skill-Based Role Portfal (SBRP)" project.
 
 ## C4 Code Diagram
 ![C4 Code Diagram](https://github.com/SPM-Job-Portal-App/spm_fullstack/blob/206dc72971c2f83758ddfd47a534f2e204aaa96a/.github/README/SPM%20Code%20Diagram.png?raw=true)
