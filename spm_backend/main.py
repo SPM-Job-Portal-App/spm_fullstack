@@ -66,8 +66,8 @@ def health_check():
 
 if __name__ == '__main__':
     # Uncomment to run cronjob to open or close role listings
-    # cronjob_thread.start()
+    cronjob_thread.start()
 
     # debug = True does not work well with multithreading because once you save some code and the Flask server restarts, there will be some error. So I commented out the "cronjob_thread.start()" line. If you want to use it, set change debug to False and uncomment the line
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
 
