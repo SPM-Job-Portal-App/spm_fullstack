@@ -44,7 +44,12 @@ This command will start the necessary containers for the backend.
    myenv\Scripts\activate
    ```
 
-4. Run the main backend application:
+4. Install packages required to run application:
+   ```
+   pip install -r requirements.txt
+   ```
+
+5. Run the main backend application:
    ```
    python main.py
    ```
