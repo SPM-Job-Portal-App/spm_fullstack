@@ -8,7 +8,7 @@ This README provides instructions for setting up and running the backend for the
 
 ## CI CD Workflow
 
-![CI CD Workflow](https://github.com/SPM-Job-Portal-App/spm_fullstack/blob/206dc72971c2f83758ddfd47a534f2e204aaa96a/.github/README/SBRP_solution_architecture.png?raw=true)
+![CI CD Workflow](https://github.com/SPM-Job-Portal-App/spm_fullstack/blob/eb3b904529650ad52d4564139ee6159e6c30a51f/.github/README/SBRP_solution_architecture.png)
 
 ## Prerequisites
 
